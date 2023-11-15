@@ -42,12 +42,12 @@ struct CameraView: View {
             }.padding()
             Button(action: {
                 NSLog("Request Shutter on...")
-                peripheral?.requestShutterOn { error in
+                peripheral?.requestShutter({ error in
                     if error != nil {
                         print("\(error!)")
                         return
                     }
-                }
+                }, on: true)
             }, label: {
                 Text("Request Shutter on")
             })
@@ -55,8 +55,24 @@ struct CameraView: View {
                 ToolbarItem(placement: .principal) {
                     Text(peripheral?.name ?? "").fontWeight(.bold)
                 }
+            }.padding()
+        Button(action: {
+            NSLog("Request Shutter off...")
+            peripheral?.requestShutter({ error in
+                if error != nil {
+                    print("\(error!)")
+                    return
+                }
+            }, on: false)
+        }, label: {
+            Text("Request Shutter off")
+        })
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text(peripheral?.name ?? "").fontWeight(.bold)
             }
-        }).padding()
+        }.padding()
+    })
     }
 
     private func joinWiFi(with SSID: String, password: String) {

@@ -58,12 +58,16 @@ extension Peripheral {
         }
     }
 
-    func requestShutterOn(_ completion: ((Error?) -> Void)?) {
+    func requestShutter(_ completion: ((Error?) -> Void)?, on: Bool) {
 
         let serviceUUID = CBUUID(string: "FEA6")
         let commandUUID = CBUUID(string: "B5F90072-AA8D-11E3-9046-0002A5D5C51B")
         let commandResponseUUID = CBUUID(string: "B5F90073-AA8D-11E3-9046-0002A5D5C51B")
-        let data = Data([0x03, 0x01, 0x01, 0x01])
+        var on_byte: UInt8 = 0x00
+        if on == true {
+            on_byte = 0x01
+        }
+        let data = Data([0x03, 0x01, 0x01, on_byte])
 
         let finishWithError: (Error?) -> Void = { error in
             // make sure to dispatch the result on the main thread
@@ -74,7 +78,7 @@ extension Peripheral {
 
         registerObserver(serviceUUID: serviceUUID, characteristicUUID: commandResponseUUID) { data in
 
-            // The response to the command to request shutter on is expected to be 3 bytes
+            // The response to the command to request shutter is expected to be 3 bytes
             if data.count != 3 {
                 finishWithError(CameraError.invalidResponse)
                 return
