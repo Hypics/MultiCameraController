@@ -13,7 +13,7 @@ struct CameraView: View {
     var peripheral: Peripheral?
     var body: some View {
         VStack(content: {
-            Text("Deep Frost Testing..")
+            Text("Deep Frost Testing..").padding()
             Button(action: {
                 NSLog("Enabling WiFi...")
                 peripheral?.enableWiFi { error in
@@ -39,7 +39,7 @@ struct CameraView: View {
                 ToolbarItem(placement: .principal) {
                     Text(peripheral?.name ?? "").fontWeight(.bold)
                 }
-            }
+            }.padding()
             Button(action: {
                 NSLog("Request Shutter on...")
                 peripheral?.requestShutterOn { error in
@@ -56,7 +56,7 @@ struct CameraView: View {
                     Text(peripheral?.name ?? "").fontWeight(.bold)
                 }
             }
-            })
+        }).padding()
     }
 
     private func joinWiFi(with SSID: String, password: String) {
