@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CoreBluetooth
+import os.log
 
 struct CameraSelectionView: View {
     @ObservedObject var scanner = CentralManager()
@@ -28,15 +29,15 @@ struct CameraSelectionView: View {
                                     .foregroundColor(.gray)
                             }
                             Button(action: {
-                                NSLog("Connecting to \(peripheral.name)..")
+                                os_log("Connecting to %@..", type: .info, peripheral.name)
                                 peripheral.connect { error in
                                     if error != nil {
-                                        NSLog("Error connecting to \(peripheral.name)")
+                                        os_log("Error connecting to %@", type: .error, peripheral.name)
                                         return
                                     }
-                                    NSLog("Connected to \(peripheral.name)!")
-                                    showCameraView = true
+                                    os_log("Connected to %@!", type: .info, peripheral.name)
                                     self.peripheral = peripheral
+                                    showCameraView = true
                                 }
                             }, label: {
                                 EmptyView()
@@ -47,10 +48,10 @@ struct CameraSelectionView: View {
             }
             .onAppear {
                 if let peripheral = peripheral {
-                    NSLog("Disconnecting to \(peripheral.name)..")
+                    os_log("Disconnecting to %@..", type: .info, peripheral.name)
                     peripheral.disconnect()
                 }
-                NSLog("Scanning for GoPro cameras..")
+                os_log("Scanning for GoPro cameras..", type: .info)
                 scanner.start(withServices: [CBUUID(string: "FEA6")])
             }
             .onDisappear { scanner.stop() }

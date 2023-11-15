@@ -8,6 +8,7 @@
 
 import SwiftUI
 import NetworkExtension
+import os.log
 
 struct CameraView: View {
     var peripheral: Peripheral?
@@ -15,14 +16,14 @@ struct CameraView: View {
         VStack(content: {
             Text("Deep Frost Testing..").padding()
             Button(action: {
-                NSLog("Enabling WiFi...")
+                os_log("Enabling WiFi...", type: .info)
                 peripheral?.enableWiFi { error in
                     if error != nil {
                         print("\(error!)")
                         return
                     }
 
-                    NSLog("Requesting WiFi settings...")
+                    os_log("Requesting WiFi settings...", type: .info)
                     peripheral?.requestWiFiSettings { result in
                         switch result {
                         case .success(let wifiSettings):
@@ -41,7 +42,7 @@ struct CameraView: View {
                 }
             }.padding()
             Button(action: {
-                NSLog("Request Shutter on...")
+                os_log("Request Shutter on...", type: .info)
                 peripheral?.requestShutter({ error in
                     if error != nil {
                         print("\(error!)")
@@ -57,7 +58,7 @@ struct CameraView: View {
                 }
             }.padding()
             Button(action: {
-                NSLog("Request Shutter off...")
+                os_log("Request Shutter off...", type: .info)
                 peripheral?.requestShutter({ error in
                     if error != nil {
                         print("\(error!)")
@@ -73,7 +74,7 @@ struct CameraView: View {
                 }
             }.padding()
             Button(action: {
-                NSLog("Request Sleep...")
+                os_log("Request Sleep...", type: .info)
                 peripheral?.requestSleep({ error in
                     if error != nil {
                         print("\(error!)")
@@ -92,13 +93,13 @@ struct CameraView: View {
     }
 
     private func joinWiFi(with SSID: String, password: String) {
-        NSLog("Joining WiFi \(SSID)...")
+        os_log("Joining WiFi %@...", type: .info, SSID)
         let configuration = NEHotspotConfiguration(ssid: SSID, passphrase: password, isWEP: false)
         NEHotspotConfigurationManager.shared.removeConfiguration(forSSID: SSID)
         configuration.joinOnce = false
         NEHotspotConfigurationManager.shared.apply(configuration) { error in
-            guard let error = error else { NSLog("Joining WiFi succeeded"); return }
-            NSLog("Joining WiFi failed: \(error)")
+            guard let error = error else { os_log("Joining WiFi succeeded", type: .info); return }
+            os_log("Joining WiFi failed: %@", type: .error, error as CVarArg)
         }
     }
 }
