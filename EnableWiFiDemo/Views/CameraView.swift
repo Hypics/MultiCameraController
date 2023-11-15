@@ -12,32 +12,51 @@ import NetworkExtension
 struct CameraView: View {
     var peripheral: Peripheral?
     var body: some View {
-        Button(action: {
-            NSLog("Enabling WiFi...")
-            peripheral?.enableWiFi { error in
-                if error != nil {
-                    print("\(error!)")
-                    return
-                }
+        VStack(content: {
+            Text("Deep Frost Testing..")
+            Button(action: {
+                NSLog("Enabling WiFi...")
+                peripheral?.enableWiFi { error in
+                    if error != nil {
+                        print("\(error!)")
+                        return
+                    }
 
-                NSLog("Requesting WiFi settings...")
-                peripheral?.requestWiFiSettings { result in
-                    switch result {
-                    case .success(let wifiSettings):
-                        joinWiFi(with: wifiSettings.SSID, password: wifiSettings.password)
-                    case .failure(let error):
-                        print("\(error)")
+                    NSLog("Requesting WiFi settings...")
+                    peripheral?.requestWiFiSettings { result in
+                        switch result {
+                        case .success(let wifiSettings):
+                            joinWiFi(with: wifiSettings.SSID, password: wifiSettings.password)
+                        case .failure(let error):
+                            print("\(error)")
+                        }
                     }
                 }
+            }, label: {
+                Text("Enable Wi-Fi")
+            })
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(peripheral?.name ?? "").fontWeight(.bold)
+                }
             }
-        }, label: {
-            Text("Enable Wi-Fi")
-        })
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(peripheral?.name ?? "").fontWeight(.bold)
+            Button(action: {
+                NSLog("Request Shutter on...")
+                peripheral?.requestShutterOn { error in
+                    if error != nil {
+                        print("\(error!)")
+                        return
+                    }
+                }
+            }, label: {
+                Text("Request Shutter on")
+            })
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(peripheral?.name ?? "").fontWeight(.bold)
+                }
             }
-        }
+            })
     }
 
     private func joinWiFi(with SSID: String, password: String) {
