@@ -96,6 +96,40 @@ extension Peripheral {
         }
     }
 
+    func requestSleep(_ completion: ((Error?) -> Void)?) {
+
+        let serviceUUID = CBUUID(string: "FEA6")
+        let commandUUID = CBUUID(string: "B5F90072-AA8D-11E3-9046-0002A5D5C51B")
+        let commandResponseUUID = CBUUID(string: "B5F90073-AA8D-11E3-9046-0002A5D5C51B")
+        let data = Data([0x01, 0x05])
+
+        let finishWithError: (Error?) -> Void = { error in
+            // make sure to dispatch the result on the main thread
+            DispatchQueue.main.async {
+                completion?(error)
+            }
+        }
+
+        registerObserver(serviceUUID: serviceUUID, characteristicUUID: commandResponseUUID) { data in
+
+            // The response to the command to request sleep is expected to be 3 bytes
+            if data.count != 3 {
+                finishWithError(CameraError.invalidResponse)
+                return
+            }
+
+            // The third byte represents the camera response. If the byte is 0x00 then the request was successful
+            finishWithError(data[2] == 0x00 ? nil : CameraError.responseError)
+
+        } completion: { [weak self] error in
+            // Check that we successfully enable the notification for the response before writing to the characteristic
+            if error != nil { finishWithError(error); return }
+            self?.write(data: data, serviceUUID: serviceUUID, characteristicUUID: commandUUID) { error in
+                if error != nil { finishWithError(error) }
+            }
+        }
+    }
+
     /// Reads camera's Wi-Fi settings
     /// - Parameter completion: The completion handler with a result representing either a success or a failure.
     ///                         In the success case, the associated value is an instance of WiFiSettings

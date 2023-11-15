@@ -56,22 +56,38 @@ struct CameraView: View {
                     Text(peripheral?.name ?? "").fontWeight(.bold)
                 }
             }.padding()
-        Button(action: {
-            NSLog("Request Shutter off...")
-            peripheral?.requestShutter({ error in
-                if error != nil {
-                    print("\(error!)")
-                    return
+            Button(action: {
+                NSLog("Request Shutter off...")
+                peripheral?.requestShutter({ error in
+                    if error != nil {
+                        print("\(error!)")
+                        return
+                    }
+                }, on: false)
+            }, label: {
+                Text("Request Shutter off")
+            })
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(peripheral?.name ?? "").fontWeight(.bold)
                 }
-            }, on: false)
-        }, label: {
-            Text("Request Shutter off")
-        })
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text(peripheral?.name ?? "").fontWeight(.bold)
-            }
-        }.padding()
+            }.padding()
+            Button(action: {
+                NSLog("Request Sleep...")
+                peripheral?.requestSleep({ error in
+                    if error != nil {
+                        print("\(error!)")
+                        return
+                    }
+                })
+            }, label: {
+                Text("Request Sleep")
+            })
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(peripheral?.name ?? "").fontWeight(.bold)
+                }
+            }.padding()
     })
     }
 
