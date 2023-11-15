@@ -332,7 +332,7 @@
 				CODE_SIGN_ENTITLEMENTS = EnableWiFiDemo/EnableWiFiDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"EnableWiFiDemo/Preview Content\"";
-				DEVELOPMENT_TEAM = 5R97Y7Q7FD;
+				DEVELOPMENT_TEAM = 6BMGBDL855;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = EnableWiFiDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -340,7 +340,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.gopro.EnableWiFiDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gopro.enable-wifi-demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -355,7 +355,7 @@
 				CODE_SIGN_ENTITLEMENTS = EnableWiFiDemo/EnableWiFiDemo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"EnableWiFiDemo/Preview Content\"";
-				DEVELOPMENT_TEAM = 5R97Y7Q7FD;
+				DEVELOPMENT_TEAM = 6BMGBDL855;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = EnableWiFiDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -363,7 +363,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.gopro.EnableWiFiDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gopro.enable-wifi-demo";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
