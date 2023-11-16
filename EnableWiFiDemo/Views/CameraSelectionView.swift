@@ -30,14 +30,18 @@ struct CameraSelectionView: View {
                             }
                             Button(action: {
                                 os_log("Connecting to %@..", type: .info, peripheral.name)
-                                peripheral.connect { error in
+                                peripheral.secureConnect { error in
                                     if error != nil {
                                         os_log("Error connecting to %@", type: .error, peripheral.name)
                                         return
                                     }
-                                    os_log("Connected to %@!", type: .info, peripheral.name)
-                                    self.peripheral = peripheral
-                                    showCameraView = true
+                                    if self.peripheral == nil {
+                                        os_log("Connected to %@!", type: .info, peripheral.name)
+                                        self.peripheral = peripheral
+                                        showCameraView = true
+                                    } else {
+                                        os_log("self.peripheral is remained!", type: .debug)
+                                    }
                                 }
                             }, label: {
                                 EmptyView()
@@ -50,6 +54,7 @@ struct CameraSelectionView: View {
                 if let peripheral = peripheral {
                     os_log("Disconnecting to %@..", type: .info, peripheral.name)
                     peripheral.disconnect()
+                    self.peripheral = nil
                 }
                 os_log("Scanning for GoPro cameras..", type: .info)
                 scanner.start(withServices: [CBUUID(string: "FEA6")])
