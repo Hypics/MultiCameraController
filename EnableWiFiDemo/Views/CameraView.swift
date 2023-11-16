@@ -18,25 +18,18 @@ struct CameraView: View {
         VStack(content: {
             Text("Deep Frost Testing..").padding()
             Button(action: {
-                os_log("Enabling WiFi...", type: .info)
-                peripheral?.enableWiFi { error in
-                    if error != nil {
-                        print("\(error!)")
-                        return
-                    }
-
-                    os_log("Requesting WiFi settings...", type: .info)
-                    peripheral?.requestWiFiSettings { result in
-                        switch result {
-                        case .success(let wifiSettings):
-                            joinWiFi(with: wifiSettings.SSID, password: wifiSettings.password)
-                        case .failure(let error):
-                            print("\(error)")
-                        }
+                os_log("Requesting WiFi settings...", type: .info)
+                peripheral?.requestWiFiSettings { result in
+                    switch result {
+                    case .success(let wifiSettings):
+                        os_log("Join WiFi...", type: .info)
+                        joinWiFi(with: wifiSettings.SSID, password: wifiSettings.password)
+                    case .failure(let error):
+                        print("\(error)")
                     }
                 }
             }, label: {
-                Text("Enable Wi-Fi")
+                Text("Join Wi-Fi")
             })
             .toolbar {
                 ToolbarItem(placement: .principal) {
