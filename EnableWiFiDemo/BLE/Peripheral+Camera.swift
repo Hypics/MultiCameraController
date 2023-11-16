@@ -8,6 +8,7 @@
 
 import Foundation
 import CoreBluetooth
+import os.log
 
 /// A struct representing the camera's Wi-Fi settings
 struct WiFiSettings {
@@ -53,7 +54,8 @@ extension Peripheral {
             // Check that we successfully enable the notification for the response before writing to the characteristic
             if error != nil { finishWithError(error); return }
             self?.write(data: data, serviceUUID: serviceUUID, characteristicUUID: commandUUID) { error in
-                if error != nil { finishWithError(error) }
+                finishWithError(error)
+                os_log("sent enableWiFi", type: .debug)
             }
         }
     }
@@ -91,7 +93,8 @@ extension Peripheral {
             // Check that we successfully enable the notification for the response before writing to the characteristic
             if error != nil { finishWithError(error); return }
             self?.write(data: data, serviceUUID: serviceUUID, characteristicUUID: commandUUID) { error in
-                if error != nil { finishWithError(error) }
+                finishWithError(error)
+                os_log("sent requestShutter", type: .debug)
             }
         }
     }
@@ -125,7 +128,8 @@ extension Peripheral {
             // Check that we successfully enable the notification for the response before writing to the characteristic
             if error != nil { finishWithError(error); return }
             self?.write(data: data, serviceUUID: serviceUUID, characteristicUUID: commandUUID) { error in
-                if error != nil { finishWithError(error) }
+                finishWithError(error)
+                os_log("sent requestSleep", type: .debug)
             }
         }
     }
@@ -182,6 +186,7 @@ extension Peripheral {
             }
 
             finishWithResult(.success(WiFiSettings(SSID: SSID, password: password)))
+            os_log("received requestWiFiSettings", type: .debug)
         }
     }
 }
