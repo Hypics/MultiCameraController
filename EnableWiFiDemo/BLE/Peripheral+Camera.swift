@@ -16,6 +16,19 @@ struct WiFiSettings {
     let password: String
 }
 
+enum GoProCommand {
+    case sleep
+}
+
+func GetGoProCommandData(command: GoProCommand) -> Data {
+    switch command {
+    case .sleep:
+        return Data([0x01, 0x05])
+    default:
+        return Data()
+    }
+}
+
 extension Peripheral {
 
     /// Turns ON camera's Wi-Fi
@@ -60,8 +73,7 @@ extension Peripheral {
         }
     }
 
-    func requestShutter(_ completion: ((Error?) -> Void)?, on: Bool) {
-
+    func requestShutter(on: Bool, _ completion: ((Error?) -> Void)?) {
         let serviceUUID = CBUUID(string: "FEA6")
         let commandUUID = CBUUID(string: "B5F90072-AA8D-11E3-9046-0002A5D5C51B")
         let commandResponseUUID = CBUUID(string: "B5F90073-AA8D-11E3-9046-0002A5D5C51B")
@@ -99,12 +111,11 @@ extension Peripheral {
         }
     }
 
-    func requestSleep(_ completion: ((Error?) -> Void)?) {
+    func requestCommand(command: GoProCommand, _ completion: ((Error?) -> Void)?) {
 
         let serviceUUID = CBUUID(string: "FEA6")
         let commandUUID = CBUUID(string: "B5F90072-AA8D-11E3-9046-0002A5D5C51B")
         let commandResponseUUID = CBUUID(string: "B5F90073-AA8D-11E3-9046-0002A5D5C51B")
-        let data = Data([0x01, 0x05])
 
         let finishWithError: (Error?) -> Void = { error in
             // make sure to dispatch the result on the main thread
@@ -127,7 +138,8 @@ extension Peripheral {
         } completion: { [weak self] error in
             // Check that we successfully enable the notification for the response before writing to the characteristic
             if error != nil { finishWithError(error); return }
-            self?.write(data: data, serviceUUID: serviceUUID, characteristicUUID: commandUUID) { error in
+            let commandData = GetGoProCommandData(command: command)
+            self?.write(data: commandData, serviceUUID: serviceUUID, characteristicUUID: commandUUID) { error in
                 finishWithError(error)
                 os_log("sent requestSleep", type: .debug)
             }

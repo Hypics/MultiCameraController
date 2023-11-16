@@ -38,12 +38,12 @@ struct CameraView: View {
             }.padding()
             Button(action: {
                 os_log("Request Shutter on...", type: .info)
-                peripheral?.requestShutter({ error in
+                peripheral?.requestShutter(on: true, { error in
                     if error != nil {
                         print("\(error!)")
                         return
                     }
-                }, on: true)
+                })
             }, label: {
                 Text("Request Shutter on")
             })
@@ -54,12 +54,12 @@ struct CameraView: View {
             }.padding()
             Button(action: {
                 os_log("Request Shutter off...", type: .info)
-                peripheral?.requestShutter({ error in
+                peripheral?.requestShutter(on: false, { error in
                     if error != nil {
                         print("\(error!)")
                         return
                     }
-                }, on: false)
+                })
             }, label: {
                 Text("Request Shutter off")
             })
@@ -70,7 +70,7 @@ struct CameraView: View {
             }.padding()
             Button(action: {
                 os_log("Request Sleep...", type: .info)
-                peripheral?.requestSleep({ error in
+                peripheral?.requestCommand(command: GoProCommand.sleep, { error in
                     if error != nil {
                         print("\(error!)")
                         return
