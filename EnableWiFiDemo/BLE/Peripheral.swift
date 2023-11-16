@@ -87,8 +87,8 @@ extension Peripheral {
             self.discoverCharacteristic(serviceUUID: serviceUUID, characteristicUUID: characteristicUUID) { result in
                 switch result {
                 case .success(let characteristic):
-                    readCharacteristicCallbacks.append { response in completion?(response) }
-                    cbPeripheral.readValue(for: characteristic)
+                    self.readCharacteristicCallbacks.append { response in completion?(response) }
+                    self.cbPeripheral.readValue(for: characteristic)
                 case .failure(let error):
                     completion?(.failure(error))
                 }
@@ -108,8 +108,8 @@ extension Peripheral {
                 switch result {
                 case .success(let characteristic):
                     let type: CBCharacteristicWriteType = completion != nil ? .withResponse : .withoutResponse
-                    writeCharacteristicCallbacks.append { error in completion?(error) }
-                    cbPeripheral.writeValue(data, for: characteristic, type: type)
+                    self.writeCharacteristicCallbacks.append { error in completion?(error) }
+                    self.cbPeripheral.writeValue(data, for: characteristic, type: type)
                 case .failure(let error):
                     completion?(error)
                 }
@@ -129,9 +129,9 @@ extension Peripheral {
                 switch result {
                 case .success(let characteristic):
                     if characteristic.isNotifying { completion?(nil); return }
-                    notificationChangeCallbacks.append { error in completion?(nil) }
-                    characteristicObservers[characteristicUUID] = observer
-                    cbPeripheral.setNotifyValue(true, for: characteristic)
+                    self.notificationChangeCallbacks.append { error in completion?(nil) }
+                    self.characteristicObservers[characteristicUUID] = observer
+                    self.cbPeripheral.setNotifyValue(true, for: characteristic)
                 case .failure(let error):
                     completion?(error)
                 }
