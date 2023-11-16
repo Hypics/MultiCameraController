@@ -11,6 +11,8 @@ import NetworkExtension
 import os.log
 
 struct CameraView: View {
+    @Environment(\.dismiss)
+    private var dismiss
     var peripheral: Peripheral?
     var body: some View {
         VStack(content: {
@@ -83,6 +85,17 @@ struct CameraView: View {
                 })
             }, label: {
                 Text("Request Sleep")
+            })
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(peripheral?.name ?? "").fontWeight(.bold)
+                }
+            }.padding()
+            Button(action: {
+                os_log("Go back...", type: .info)
+                dismiss()
+            }, label: {
+                Text("Go back")
             })
             .toolbar {
                 ToolbarItem(placement: .principal) {
