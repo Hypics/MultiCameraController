@@ -154,8 +154,6 @@ enum GoProSetting {
             return Data([0x03, 0xB7, 0x01, 0x00])
         case .systemVideoBitDepth_10bit:
             return Data([0x03, 0xB7, 0x01, 0x02])
-        default:
-            return Data()
         }
     }
 }

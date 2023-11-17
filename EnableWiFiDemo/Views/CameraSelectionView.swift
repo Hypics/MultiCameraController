@@ -13,11 +13,11 @@ import os.log
 struct CameraSelectionView: View {
     @ObservedObject var scanner = CentralManager()
     @State private var peripheral: Peripheral?
-    @State private var showCameraView = false
+    @State private var showCameraBleView = false
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(destination: CameraView(peripheral: peripheral), isActive: $showCameraView) { EmptyView() }
+                NavigationLink(destination: CameraBleView(peripheral: peripheral), isActive: $showCameraBleView) { EmptyView() }
                 List {
                     ForEach(scanner.peripherals, id: \.self) { peripheral in
                         ZStack {
@@ -88,7 +88,7 @@ struct CameraSelectionView: View {
                         }
                         os_log("Connected to %@", type: .info, new_peripheral?.name ?? "")
                         self.peripheral = new_peripheral
-                        showCameraView = true
+                        showCameraBleView = true
                     }
                 }
             }
