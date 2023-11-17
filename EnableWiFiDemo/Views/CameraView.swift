@@ -25,7 +25,7 @@ struct CameraView: View {
                         os_log("Join WiFi...", type: .info)
                         joinWiFi(with: wifiSettings.SSID, password: wifiSettings.password)
                     case .failure(let error):
-                        print("\(error)")
+                        os_log("Error: %@", type: .error, error as CVarArg)
                     }
                 }
             }, label: {
@@ -37,10 +37,31 @@ struct CameraView: View {
                 }
             }.padding()
             Button(action: {
+                os_log("Set Settings...", type: .info)
+                let goProSettings: [GoProSetting] = [.controls_pro, .videoAspectRatio_16_9, .videoResolution_4k_16_9, .fps_120, .videoDigitalLenses_linear, .antiFlicker_60, .hypersmooth_off, .systemVideoBitRate_high, .systemVideoBitDepth_10bit, .autoPowerDown_5min, .wirelessBand_5ghz]
+                for (idx, goProSetting) in goProSettings.enumerated() {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + Double(idx) * 0.5) {
+                        peripheral?.requestSetting(setting: goProSetting, { error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        })
+                    }
+                }
+            }, label: {
+                Text("Set Settings")
+            })
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    Text(peripheral?.name ?? "").fontWeight(.bold)
+                }
+            }.padding()
+            Button(action: {
                 os_log("Request Shutter on...", type: .info)
-                peripheral?.requestShutter(on: true, { error in
+                peripheral?.requestCommand(command: .shutter_on, { error in
                     if error != nil {
-                        print("\(error!)")
+                        os_log("Error: %@", type: .error, error! as CVarArg)
                         return
                     }
                 })
@@ -54,9 +75,9 @@ struct CameraView: View {
             }.padding()
             Button(action: {
                 os_log("Request Shutter off...", type: .info)
-                peripheral?.requestShutter(on: false, { error in
+                peripheral?.requestCommand(command: .shutter_off, { error in
                     if error != nil {
-                        print("\(error!)")
+                        os_log("Error: %@", type: .error, error! as CVarArg)
                         return
                     }
                 })
@@ -70,9 +91,9 @@ struct CameraView: View {
             }.padding()
             Button(action: {
                 os_log("Request Sleep...", type: .info)
-                peripheral?.requestCommand(command: GoProCommand.sleep, { error in
+                peripheral?.requestCommand(command: .sleep, { error in
                     if error != nil {
-                        print("\(error!)")
+                        os_log("Error: %@", type: .error, error! as CVarArg)
                         return
                     }
                 })
