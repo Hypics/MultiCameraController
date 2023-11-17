@@ -46,27 +46,6 @@ final class Peripheral: NSObject {
 // MARK: Connection/Disconnection
 
 extension Peripheral {
-
-    func secureConnect(_ completion: ((Error?) -> Void)?) {
-        var connectError: Error?
-        connect { error in connectError = error }
-
-        let tryCount = 6
-        let asyncAfterSeconds = 2.0
-        let eachAsyncAfterSeconds = 1.0
-        for idx in 1 ... tryCount {
-            self.queue.asyncAfter(deadline: .now() + asyncAfterSeconds + Double(idx-1) * eachAsyncAfterSeconds) {
-                self.enableWiFi { error in
-                    if error != nil {
-                        os_log("Error enableWifi for connection (%@): %@", type: .error, idx, error! as CVarArg)
-                        return
-                    }
-                }
-                DispatchQueue.main.async { completion?(connectError) }
-            }
-        }
-    }
-
     /// Connects to the peripheral
     /// - Parameter completion: The completion handler with an optional error invoked once the request completes.
     func connect(_ completion: ((Error?) -> Void)?) {
@@ -96,7 +75,6 @@ extension Peripheral {
 // MARK: Read/Write/Notification
 
 extension Peripheral {
-
     /// Reads the characteristic value on a service
     /// - Parameters:
     ///   - characteristicUUID: The characteristic UUID

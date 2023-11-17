@@ -162,7 +162,6 @@ enum GoProSetting {
 
 
 extension Peripheral {
-
     /// Turns ON camera's Wi-Fi
     /// - Parameter completion: The completion handler with an optional error that is invoked once the request completes.
     ///

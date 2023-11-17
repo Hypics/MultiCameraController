@@ -29,20 +29,8 @@ struct CameraSelectionView: View {
                                     .foregroundColor(.gray)
                             }
                             Button(action: {
-                                os_log("Connecting to %@..", type: .info, peripheral.name)
-                                peripheral.secureConnect { error in
-                                    if error != nil {
-                                        os_log("Error connecting to %@", type: .error, peripheral.name)
-                                        return
-                                    }
-                                    if self.peripheral == nil {
-                                        os_log("Connected to %@!", type: .info, peripheral.name)
-                                        self.peripheral = peripheral
-                                        showCameraView = true
-                                    } else {
-                                        os_log("self.peripheral is remained!", type: .debug)
-                                    }
-                                }
+                                os_log("[1st] Connecting to %@..", type: .info, peripheral.name)
+                                secureConnect(with: peripheral)
                             }, label: {
                                 EmptyView()
                             })
@@ -68,6 +56,43 @@ struct CameraSelectionView: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
+    }
+
+    private func secureConnect(with peripheral: Peripheral) {
+        let peripheral_name = peripheral.name
+        peripheral.connect { error in
+            if error != nil {
+                os_log("Error: %@", type: .error, error! as CVarArg)
+                return
+            }
+            self.peripheral = peripheral
+            os_log("Stop scanning", type: .info)
+            scanner.stop()
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                if let peripheral = self.peripheral {
+                    os_log("Disconnecting to %@..", type: .info, peripheral.name)
+                    peripheral.disconnect()
+                    self.peripheral = nil
+                }
+                os_log("Scanning for GoPro cameras..", type: .info)
+                scanner.start(withServices: [CBUUID(string: "FEA6")])
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    let new_peripheral = scanner.peripherals.filter({$0.name == peripheral_name}).first
+                    os_log("[2nd] Connecting to %@..", type: .info, new_peripheral?.name ?? "")
+                    new_peripheral?.connect { error in
+                        if error != nil {
+                            os_log("Error: %@", type: .error, error! as CVarArg)
+                            return
+                        }
+                        os_log("Connected to %@", type: .info, new_peripheral?.name ?? "")
+                        self.peripheral = new_peripheral
+                        showCameraView = true
+                    }
+                }
+            }
+        }
     }
 }
 
