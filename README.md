@@ -8,19 +8,49 @@ required to join camera's Wi-Fi are:
 2. Request camera's Wi-Fi settings (SSID and password)
 3. Use [iOS NetworkExtension](https://developer.apple.com/documentation/networkextension/nehotspotconfigurationmanager) API to join camera's WiFi
 
-# Requirements
+## Requirements
 
 GoPro camera must be paired with the mobile device. If the camera is not paired, put the camera in pairing mode
 
-# File Structure
+## File Structure
 
-## BLE
+### BLE
 
--   _CentralManager.swift_ - A simple wrapper around CBCentralManager to handle CoreBluetooth Central related tasks
--   _Peripheral.swift_ - A simple wrapper around CBPeripheral to handle CoreBluetooth Peripheral related tasks
--   _Peripheral+Camera.swift_ - An extension of Peripheral class for sending commands to a GoPro camera
+- _CentralManager.swift_ - A simple wrapper around CBCentralManager to handle CoreBluetooth Central related tasks
+- _Peripheral.swift_ - A simple wrapper around CBPeripheral to handle CoreBluetooth Peripheral related tasks
+- _Peripheral+Camera.swift_ - An extension of Peripheral class for sending commands to a GoPro camera
 
-## Views
+### Views
 
--   _CameraSelectionView.swift_ - A SwiftUI list view for showing the nearby GoPro cameras
--   _CameraView.swift_ - A simple view with a button for initiate the request to enable Wi-Fi on the connected GoPro camera
+- _CameraSelectionView.swift_ - A SwiftUI list view for showing the nearby GoPro cameras
+- _CameraView.swift_ - A simple view with a button for initiate the request to enable Wi-Fi on the connected GoPro camera
+
+## Installation
+
+### Ruby
+
+```bash
+brew install ruby
+```
+
+```bash
+echo 'if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
+  export PATH=/opt/homebrew/opt/ruby/bin:$PATH
+  export PATH=`gem environment gemdir`/bin:$PATH
+fi' >> ~/.zshrc
+```
+
+### Cocoapods
+
+```bash
+sudo gem pristine ffi --version 1.15.5 \
+  && sudo gem install cocoapods
+```
+
+### Project (Pod)
+
+```bash
+pod install
+```
+
+- Open ***EnableWiFiDemo.xcworkspace***
