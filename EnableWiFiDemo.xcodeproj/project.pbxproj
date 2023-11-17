@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4EF229F92B07BA9B0007CD4B /* Peropheral+Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF229F82B07BA9B0007CD4B /* Peropheral+Media.swift */; };
+		4EF229FB2B07BD510007CD4B /* CameraWiFiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF229FA2B07BD510007CD4B /* CameraWiFiView.swift */; };
 		C9401CD62631EF9B00E5208E /* EnableWiFiDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CD52631EF9B00E5208E /* EnableWiFiDemoApp.swift */; };
 		C9401CD82631EF9B00E5208E /* CameraSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CD72631EF9B00E5208E /* CameraSelectionView.swift */; };
 		C9401CDA2631EF9F00E5208E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9401CD92631EF9F00E5208E /* Assets.xcassets */; };
@@ -23,6 +25,8 @@
 
 /* Begin PBXFileReference section */
 		4CB7D8606BD10B82C03A99D8 /* Pods-EnableWiFiDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EnableWiFiDemo.debug.xcconfig"; path = "Target Support Files/Pods-EnableWiFiDemo/Pods-EnableWiFiDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		4EF229F82B07BA9B0007CD4B /* Peropheral+Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Peropheral+Media.swift"; sourceTree = "<group>"; };
+		4EF229FA2B07BD510007CD4B /* CameraWiFiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraWiFiView.swift; sourceTree = "<group>"; };
 		5489286A041A9E4674C4079B /* Pods_EnableWiFiDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EnableWiFiDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9401CD22631EF9B00E5208E /* EnableWiFiDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EnableWiFiDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9401CD52631EF9B00E5208E /* EnableWiFiDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableWiFiDemoApp.swift; sourceTree = "<group>"; };
@@ -54,6 +58,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4EF229F72B07BA7C0007CD4B /* WiFi */ = {
+			isa = PBXGroup;
+			children = (
+				4EF229F82B07BA9B0007CD4B /* Peropheral+Media.swift */,
+			);
+			path = WiFi;
+			sourceTree = "<group>";
+		};
 		7F82A9C280955B062DD7C5E2 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +96,7 @@
 		C9401CD42631EF9B00E5208E /* EnableWiFiDemo */ = {
 			isa = PBXGroup;
 			children = (
+				4EF229F72B07BA7C0007CD4B /* WiFi */,
 				C9628A7E2636FEEB009101EC /* EnableWiFiDemo.entitlements */,
 				C9401D07263200F400E5208E /* BLE */,
 				C9401D092632012300E5208E /* Helpers */,
@@ -110,6 +123,7 @@
 			children = (
 				C9401CD72631EF9B00E5208E /* CameraSelectionView.swift */,
 				C9401CF12631FBFD00E5208E /* CameraBleView.swift */,
+				4EF229FA2B07BD510007CD4B /* CameraWiFiView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -257,10 +271,12 @@
 			files = (
 				C9401CD82631EF9B00E5208E /* CameraSelectionView.swift in Sources */,
 				C9401D0B2632015600E5208E /* Peripheral+Camera.swift in Sources */,
+				4EF229FB2B07BD510007CD4B /* CameraWiFiView.swift in Sources */,
 				C9401CF22631FBFD00E5208E /* CameraBleView.swift in Sources */,
 				C9401CD62631EF9B00E5208E /* EnableWiFiDemoApp.swift in Sources */,
 				C9401CE62631EFC300E5208E /* CentralManager.swift in Sources */,
 				C9401CE92631EFE200E5208E /* Peripheral.swift in Sources */,
+				4EF229F92B07BA9B0007CD4B /* Peropheral+Media.swift in Sources */,
 				C9401CEC2631EFF900E5208E /* Atomic.swift in Sources */,
 				C9401D04263200C400E5208E /* CameraError.swift in Sources */,
 			);
