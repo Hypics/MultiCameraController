@@ -14,10 +14,49 @@ struct CameraSelectionView: View {
     @ObservedObject var scanner = CentralManager()
     @State private var peripheral: Peripheral?
     @State private var showCameraBleView = false
+    @State private var mediaList: [String] = []
     var body: some View {
         NavigationView {
             VStack {
                 NavigationLink(destination: CameraBleView(peripheral: peripheral), isActive: $showCameraBleView) { EmptyView() }
+                Text("USB").padding()
+                Button(action: {
+                    os_log("Requesting Media List...", type: .info)
+                    Peripheral.requestWiFiCommand(serialNumber: 317, command: .get_media_list, { (mediaList, error) in
+                        if error != nil {
+                            os_log("Error: %@", type: .error, error! as CVarArg)
+                            return
+                        }
+                        self.mediaList = mediaList
+                    })
+                }, label: {
+                    Text("Get Media List")
+                })
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        Text(peripheral?.name ?? "").fontWeight(.bold)
+                    }
+                }.padding()
+                List{
+                    ForEach(mediaList, id: \.self) { media in
+                        ZStack {
+                            HStack() {
+                                Text(media)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .renderingMode(.template)
+                                    .foregroundColor(.gray)
+                            }
+                            Button(action: {
+                                os_log("Download %@..", type: .info, media)
+                            }, label: {
+                                EmptyView()
+                            })
+                        }
+                    }
+                }
+                Divider()
+                Text("Bluetooth").padding()
                 List {
                     ForEach(scanner.peripherals, id: \.self) { peripheral in
                         ZStack {

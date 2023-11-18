@@ -17,7 +17,7 @@ struct CameraWiFiView: View {
                 Text("Deep Frost Testing..").padding()
                 Button(action: {
                     os_log("Requesting Media List...", type: .info)
-                    peripheral?.requestWiFiCommand(command: .get_media_list, { error in
+                    Peripheral.requestWiFiCommand(command: .get_media_list, { error in
                         if error != nil {
                             os_log("Error: %@", type: .error, error! as CVarArg)
                             return
