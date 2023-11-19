@@ -56,30 +56,55 @@ extension Peripheral {
                    headers: ["Content-Type":"application/json", "Accept":"application/json"])
             .validate(statusCode: 200 ..< 300)
             .responseJSON { response in
-                switch response.result{
-                case .success (let obj):
-                    var mediaList: [String] = []
-                    do {
-                        let dataJSON = try JSONSerialization.data(withJSONObject: obj, options: .prettyPrinted)
-                        let mediaListJson = try JSONDecoder().decode(MediaListInfo.self, from: dataJSON)
-                        print(mediaListJson)
-                        os_log("json.id: %@", type: .info, mediaListJson.id)
-                        os_log("json.media[0].d: %@", type: .info, mediaListJson.media[0].d)
+            switch response.result{
+            case .success (let obj):
+                var mediaUrlList: [String] = []
+                do {
+                    let dataJSON = try JSONSerialization.data(withJSONObject: obj, options: .prettyPrinted)
+                    let mediaListJson = try JSONDecoder().decode(MediaListInfo.self, from: dataJSON)
+                    print(mediaListJson)
+                    os_log("json.id: %@", type: .info, mediaListJson.id)
+                    os_log("json.media[0].d: %@", type: .info, mediaListJson.media[0].d)
 
-                        for mediaInfo in mediaListJson.media {
-                            for fileInfo in mediaInfo.fs {
-                                mediaList.append("/videos/DCIM/" + mediaInfo.d + "/" + fileInfo.n)
-                            }
+                    for mediaInfo in mediaListJson.media {
+                        for fileInfo in mediaInfo.fs {
+                            mediaUrlList.append("/videos/DCIM/" + mediaInfo.d + "/" + fileInfo.n)
                         }
-                        os_log("mediaList: %@", type: .info, mediaList.description)
-                        completion?(mediaList, nil)
-                    } catch {
-                        os_log("error: %@", type: .error, error.localizedDescription)
-                        completion?([], error)
                     }
-                case .failure (let error):
-                    os_log("error: %@", type: .error, error as CVarArg)
+                    os_log("mediaList: %@", type: .info, mediaUrlList.description)
+                    completion?(mediaUrlList, nil)
+                } catch {
+                    os_log("error: %@", type: .error, error.localizedDescription)
+                    completion?([], error)
                 }
+            case .failure (let error):
+                os_log("error: %@", type: .error, error as CVarArg)
             }
+        }
+    }
+
+    static func requestDownloadMedia(serialNumber: Int, endPoint: String) {
+        let fileManager = FileManager.default
+        let appURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        let fileName : String = URL(string: endPoint)!.lastPathComponent
+        let fileURL = appURL.appendingPathComponent(fileName)
+        let destination: DownloadRequest.Destination = { _, _ in
+            return (fileURL, [.removePreviousFile, .createIntermediateDirectories])
+        }
+
+        let serialX = Int(Double(serialNumber) / 100.0)
+        let serialYZ = serialNumber - serialX * 100
+        let url = "http://172.2" + String(serialX) + ".1" + String(serialYZ) + ".51:8080" + endPoint
+        AF.download(url, method: .get, parameters: nil, encoding: JSONEncoding.default, to: destination).downloadProgress { (progress) in
+//            self.progressView.progress = Float(progress.fractionCompleted)
+//            self.progressLabel.text = "\(Int(progress.fractionCompleted * 100))%"
+            os_log("%@%", type: .debug, String(Int(progress.fractionCompleted * 100)))
+        }.response{ response in
+                if response.error != nil {
+                    os_log("Download failed: %@", type: .error, response.error?.errorDescription ?? "")
+                } else {
+                    os_log("Download Success", type: .info)
+                }
+        }
     }
 }

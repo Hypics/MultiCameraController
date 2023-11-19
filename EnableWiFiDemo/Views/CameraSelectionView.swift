@@ -14,7 +14,7 @@ struct CameraSelectionView: View {
     @ObservedObject var scanner = CentralManager()
     @State private var peripheral: Peripheral?
     @State private var showCameraBleView = false
-    @State private var mediaList: [String] = []
+    @State private var mediaUrlList: [String] = []
     var body: some View {
         NavigationView {
             VStack {
@@ -22,12 +22,12 @@ struct CameraSelectionView: View {
                 Text("USB").padding()
                 Button(action: {
                     os_log("Requesting Media List...", type: .info)
-                    Peripheral.requestWiFiCommand(serialNumber: 317, command: .get_media_list, { (mediaList, error) in
+                    Peripheral.requestWiFiCommand(serialNumber: 317, command: .get_media_list, { (mediaUrlList, error) in
                         if error != nil {
                             os_log("Error: %@", type: .error, error! as CVarArg)
                             return
                         }
-                        self.mediaList = mediaList
+                        self.mediaUrlList = mediaUrlList
                     })
                 }, label: {
                     Text("Get Media List")
@@ -38,17 +38,18 @@ struct CameraSelectionView: View {
                     }
                 }.padding()
                 List{
-                    ForEach(mediaList, id: \.self) { media in
+                    ForEach(mediaUrlList, id: \.self) { mediaUrl in
                         ZStack {
                             HStack() {
-                                Text(media)
+                                Text(mediaUrl)
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .renderingMode(.template)
                                     .foregroundColor(.gray)
                             }
                             Button(action: {
-                                os_log("Download %@..", type: .info, media)
+                                os_log("Download %@..", type: .info, mediaUrl)
+                                Peripheral.requestDownloadMedia(serialNumber: 317, endPoint: mediaUrl)
                             }, label: {
                                 EmptyView()
                             })
