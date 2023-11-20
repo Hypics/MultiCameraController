@@ -10,15 +10,17 @@ import SwiftUI
 import CoreBluetooth
 import os.log
 
-struct CameraSelectionView: View {
+struct MultiCameraView: View {
     @ObservedObject var scanner = CentralManager()
     @State private var peripheral: Peripheral?
-    @State private var showCameraBleView = false
+    @State private var showSettingsView = false
+    @State private var showCameraView = false
     @State private var mediaUrlList: [String] = []
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(destination: CameraBleView(peripheral: peripheral), isActive: $showCameraBleView) { EmptyView() }
+                NavigationLink(destination: SettingsView(), isActive: $showCameraView) { EmptyView() }
+                NavigationLink(destination: CameraView(peripheral: peripheral), isActive: $showSettingsView) { EmptyView() }
                 Text("USB").padding()
                 Button(action: {
                     os_log("Requesting Media List...", type: .info)
@@ -128,7 +130,7 @@ struct CameraSelectionView: View {
                         }
                         os_log("Connected to %@", type: .info, new_peripheral?.name ?? "")
                         self.peripheral = new_peripheral
-                        showCameraBleView = true
+                        showCameraView = true
                     }
                 }
             }
@@ -136,8 +138,8 @@ struct CameraSelectionView: View {
     }
 }
 
-struct CameraSelectionView_Previews: PreviewProvider {
+struct MultiCameraView_Previews: PreviewProvider {
     static var previews: some View {
-        CameraSelectionView()
+        MultiCameraView()
     }
 }

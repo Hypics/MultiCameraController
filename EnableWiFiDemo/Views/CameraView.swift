@@ -10,7 +10,7 @@ import SwiftUI
 import NetworkExtension
 import os.log
 
-struct CameraBleView: View {
+struct CameraView: View {
     @Environment(\.dismiss)
     private var dismiss
     var peripheral: Peripheral?
@@ -143,8 +143,8 @@ struct CameraBleView: View {
     }
 }
 
-struct CameraBleView_Previews: PreviewProvider {
+struct CameraView_Previews: PreviewProvider {
     static var previews: some View {
-        CameraBleView()
+        CameraView()
     }
 }

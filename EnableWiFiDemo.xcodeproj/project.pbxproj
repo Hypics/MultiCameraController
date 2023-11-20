@@ -8,34 +8,36 @@
 
 /* Begin PBXBuildFile section */
 		0BBEE24B3959FD9D3E81F4B4 /* Pods_EnableWiFiDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB77D273124D29CA2CA9C621 /* Pods_EnableWiFiDemo.framework */; };
+		4ED618C32B0BA5B600464B73 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED618C22B0BA5B600464B73 /* SettingsView.swift */; };
 		4EF229F92B07BA9B0007CD4B /* Peropheral+Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF229F82B07BA9B0007CD4B /* Peropheral+Media.swift */; };
 		C9401CD62631EF9B00E5208E /* EnableWiFiDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CD52631EF9B00E5208E /* EnableWiFiDemoApp.swift */; };
-		C9401CD82631EF9B00E5208E /* CameraSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CD72631EF9B00E5208E /* CameraSelectionView.swift */; };
+		C9401CD82631EF9B00E5208E /* MultiCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CD72631EF9B00E5208E /* MultiCameraView.swift */; };
 		C9401CDA2631EF9F00E5208E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9401CD92631EF9F00E5208E /* Assets.xcassets */; };
 		C9401CDD2631EF9F00E5208E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9401CDC2631EF9F00E5208E /* Preview Assets.xcassets */; };
 		C9401CE62631EFC300E5208E /* CentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CE52631EFC300E5208E /* CentralManager.swift */; };
 		C9401CE92631EFE200E5208E /* Peripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CE82631EFE200E5208E /* Peripheral.swift */; };
 		C9401CEC2631EFF900E5208E /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CEB2631EFF900E5208E /* Atomic.swift */; };
-		C9401CF22631FBFD00E5208E /* CameraBleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CF12631FBFD00E5208E /* CameraBleView.swift */; };
+		C9401CF22631FBFD00E5208E /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CF12631FBFD00E5208E /* CameraView.swift */; };
 		C9401D04263200C400E5208E /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401D03263200C400E5208E /* CameraError.swift */; };
 		C9401D0B2632015600E5208E /* Peripheral+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401D0A2632015600E5208E /* Peripheral+Camera.swift */; };
 		C9628A812636FEEB009101EC /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9628A802636FEEB009101EC /* NetworkExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4ED618C22B0BA5B600464B73 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		4EF229F82B07BA9B0007CD4B /* Peropheral+Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Peropheral+Media.swift"; sourceTree = "<group>"; };
 		866749188365C4BC1A390FC0 /* Pods-EnableWiFiDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EnableWiFiDemo.debug.xcconfig"; path = "Target Support Files/Pods-EnableWiFiDemo/Pods-EnableWiFiDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		AB77D273124D29CA2CA9C621 /* Pods_EnableWiFiDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EnableWiFiDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9401CD22631EF9B00E5208E /* EnableWiFiDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EnableWiFiDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9401CD52631EF9B00E5208E /* EnableWiFiDemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableWiFiDemoApp.swift; sourceTree = "<group>"; };
-		C9401CD72631EF9B00E5208E /* CameraSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSelectionView.swift; sourceTree = "<group>"; };
+		C9401CD72631EF9B00E5208E /* MultiCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiCameraView.swift; sourceTree = "<group>"; };
 		C9401CD92631EF9F00E5208E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C9401CDC2631EF9F00E5208E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C9401CDE2631EF9F00E5208E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9401CE52631EFC300E5208E /* CentralManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralManager.swift; sourceTree = "<group>"; };
 		C9401CE82631EFE200E5208E /* Peripheral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Peripheral.swift; sourceTree = "<group>"; };
 		C9401CEB2631EFF900E5208E /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
-		C9401CF12631FBFD00E5208E /* CameraBleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraBleView.swift; sourceTree = "<group>"; };
+		C9401CF12631FBFD00E5208E /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		C9401D03263200C400E5208E /* CameraError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraError.swift; sourceTree = "<group>"; };
 		C9401D0A2632015600E5208E /* Peripheral+Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Peripheral+Camera.swift"; sourceTree = "<group>"; };
 		C9628A7E2636FEEB009101EC /* EnableWiFiDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EnableWiFiDemo.entitlements; sourceTree = "<group>"; };
@@ -119,8 +121,9 @@
 		C9401D06263200E800E5208E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C9401CD72631EF9B00E5208E /* CameraSelectionView.swift */,
-				C9401CF12631FBFD00E5208E /* CameraBleView.swift */,
+				C9401CD72631EF9B00E5208E /* MultiCameraView.swift */,
+				C9401CF12631FBFD00E5208E /* CameraView.swift */,
+				4ED618C22B0BA5B600464B73 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -266,11 +269,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9401CD82631EF9B00E5208E /* CameraSelectionView.swift in Sources */,
+				C9401CD82631EF9B00E5208E /* MultiCameraView.swift in Sources */,
 				C9401D0B2632015600E5208E /* Peripheral+Camera.swift in Sources */,
-				C9401CF22631FBFD00E5208E /* CameraBleView.swift in Sources */,
+				C9401CF22631FBFD00E5208E /* CameraView.swift in Sources */,
 				C9401CD62631EF9B00E5208E /* EnableWiFiDemoApp.swift in Sources */,
 				C9401CE62631EFC300E5208E /* CentralManager.swift in Sources */,
+				4ED618C32B0BA5B600464B73 /* SettingsView.swift in Sources */,
 				C9401CE92631EFE200E5208E /* Peripheral.swift in Sources */,
 				4EF229F92B07BA9B0007CD4B /* Peropheral+Media.swift in Sources */,
 				C9401CEC2631EFF900E5208E /* Atomic.swift in Sources */,

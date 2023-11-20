@@ -12,7 +12,7 @@ import SwiftUI
 struct EnableWiFiDemoApp: App {
     var body: some Scene {
         WindowGroup {
-            CameraSelectionView()
+            MultiCameraView()
         }
     }
 }
