@@ -6,7 +6,6 @@
 //  EnableWiFiDemo
 //
 
-import Foundation
 import CoreBluetooth
 
 /// A simple wrapper around CBCentralManager to handle CoreBluetooth Central related tasks

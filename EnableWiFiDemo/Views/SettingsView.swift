@@ -9,10 +9,7 @@ import SwiftUI
 import os.log
 
 struct SettingsView: View {
-    @Environment(\.dismiss)
-    private var dismiss
-    var peripheral: Peripheral?
-    @State private var showCameraWiFiView = false
+    var cameraSerialNumberList: [String]
     var body: some View {
         VStack {
             Divider().padding()
@@ -25,9 +22,9 @@ struct SettingsView: View {
                         .padding([.top, .bottom], 5)
                         .padding([.leading, .trailing], 10)
                     Text("4K@120FPS, 16:9, Linear")
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                     Text("60Hz, Off, High, 10bit, Never, Pro")
-                        .foregroundColor(.black)
+                        .foregroundColor(.primary)
                         .padding([.top, .bottom], 5)
                         .padding([.leading, .trailing], 10)
                 }
@@ -45,9 +42,9 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "camera")
-                            .foregroundColor(.orange)
+                            .foregroundColor(.pink)
                         Text("Video Resolution: 4K")
-                            .foregroundColor(.orange)
+                            .foregroundColor(.pink)
                         Spacer()
                     }
                 })
@@ -58,9 +55,9 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "rectangle.on.rectangle")
-                            .foregroundColor(.orange)
+                            .foregroundColor(.pink)
                         Text("Video FPS: 120Hz")
-                            .foregroundColor(.orange)
+                            .foregroundColor(.pink)
                         Spacer()
                     }
                 })
@@ -71,9 +68,9 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "aspectratio")
-                            .foregroundColor(.mint)
+                            .foregroundColor(.red)
                         Text("Video Aspect: 16:9")
-                            .foregroundColor(.mint)
+                            .foregroundColor(.red)
                         Spacer()
                     }
                 })
@@ -84,9 +81,9 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "field.of.view.wide")
-                            .foregroundColor(.mint)
+                            .foregroundColor(.red)
                         Text("Video Digital Lens: Linear")
-                            .foregroundColor(.mint)
+                            .foregroundColor(.red)
                         Spacer()
                     }
                 })
@@ -97,9 +94,9 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "warninglight")
-                            .foregroundColor(.indigo)
+                            .foregroundColor(.orange)
                         Text("Anti Flicker: 60Hz")
-                            .foregroundColor(.indigo)
+                            .foregroundColor(.orange)
                         Spacer()
                     }
                 })
@@ -110,9 +107,9 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "circle.and.line.horizontal")
-                            .foregroundColor(.indigo)
+                            .foregroundColor(.orange)
                         Text("Hypersmooth: Off")
-                            .foregroundColor(.indigo)
+                            .foregroundColor(.orange)
                         Spacer()
                     }
                 })
@@ -123,9 +120,9 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "slider.horizontal.3")
-                            .foregroundColor(.pink)
+                            .foregroundColor(.teal)
                         Text("System Video Bit Rate: High")
-                            .foregroundColor(.pink)
+                            .foregroundColor(.teal)
                         Spacer()
                     }
                 })
@@ -136,9 +133,9 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "slider.vertical.3")
-                            .foregroundColor(.pink)
+                            .foregroundColor(.teal)
                         Text("System Video Bit Depth: 10bit")
-                            .foregroundColor(.pink)
+                            .foregroundColor(.teal)
                         Spacer()
                     }
                 })
@@ -149,9 +146,9 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "powersleep")
-                            .foregroundColor(.teal)
+                            .foregroundColor(.indigo)
                         Text("Auto Power Down: Never")
-                            .foregroundColor(.teal)
+                            .foregroundColor(.indigo)
                         Spacer()
                     }
                 })
@@ -162,9 +159,9 @@ struct SettingsView: View {
                     HStack {
                         Spacer()
                         Image(systemName: "wrench.and.screwdriver")
-                            .foregroundColor(.teal)
+                            .foregroundColor(.indigo)
                         Text("Controls Mode: Pro")
-                            .foregroundColor(.teal)
+                            .foregroundColor(.indigo)
                         Spacer()
                     }
                 })
@@ -181,6 +178,6 @@ struct SettingsView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        SettingsView(cameraSerialNumberList: [])
     }
 }

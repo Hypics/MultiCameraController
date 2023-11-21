@@ -7,22 +7,19 @@
 //
 
 import SwiftUI
-import CoreBluetooth
 import os.log
 
 struct MultiCameraView: View {
-    @ObservedObject var scanner = CentralManager()
-    @State private var peripheral: Peripheral?
     @State private var showSettingsView = false
     @State private var showCameraView = false
-    @State private var mediaUrlList: [String] = []
-    @State private var cameraList: [String] = ["123", "317"]
-    @State private var new_camera: String = ""
+    @State private var cameraSerialNumberList: [String] = ["123", "317"]
+    @State private var targetCameraSerialNumber: String = ""
+    @State private var newCameraSerialNumber: String = ""
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(destination: SettingsView(), isActive: $showSettingsView) { EmptyView() }
-                NavigationLink(destination: CameraView(peripheral: peripheral), isActive: $showCameraView) { EmptyView() }
+                NavigationLink(destination: SettingsView(cameraSerialNumberList: cameraSerialNumberList), isActive: $showSettingsView) { EmptyView() }
+                NavigationLink(destination: CameraView(cameraSerialNumber: targetCameraSerialNumber), isActive: $showCameraView) { EmptyView() }
                 Divider().padding()
                 HStack() {
                     Button(action: {
@@ -70,11 +67,11 @@ struct MultiCameraView: View {
                     }, label: {
                         VStack {
                             Image(systemName: "photo.on.rectangle.angled")
-                                .foregroundColor(.mint)
+                                .foregroundColor(.green)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                             Text("Get Media All")
-                                .foregroundColor(.mint)
+                                .foregroundColor(.green)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                         }
@@ -90,11 +87,11 @@ struct MultiCameraView: View {
                     }, label: {
                         VStack {
                             Image(systemName: "trash")
-                                .foregroundColor(.orange)
+                                .foregroundColor(.red)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                             Text("Remove Media All")
-                                .foregroundColor(.orange)
+                                .foregroundColor(.red)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                         }
@@ -111,11 +108,11 @@ struct MultiCameraView: View {
                     }, label: {
                         VStack {
                             Image(systemName: "gear")
-                                .foregroundColor(.indigo)
+                                .foregroundColor(.orange)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                             Text("Settings All")
-                                .foregroundColor(.indigo)
+                                .foregroundColor(.orange)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                         }
@@ -130,7 +127,7 @@ struct MultiCameraView: View {
                 Divider().padding()
                 Text("GoPro List").padding()
                 HStack {
-                    TextField("GoPro Serial Number", text: $new_camera)
+                    TextField("GoPro Serial Number (last 3 digits)", text: $newCameraSerialNumber)
                         .padding()
                         .overlay(
                             RoundedRectangle(cornerRadius: 15)
@@ -138,16 +135,20 @@ struct MultiCameraView: View {
                         )
                         .padding()
                     Button(action: {
-                        os_log("Add Camera", type: .info)
-                        cameraList.append(new_camera)
+                        if newCameraSerialNumber.count == 3 && newCameraSerialNumber.isInt() && !cameraSerialNumberList.contains(newCameraSerialNumber) {
+                            os_log("Add GoPro %@", type: .info, newCameraSerialNumber)
+                            cameraSerialNumberList.append(newCameraSerialNumber)
+                        } else {
+                            os_log("%@ is not a serial number (3 digits)", type: .error, newCameraSerialNumber)
+                        }
                     }, label: {
                         VStack() {
                             Image(systemName: "plus.square")
-                                .foregroundColor(.indigo)
+                                .foregroundColor(.orange)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                             Text("Add Camera")
-                                .foregroundColor(.indigo)
+                                .foregroundColor(.orange)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                         }
@@ -161,16 +162,17 @@ struct MultiCameraView: View {
                 }
                 Divider()
                 List{
-                    ForEach(cameraList, id: \.self) { camera in
+                    ForEach(cameraSerialNumberList, id: \.self) { cameraSerialNumber in
                         Button(action: {
-                            os_log("CameraView: GoPro %@", type: .info, camera)
+                            os_log("CameraView: GoPro %@", type: .info, cameraSerialNumber)
+                            targetCameraSerialNumber = cameraSerialNumber
                             showCameraView = true
                         }, label: {
                             HStack() {
                                 Spacer()
                                 Image(systemName: "camera")
                                     .foregroundColor(.teal)
-                                Text("GoPro " + camera)
+                                Text("GoPro " + cameraSerialNumber)
                                     .foregroundColor(.teal)
                                 Spacer()
                                 Image(systemName: "chevron.right")
@@ -182,75 +184,7 @@ struct MultiCameraView: View {
                     .onDelete(perform: deleteItem)
                     .listRowSeparator(.hidden)
                 }
-                // End
-                Button(action: {
-                    os_log("Requesting Media List...", type: .info)
-                    Peripheral.requestWiFiCommand(serialNumber: 317, command: .get_media_list, { (mediaUrlList, error) in
-                        if error != nil {
-                            os_log("Error: %@", type: .error, error! as CVarArg)
-                            return
-                        }
-                        self.mediaUrlList = mediaUrlList
-                    })
-                }, label: {
-                    Text("Get Media List")
-                })
-                .toolbar {
-                    ToolbarItem(placement: .principal) {
-                        Text(peripheral?.name ?? "").fontWeight(.bold)
-                    }
-                }.padding()
-                List{
-                    ForEach(mediaUrlList, id: \.self) { mediaUrl in
-                        ZStack {
-                            HStack() {
-                                Text(mediaUrl)
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .renderingMode(.template)
-                                    .foregroundColor(.gray)
-                            }
-                            Button(action: {
-                                os_log("Download %@..", type: .info, mediaUrl)
-                                Peripheral.requestDownloadMedia(serialNumber: 317, endPoint: mediaUrl)
-                            }, label: {
-                                EmptyView()
-                            })
-                        }
-                    }
-                }
-                Divider()
-                Text("Bluetooth").padding()
-                List {
-                    ForEach(scanner.peripherals, id: \.self) { peripheral in
-                        ZStack {
-                            HStack() {
-                                Text(peripheral.name)
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .renderingMode(.template)
-                                    .foregroundColor(.gray)
-                            }
-                            Button(action: {
-                                os_log("[1st] Connecting to %@..", type: .info, peripheral.name)
-                                secureConnect(with: peripheral)
-                            }, label: {
-                                EmptyView()
-                            })
-                        }
-                    }
-                }
             }
-            .onAppear {
-                if let peripheral = peripheral {
-                    os_log("Disconnecting to %@..", type: .info, peripheral.name)
-                    peripheral.disconnect()
-                    self.peripheral = nil
-                }
-                os_log("Scanning for GoPro cameras..", type: .info)
-                scanner.start(withServices: [CBUUID(string: "FEA6")])
-            }
-            .onDisappear { scanner.stop() }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -261,45 +195,8 @@ struct MultiCameraView: View {
         .navigationViewStyle(StackNavigationViewStyle())
     }
 
-    private func secureConnect(with peripheral: Peripheral) {
-        let peripheral_name = peripheral.name
-        peripheral.connect { error in
-            if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
-                return
-            }
-            self.peripheral = peripheral
-            os_log("Stop scanning", type: .info)
-            scanner.stop()
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                if let peripheral = self.peripheral {
-                    os_log("Disconnecting to %@..", type: .info, peripheral.name)
-                    peripheral.disconnect()
-                    self.peripheral = nil
-                }
-                os_log("Scanning for GoPro cameras..", type: .info)
-                scanner.start(withServices: [CBUUID(string: "FEA6")])
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                    let new_peripheral = scanner.peripherals.filter({$0.name == peripheral_name}).first
-                    os_log("[2nd] Connecting to %@..", type: .info, new_peripheral?.name ?? "")
-                    new_peripheral?.connect { error in
-                        if error != nil {
-                            os_log("Error: %@", type: .error, error! as CVarArg)
-                            return
-                        }
-                        os_log("Connected to %@", type: .info, new_peripheral?.name ?? "")
-                        self.peripheral = new_peripheral
-                        showCameraView = true
-                    }
-                }
-            }
-        }
-    }
-
     private func deleteItem(at offsets: IndexSet) {
-        cameraList.remove(atOffsets: offsets)
+        cameraSerialNumberList.remove(atOffsets: offsets)
     }
 }
 

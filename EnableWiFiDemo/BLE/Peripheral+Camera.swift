@@ -6,7 +6,6 @@
 //  EnableWiFiDemo
 //
 
-import Foundation
 import CoreBluetooth
 import os.log
 
@@ -16,7 +15,7 @@ struct WiFiSettings {
     let password: String
 }
 
-enum GoProCommand {
+enum GoProBleCommand {
     case shutter_off, shutter_on
     case sleep
     case apMode_off, apMode_on
@@ -160,7 +159,7 @@ enum GoProSetting {
 
 
 extension Peripheral {
-    func requestCommand(command: GoProCommand, _ completion: ((Error?) -> Void)?) {
+    func requestCommand(command: GoProBleCommand, _ completion: ((Error?) -> Void)?) {
 
         let serviceUUID = CBUUID(string: "FEA6")
         let commandUUID = CBUUID(string: "B5F90072-AA8D-11E3-9046-0002A5D5C51B")

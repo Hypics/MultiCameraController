@@ -7,19 +7,82 @@
 //
 
 import SwiftUI
-import NetworkExtension
 import os.log
 
 struct CameraView: View {
-    @Environment(\.dismiss)
-    private var dismiss
-    var peripheral: Peripheral?
-    var camera: String?
-    @State private var showCameraWiFiView = false
+    var cameraSerialNumber: String
+    @State private var camera: GoPro?
+    @State private var mediaUrlList: [String]?
+    @State private var cameraInfo: CameraInfo?
     var body: some View {
         VStack(content: {
             Divider().padding()
-            Text("Camera Info").padding()
+            HStack {
+                VStack {
+                    Text("Model Name")
+                        .foregroundColor(.orange)
+                        .padding([.top, .bottom], 5)
+                        .padding([.leading, .trailing], 10)
+                    Divider()
+                    Text(cameraInfo?.model_name ?? "")
+                        .padding([.top, .bottom], 5)
+                        .padding([.leading, .trailing], 10)
+                }
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(.gray, lineWidth: 1.0)
+                )
+                .padding()
+                VStack {
+                    Text("Serial Number")
+                        .foregroundColor(.orange)
+                        .padding([.top, .bottom], 5)
+                        .padding([.leading, .trailing], 10)
+                    Divider()
+                    Text(cameraInfo?.serial_number ?? "")
+                        .padding([.top, .bottom], 5)
+                        .padding([.leading, .trailing], 10)
+                }
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(.gray, lineWidth: 1.0)
+                )
+                .padding()
+                VStack {
+                    Text("AP SSID")
+                        .foregroundColor(.orange)
+                        .padding([.top, .bottom], 5)
+                        .padding([.leading, .trailing], 10)
+                    Divider()
+                    Text(cameraInfo?.ap_ssid ?? "")
+                        .padding([.top, .bottom], 5)
+                        .padding([.leading, .trailing], 10)
+                }
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(.gray, lineWidth: 1.0)
+                )
+                .padding()
+                VStack {
+                    Text("Firmware Version")
+                        .foregroundColor(.orange)
+                        .padding([.top, .bottom], 5)
+                        .padding([.leading, .trailing], 10)
+                    Divider()
+                    Text(cameraInfo?.firmware_version ?? "")
+                        .padding([.top, .bottom], 5)
+                        .padding([.leading, .trailing], 10)
+                }
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(.gray, lineWidth: 1.0)
+                )
+                .padding()
+            }
             Divider().padding()
             HStack() {
                 Button(action: {
@@ -62,115 +125,117 @@ struct CameraView: View {
                         .stroke(.gray, lineWidth: 1.0)
                 )
                 .padding()
-            }
-            Divider().padding()
-            Text("Media List").padding()
-            List {
-
-            }
-            // End
-            Button(action: {
-                os_log("Enabling WiFi...", type: .info)
-                peripheral?.requestCommand(command: .apMode_on, { error in
-                    if error != nil {
-                        os_log("Error: %@", type: .error, error! as CVarArg)
-                        return
-                    }
-                    os_log("Requesting WiFi settings...", type: .info)
-                    peripheral?.requestWiFiSettings { result in
-                        switch result {
-                        case .success(let wifiSettings):
-                            os_log("Join WiFi...", type: .info)
-                            joinWiFi(with: wifiSettings.SSID, password: wifiSettings.password)
-                            showCameraWiFiView=true
-                        case .failure(let error):
-                            os_log("Error: %@", type: .error, error as CVarArg)
-                        }
-                    }
-                })
-            }, label: {
-                Text("Join Wi-Fi")
-            }).padding()
-            Button(action: {
-                os_log("Set Settings...", type: .info)
-                let goProSettings: [GoProSetting] = [.controls_pro, .videoAspectRatio_16_9, .videoResolution_4k_16_9, .fps_120, .videoDigitalLenses_linear, .antiFlicker_60, .hypersmooth_off, .systemVideoBitRate_high, .systemVideoBitDepth_10bit, .autoPowerDown_5min, .wirelessBand_5ghz]
-                for (idx, goProSetting) in goProSettings.enumerated() {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + Double(idx) * 0.5) {
-                        peripheral?.requestSetting(setting: goProSetting, { error in
+                Button(action: {
+                    os_log("Get Media All", type: .info)
+                    for mediaUrl in mediaUrlList ?? [] {
+                        self.camera?.requestUsbMediaDownload(mediaEndPoint: mediaUrl) { progress, error in
                             if error != nil {
                                 os_log("Error: %@", type: .error, error! as CVarArg)
                                 return
                             }
-                        })
+                        }
                     }
+                }, label: {
+                    VStack {
+                        Image(systemName: "photo.on.rectangle.angled")
+                            .foregroundColor(.green)
+                            .padding([.top, .bottom], 5)
+                            .padding([.leading, .trailing], 10)
+                        Text("Get Media All")
+                            .foregroundColor(.green)
+                            .padding([.top, .bottom], 5)
+                            .padding([.leading, .trailing], 10)
+                    }
+                })
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(.gray, lineWidth: 1.0)
+                )
+                .padding()
+                Button(action: {
+                    os_log("Remove Media All", type: .info)
+                }, label: {
+                    VStack {
+                        Image(systemName: "trash")
+                            .foregroundColor(.red)
+                            .padding([.top, .bottom], 5)
+                            .padding([.leading, .trailing], 10)
+                        Text("Remove Media All")
+                            .foregroundColor(.red)
+                            .padding([.top, .bottom], 5)
+                            .padding([.leading, .trailing], 10)
+                    }
+                })
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(.gray, lineWidth: 1.0)
+                )
+                .padding()
+            }
+            Divider().padding()
+            Text("Media List").padding()
+            List {
+                ForEach(mediaUrlList ?? [], id: \.self) { mediaUrl in
+                    Button(action: {
+                        os_log("Download Media: %@", type: .info, mediaUrl)
+                        self.camera?.requestUsbMediaDownload(mediaEndPoint: mediaUrl) { progress, error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }, label: {
+                        HStack() {
+                            Spacer()
+                            Image(systemName: "photo")
+                                .foregroundColor(.teal)
+                            Text(mediaUrl)
+                                .foregroundColor(.teal)
+                            Spacer()
+                        }
+                    })
                 }
-            }, label: {
-                Text("Set Settings")
-            }).padding()
-            Button(action: {
-                os_log("Request Shutter on...", type: .info)
-                peripheral?.requestCommand(command: .shutter_on, { error in
-                    if error != nil {
-                        os_log("Error: %@", type: .error, error! as CVarArg)
-                        return
-                    }
-                })
-            }, label: {
-                Text("Request Shutter on")
-            }).padding()
-            Button(action: {
-                os_log("Request Shutter off...", type: .info)
-                peripheral?.requestCommand(command: .shutter_off, { error in
-                    if error != nil {
-                        os_log("Error: %@", type: .error, error! as CVarArg)
-                        return
-                    }
-                })
-            }, label: {
-                Text("Request Shutter off")
-            }).padding()
-            Button(action: {
-                os_log("Request Sleep...", type: .info)
-                peripheral?.requestCommand(command: .sleep, { error in
-                    if error != nil {
-                        os_log("Error: %@", type: .error, error! as CVarArg)
-                        return
-                    }
-                })
-            }, label: {
-                Text("Request Sleep")
-            }).padding()
-            Button(action: {
-                os_log("Go back...", type: .info)
-                dismiss()
-            }, label: {
-                Text("Go back")
-            }).padding()
+                .onDelete(perform: deleteItem)
+                .listRowSeparator(.hidden)
+            }
         })
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Single Camera Control").fontWeight(.bold)
+        .onAppear() {
+            self.camera = GoPro(serialNumber: cameraSerialNumber)
+            os_log("Get camera info: GoPro %@", type: .info, cameraSerialNumber)
+            self.camera?.requestUsbCameraInfo { cameraInfo, error in
+                if error != nil {
+                    os_log("Error: %@", type: .error, error! as CVarArg)
+                    return
+                }
+                self.cameraInfo = cameraInfo
+            }
+            os_log("Get media list: GoPro %@", type: .info, cameraSerialNumber)
+            self.camera?.requestUsbMediaList { mediaUrlList, error in
+                if error != nil {
+                    os_log("Error: %@", type: .error, error! as CVarArg)
+                    return
+                }
+                self.mediaUrlList = mediaUrlList
             }
         }
     }
 
-    private func joinWiFi(with SSID: String, password: String) {
-        os_log("Joining WiFi %@...", type: .info, SSID)
-        let configuration = NEHotspotConfiguration(ssid: SSID, passphrase: password, isWEP: false)
-        NEHotspotConfigurationManager.shared.removeConfiguration(forSSID: SSID)
-        configuration.joinOnce = false
-        NEHotspotConfigurationManager.shared.apply(configuration) { error in
-            guard let error = error else {
-                os_log("Joining WiFi succeeded", type: .info)
-                return
-            }
-            os_log("Joining WiFi failed: %@", type: .error, error as CVarArg)
-        }
+    private func deleteItem(at offsets: IndexSet) {
+//        camera?.requestUsbMediaRemove(mediaEndPoint: mediaUrlList?.get(at: offsets)) { progress, error in
+//            if error != nil {
+//                os_log("Error: %@", type: .error, error! as CVarArg)
+//                return
+//            }
+//            self.mediaUrlList?.remove(atOffsets: offsets)
+//        }
+        self.mediaUrlList?.remove(atOffsets: offsets)
     }
 }
 
 struct CameraView_Previews: PreviewProvider {
     static var previews: some View {
-        CameraView()
+        CameraView(cameraSerialNumber: "")
     }
 }
