@@ -30,9 +30,11 @@ struct MultiCameraView: View {
                     }, label: {
                         VStack {
                             Image(systemName: "video")
+                                .foregroundColor(.cyan)
                                 .padding([.top, .bottom], 7)
                                 .padding([.leading, .trailing], 10)
                             Text("Shutter On All")
+                                .foregroundColor(.cyan)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                         }
@@ -40,16 +42,19 @@ struct MultiCameraView: View {
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.gray, lineWidth: 1.0)
+                            .stroke(.gray, lineWidth: 1.0)
                     )
+                    .padding()
                     Button(action: {
                         os_log("Shutter Off All", type: .info)
                     }, label: {
                         VStack {
                             Image(systemName: "stop")
+                                .foregroundColor(.pink)
                                 .padding([.top, .bottom], 7)
                                 .padding([.leading, .trailing], 10)
                             Text("Shutter Off All")
+                                .foregroundColor(.pink)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                         }
@@ -57,16 +62,19 @@ struct MultiCameraView: View {
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.gray, lineWidth: 1.0)
+                            .stroke(.gray, lineWidth: 1.0)
                     )
+                    .padding()
                     Button(action: {
                         os_log("Get Media All", type: .info)
                     }, label: {
                         VStack {
                             Image(systemName: "photo.on.rectangle.angled")
+                                .foregroundColor(.mint)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                             Text("Get Media All")
+                                .foregroundColor(.mint)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                         }
@@ -74,16 +82,19 @@ struct MultiCameraView: View {
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.gray, lineWidth: 1.0)
+                            .stroke(.gray, lineWidth: 1.0)
                     )
+                    .padding()
                     Button(action: {
                         os_log("Remove Media All", type: .info)
                     }, label: {
                         VStack {
                             Image(systemName: "trash")
+                                .foregroundColor(.orange)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                             Text("Remove Media All")
+                                .foregroundColor(.orange)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                         }
@@ -91,17 +102,20 @@ struct MultiCameraView: View {
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.gray, lineWidth: 1.0)
+                            .stroke(.gray, lineWidth: 1.0)
                     )
+                    .padding()
                     Button(action: {
                         os_log("SettingsView", type: .info)
                         showSettingsView = true
                     }, label: {
                         VStack {
                             Image(systemName: "gear")
+                                .foregroundColor(.indigo)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                             Text("Settings All")
+                                .foregroundColor(.indigo)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                         }
@@ -109,8 +123,9 @@ struct MultiCameraView: View {
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.gray, lineWidth: 1.0)
+                            .stroke(.gray, lineWidth: 1.0)
                     )
+                    .padding()
                 }
                 Divider().padding()
                 Text("GoPro List").padding()
@@ -119,7 +134,7 @@ struct MultiCameraView: View {
                         .padding()
                         .overlay(
                             RoundedRectangle(cornerRadius: 15)
-                                .stroke(Color.gray, lineWidth: 1.0)
+                                .stroke(.gray, lineWidth: 1.0)
                         )
                         .padding()
                     Button(action: {
@@ -128,9 +143,11 @@ struct MultiCameraView: View {
                     }, label: {
                         VStack() {
                             Image(systemName: "plus.square")
+                                .foregroundColor(.indigo)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                             Text("Add Camera")
+                                .foregroundColor(.indigo)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                         }
@@ -138,31 +155,29 @@ struct MultiCameraView: View {
                     .padding()
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.gray, lineWidth: 1.0)
+                            .stroke(.gray, lineWidth: 1.0)
                     )
                     .padding()
                 }
                 Divider()
                 List{
                     ForEach(cameraList, id: \.self) { camera in
-                        ZStack {
+                        Button(action: {
+                            os_log("CameraView: GoPro %@", type: .info, camera)
+                            showCameraView = true
+                        }, label: {
                             HStack() {
                                 Spacer()
                                 Image(systemName: "camera")
+                                    .foregroundColor(.teal)
                                 Text("GoPro " + camera)
+                                    .foregroundColor(.teal)
                                 Spacer()
                                 Image(systemName: "chevron.right")
                                     .renderingMode(.template)
-                                    .foregroundColor(.gray)
-                                
+                                    .foregroundColor(.teal)
                             }
-                            Button(action: {
-                                os_log("CameraView: GoPro %@", type: .info, camera)
-                                showCameraView = true
-                            }, label: {
-                                EmptyView()
-                            })
-                        }
+                        })
                     }
                     .onDelete(perform: deleteItem)
                     .listRowSeparator(.hidden)

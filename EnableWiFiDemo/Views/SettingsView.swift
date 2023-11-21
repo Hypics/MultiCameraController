@@ -21,10 +21,13 @@ struct SettingsView: View {
             }, label: {
                 VStack {
                     Image(systemName: "1.square")
+                        .foregroundColor(.pink)
                         .padding([.top, .bottom], 5)
                         .padding([.leading, .trailing], 10)
                     Text("4K@120FPS, 16:9, Linear")
+                        .foregroundColor(.black)
                     Text("60Hz, Off, High, 10bit, Never, Pro")
+                        .foregroundColor(.black)
                         .padding([.top, .bottom], 5)
                         .padding([.leading, .trailing], 10)
                 }
@@ -32,159 +35,139 @@ struct SettingsView: View {
             .padding()
             .overlay(
                 RoundedRectangle(cornerRadius: 15)
-                    .stroke(Color.gray, lineWidth: 1.0)
+                    .stroke(.gray, lineWidth: 1.0)
             )
             Divider().padding()
             List {
-                ZStack {
+                Button(action: {
+                    os_log("Video Resolution: 4K", type: .info)
+                }, label: {
                     HStack {
                         Spacer()
                         Image(systemName: "camera")
+                            .foregroundColor(.orange)
                         Text("Video Resolution: 4K")
+                            .foregroundColor(.orange)
                         Spacer()
-
                     }
-                    Button(action: {
-                        os_log("Video Resolution: 4K", type: .info)
-                    }, label: {
-                        EmptyView()
-                    })
-                }
+                })
                 .listRowSeparator(.hidden)
-                ZStack {
+                Button(action: {
+                    os_log("Video FPS: 120Hz", type: .info)
+                }, label: {
                     HStack {
                         Spacer()
                         Image(systemName: "rectangle.on.rectangle")
+                            .foregroundColor(.orange)
                         Text("Video FPS: 120Hz")
+                            .foregroundColor(.orange)
                         Spacer()
-
                     }
-                    Button(action: {
-                        os_log("Video FPS: 120Hz", type: .info)
-                    }, label: {
-                        EmptyView()
-                    })
-                }
+                })
                 .listRowSeparator(.hidden)
-                ZStack {
+                Button(action: {
+                    os_log("Video Aspect: 16:9", type: .info)
+                }, label: {
                     HStack {
                         Spacer()
                         Image(systemName: "aspectratio")
+                            .foregroundColor(.mint)
                         Text("Video Aspect: 16:9")
+                            .foregroundColor(.mint)
                         Spacer()
-
                     }
-                    Button(action: {
-                        os_log("Video Aspect: 16:9", type: .info)
-                    }, label: {
-                        EmptyView()
-                    })
-                }
+                })
                 .listRowSeparator(.hidden)
-                ZStack {
+                Button(action: {
+                    os_log("Video Digital Lens: Linear", type: .info)
+                }, label: {
                     HStack {
                         Spacer()
                         Image(systemName: "field.of.view.wide")
+                            .foregroundColor(.mint)
                         Text("Video Digital Lens: Linear")
+                            .foregroundColor(.mint)
                         Spacer()
-
                     }
-                    Button(action: {
-                        os_log("Video Digital Lens: Linear", type: .info)
-                    }, label: {
-                        EmptyView()
-                    })
-                }
+                })
                 .listRowSeparator(.hidden)
-                ZStack {
+                Button(action: {
+                    os_log("Anti Flicker: 60Hz", type: .info)
+                }, label: {
                     HStack {
                         Spacer()
                         Image(systemName: "warninglight")
+                            .foregroundColor(.indigo)
                         Text("Anti Flicker: 60Hz")
+                            .foregroundColor(.indigo)
                         Spacer()
-
                     }
-                    Button(action: {
-                        os_log("Anti Flicker: 60Hz", type: .info)
-                    }, label: {
-                        EmptyView()
-                    })
-                }
+                })
                 .listRowSeparator(.hidden)
-                ZStack {
+                Button(action: {
+                    os_log("Hypersmooth: Off", type: .info)
+                }, label: {
                     HStack {
                         Spacer()
                         Image(systemName: "circle.and.line.horizontal")
+                            .foregroundColor(.indigo)
                         Text("Hypersmooth: Off")
+                            .foregroundColor(.indigo)
                         Spacer()
-
                     }
-                    Button(action: {
-                        os_log("Hypersmooth: Off", type: .info)
-                    }, label: {
-                        EmptyView()
-                    })
-                }
+                })
                 .listRowSeparator(.hidden)
-                ZStack {
+                Button(action: {
+                    os_log("System Video Bit Rate: High", type: .info)
+                }, label: {
                     HStack {
                         Spacer()
                         Image(systemName: "slider.horizontal.3")
+                            .foregroundColor(.pink)
                         Text("System Video Bit Rate: High")
+                            .foregroundColor(.pink)
                         Spacer()
-
                     }
-                    Button(action: {
-                        os_log("System Video Bit Rate: High", type: .info)
-                    }, label: {
-                        EmptyView()
-                    })
-                }
+                })
                 .listRowSeparator(.hidden)
-                ZStack {
+                Button(action: {
+                    os_log("System Video Bit Depth: 10bit", type: .info)
+                }, label: {
                     HStack {
                         Spacer()
                         Image(systemName: "slider.vertical.3")
+                            .foregroundColor(.pink)
                         Text("System Video Bit Depth: 10bit")
+                            .foregroundColor(.pink)
                         Spacer()
-
                     }
-                    Button(action: {
-                        os_log("System Video Bit Depth: 10bit", type: .info)
-                    }, label: {
-                        EmptyView()
-                    })
-                }
+                })
                 .listRowSeparator(.hidden)
-                ZStack {
+                Button(action: {
+                    os_log("Auto Power Down: Never", type: .info)
+                }, label: {
                     HStack {
                         Spacer()
                         Image(systemName: "powersleep")
+                            .foregroundColor(.teal)
                         Text("Auto Power Down: Never")
+                            .foregroundColor(.teal)
                         Spacer()
-
                     }
-                    Button(action: {
-                        os_log("Auto Power Down: Never", type: .info)
-                    }, label: {
-                        EmptyView()
-                    })
-                }
+                })
                 .listRowSeparator(.hidden)
-                ZStack {
+                Button(action: {
+                    os_log("Controls Mode: Pro", type: .info)
+                }, label: {
                     HStack {
                         Spacer()
                         Image(systemName: "wrench.and.screwdriver")
+                            .foregroundColor(.teal)
                         Text("Controls Mode: Pro")
+                            .foregroundColor(.teal)
                         Spacer()
-
                     }
-                    Button(action: {
-                        os_log("Controls Mode: Pro", type: .info)
-                    }, label: {
-                        EmptyView()
-                    })
-                }
+                })
                 .listRowSeparator(.hidden)
             }
         }

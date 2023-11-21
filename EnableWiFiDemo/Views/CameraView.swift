@@ -27,9 +27,11 @@ struct CameraView: View {
                 }, label: {
                     VStack {
                         Image(systemName: "video")
+                            .foregroundColor(.cyan)
                             .padding([.top, .bottom], 7)
                             .padding([.leading, .trailing], 10)
                         Text("Shutter On")
+                            .foregroundColor(.cyan)
                             .padding([.top, .bottom], 5)
                             .padding([.leading, .trailing], 10)
                     }
@@ -37,16 +39,19 @@ struct CameraView: View {
                 .padding()
                 .overlay(
                     RoundedRectangle(cornerRadius: 15)
-                        .stroke(Color.gray, lineWidth: 1.0)
+                        .stroke(.gray, lineWidth: 1.0)
                 )
+                .padding()
                 Button(action: {
                     os_log("Shutter Off", type: .info)
                 }, label: {
                     VStack {
                         Image(systemName: "stop")
+                            .foregroundColor(.pink)
                             .padding([.top, .bottom], 7)
                             .padding([.leading, .trailing], 10)
                         Text("Shutter Off")
+                            .foregroundColor(.pink)
                             .padding([.top, .bottom], 5)
                             .padding([.leading, .trailing], 10)
                     }
@@ -54,13 +59,14 @@ struct CameraView: View {
                 .padding()
                 .overlay(
                     RoundedRectangle(cornerRadius: 15)
-                        .stroke(Color.gray, lineWidth: 1.0)
+                        .stroke(.gray, lineWidth: 1.0)
                 )
+                .padding()
             }
             Divider().padding()
             Text("Media List").padding()
             List {
-                
+
             }
             // End
             Button(action: {
