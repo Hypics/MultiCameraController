@@ -14,10 +14,55 @@ struct CameraView: View {
     @Environment(\.dismiss)
     private var dismiss
     var peripheral: Peripheral?
+    var camera: String?
     @State private var showCameraWiFiView = false
     var body: some View {
         VStack(content: {
-            Text("Deep Frost Testing..").padding()
+            Divider().padding()
+            Text("Camera Info").padding()
+            Divider().padding()
+            HStack() {
+                Button(action: {
+                    os_log("Shutter On", type: .info)
+                }, label: {
+                    VStack {
+                        Image(systemName: "video")
+                            .padding([.top, .bottom], 7)
+                            .padding([.leading, .trailing], 10)
+                        Text("Shutter On")
+                            .padding([.top, .bottom], 5)
+                            .padding([.leading, .trailing], 10)
+                    }
+                })
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(Color.gray, lineWidth: 1.0)
+                )
+                Button(action: {
+                    os_log("Shutter Off", type: .info)
+                }, label: {
+                    VStack {
+                        Image(systemName: "stop")
+                            .padding([.top, .bottom], 7)
+                            .padding([.leading, .trailing], 10)
+                        Text("Shutter Off")
+                            .padding([.top, .bottom], 5)
+                            .padding([.leading, .trailing], 10)
+                    }
+                })
+                .padding()
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(Color.gray, lineWidth: 1.0)
+                )
+            }
+            Divider().padding()
+            Text("Media List").padding()
+            List {
+                
+            }
+            // End
             Button(action: {
                 os_log("Enabling WiFi...", type: .info)
                 peripheral?.requestCommand(command: .apMode_on, { error in
@@ -39,12 +84,7 @@ struct CameraView: View {
                 })
             }, label: {
                 Text("Join Wi-Fi")
-            })
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(peripheral?.name ?? "").fontWeight(.bold)
-                }
-            }.padding()
+            }).padding()
             Button(action: {
                 os_log("Set Settings...", type: .info)
                 let goProSettings: [GoProSetting] = [.controls_pro, .videoAspectRatio_16_9, .videoResolution_4k_16_9, .fps_120, .videoDigitalLenses_linear, .antiFlicker_60, .hypersmooth_off, .systemVideoBitRate_high, .systemVideoBitDepth_10bit, .autoPowerDown_5min, .wirelessBand_5ghz]
@@ -60,12 +100,7 @@ struct CameraView: View {
                 }
             }, label: {
                 Text("Set Settings")
-            })
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(peripheral?.name ?? "").fontWeight(.bold)
-                }
-            }.padding()
+            }).padding()
             Button(action: {
                 os_log("Request Shutter on...", type: .info)
                 peripheral?.requestCommand(command: .shutter_on, { error in
@@ -76,12 +111,7 @@ struct CameraView: View {
                 })
             }, label: {
                 Text("Request Shutter on")
-            })
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(peripheral?.name ?? "").fontWeight(.bold)
-                }
-            }.padding()
+            }).padding()
             Button(action: {
                 os_log("Request Shutter off...", type: .info)
                 peripheral?.requestCommand(command: .shutter_off, { error in
@@ -92,12 +122,7 @@ struct CameraView: View {
                 })
             }, label: {
                 Text("Request Shutter off")
-            })
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(peripheral?.name ?? "").fontWeight(.bold)
-                }
-            }.padding()
+            }).padding()
             Button(action: {
                 os_log("Request Sleep...", type: .info)
                 peripheral?.requestCommand(command: .sleep, { error in
@@ -108,24 +133,19 @@ struct CameraView: View {
                 })
             }, label: {
                 Text("Request Sleep")
-            })
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(peripheral?.name ?? "").fontWeight(.bold)
-                }
-            }.padding()
+            }).padding()
             Button(action: {
                 os_log("Go back...", type: .info)
                 dismiss()
             }, label: {
                 Text("Go back")
-            })
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(peripheral?.name ?? "").fontWeight(.bold)
-                }
-            }.padding()
+            }).padding()
         })
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Text("Single Camera Control").fontWeight(.bold)
+            }
+        }
     }
 
     private func joinWiFi(with SSID: String, password: String) {

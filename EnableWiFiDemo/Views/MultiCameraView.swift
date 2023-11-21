@@ -16,12 +16,158 @@ struct MultiCameraView: View {
     @State private var showSettingsView = false
     @State private var showCameraView = false
     @State private var mediaUrlList: [String] = []
+    @State private var cameraList: [String] = ["123", "317"]
+    @State private var new_camera: String = ""
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(destination: SettingsView(), isActive: $showCameraView) { EmptyView() }
-                NavigationLink(destination: CameraView(peripheral: peripheral), isActive: $showSettingsView) { EmptyView() }
-                Text("USB").padding()
+                NavigationLink(destination: SettingsView(), isActive: $showSettingsView) { EmptyView() }
+                NavigationLink(destination: CameraView(peripheral: peripheral), isActive: $showCameraView) { EmptyView() }
+                Divider().padding()
+                HStack() {
+                    Button(action: {
+                        os_log("Shutter On All", type: .info)
+                    }, label: {
+                        VStack {
+                            Image(systemName: "video")
+                                .padding([.top, .bottom], 7)
+                                .padding([.leading, .trailing], 10)
+                            Text("Shutter On All")
+                                .padding([.top, .bottom], 5)
+                                .padding([.leading, .trailing], 10)
+                        }
+                    })
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.gray, lineWidth: 1.0)
+                    )
+                    Button(action: {
+                        os_log("Shutter Off All", type: .info)
+                    }, label: {
+                        VStack {
+                            Image(systemName: "stop")
+                                .padding([.top, .bottom], 7)
+                                .padding([.leading, .trailing], 10)
+                            Text("Shutter Off All")
+                                .padding([.top, .bottom], 5)
+                                .padding([.leading, .trailing], 10)
+                        }
+                    })
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.gray, lineWidth: 1.0)
+                    )
+                    Button(action: {
+                        os_log("Get Media All", type: .info)
+                    }, label: {
+                        VStack {
+                            Image(systemName: "photo.on.rectangle.angled")
+                                .padding([.top, .bottom], 5)
+                                .padding([.leading, .trailing], 10)
+                            Text("Get Media All")
+                                .padding([.top, .bottom], 5)
+                                .padding([.leading, .trailing], 10)
+                        }
+                    })
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.gray, lineWidth: 1.0)
+                    )
+                    Button(action: {
+                        os_log("Remove Media All", type: .info)
+                    }, label: {
+                        VStack {
+                            Image(systemName: "trash")
+                                .padding([.top, .bottom], 5)
+                                .padding([.leading, .trailing], 10)
+                            Text("Remove Media All")
+                                .padding([.top, .bottom], 5)
+                                .padding([.leading, .trailing], 10)
+                        }
+                    })
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.gray, lineWidth: 1.0)
+                    )
+                    Button(action: {
+                        os_log("SettingsView", type: .info)
+                        showSettingsView = true
+                    }, label: {
+                        VStack {
+                            Image(systemName: "gear")
+                                .padding([.top, .bottom], 5)
+                                .padding([.leading, .trailing], 10)
+                            Text("Settings All")
+                                .padding([.top, .bottom], 5)
+                                .padding([.leading, .trailing], 10)
+                        }
+                    })
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.gray, lineWidth: 1.0)
+                    )
+                }
+                Divider().padding()
+                Text("GoPro List").padding()
+                HStack {
+                    TextField("GoPro Serial Number", text: $new_camera)
+                        .padding()
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.gray, lineWidth: 1.0)
+                        )
+                        .padding()
+                    Button(action: {
+                        os_log("Add Camera", type: .info)
+                        cameraList.append(new_camera)
+                    }, label: {
+                        VStack() {
+                            Image(systemName: "plus.square")
+                                .padding([.top, .bottom], 5)
+                                .padding([.leading, .trailing], 10)
+                            Text("Add Camera")
+                                .padding([.top, .bottom], 5)
+                                .padding([.leading, .trailing], 10)
+                        }
+                    })
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(Color.gray, lineWidth: 1.0)
+                    )
+                    .padding()
+                }
+                Divider()
+                List{
+                    ForEach(cameraList, id: \.self) { camera in
+                        ZStack {
+                            HStack() {
+                                Spacer()
+                                Image(systemName: "camera")
+                                Text("GoPro " + camera)
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .renderingMode(.template)
+                                    .foregroundColor(.gray)
+                                
+                            }
+                            Button(action: {
+                                os_log("CameraView: GoPro %@", type: .info, camera)
+                                showCameraView = true
+                            }, label: {
+                                EmptyView()
+                            })
+                        }
+                    }
+                    .onDelete(perform: deleteItem)
+                    .listRowSeparator(.hidden)
+                }
+                // End
                 Button(action: {
                     os_log("Requesting Media List...", type: .info)
                     Peripheral.requestWiFiCommand(serialNumber: 317, command: .get_media_list, { (mediaUrlList, error) in
@@ -93,7 +239,7 @@ struct MultiCameraView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Select Camera").fontWeight(.bold)
+                    Text("Multi Camera Control").fontWeight(.bold)
                 }
             }
         }
@@ -135,6 +281,10 @@ struct MultiCameraView: View {
                 }
             }
         }
+    }
+
+    private func deleteItem(at offsets: IndexSet) {
+        cameraList.remove(atOffsets: offsets)
     }
 }
 
