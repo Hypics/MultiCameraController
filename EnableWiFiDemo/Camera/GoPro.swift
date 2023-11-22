@@ -208,6 +208,11 @@ final class GoPro: NSObject {
 
     init(serialNumber: String) {
         self.serialNumber = serialNumber
+        if serialNumber == "" {
+            self.url = ""
+            return
+        }
+
         let serialNumberX = serialNumber.substring(with: 0 ..< 1)
         let serialNumberYZ = serialNumber.substring(with: 1 ..< 3)
         self.url = "http://172.2" + serialNumberX + ".1" + serialNumberYZ + ".51:8080"

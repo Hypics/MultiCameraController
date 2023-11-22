@@ -10,10 +10,9 @@ import SwiftUI
 import os.log
 
 struct CameraView: View {
-    var cameraSerialNumber: String
-    @State private var camera: GoPro?
-    @State private var mediaEndPointList: [String]?
+    var camera: GoPro
     @State private var cameraInfo: CameraInfo?
+    @State private var mediaEndPointList: [String]?
     var body: some View {
         VStack(content: {
             Divider().padding()
@@ -87,7 +86,7 @@ struct CameraView: View {
             HStack {
                 Button(action: {
                     os_log("Shutter On", type: .info)
-                    camera?.requestUsbCommand(command: .shutterOn) {error in
+                    camera.requestUsbCommand(command: .shutterOn) {error in
                             if error != nil {
                                 os_log("Error: %@", type: .error, error! as CVarArg)
                                 return
@@ -113,12 +112,11 @@ struct CameraView: View {
                 .padding()
                 Button(action: {
                     os_log("Shutter Off", type: .info)
-                    camera?.requestUsbCommand(command: .shutterOff) {error in
+                    camera.requestUsbCommand(command: .shutterOff) {error in
                         if error != nil {
                             os_log("Error: %@", type: .error, error! as CVarArg)
                             return
                         }
-                        // refresh media list
                     }
                 }, label: {
                     VStack {
@@ -139,9 +137,9 @@ struct CameraView: View {
                 )
                 .padding()
                 Button(action: {
-                    os_log("Get Media All", type: .info)
+                    os_log("Download Media All", type: .info)
                     for mediaUrl in mediaEndPointList ?? [] {
-                        self.camera?.requestUsbMediaDownload(mediaEndPoint: mediaUrl) { progress, error in
+                        self.camera.requestUsbMediaDownload(mediaEndPoint: mediaUrl) { progress, error in
                             if error != nil {
                                 os_log("Error: %@", type: .error, error! as CVarArg)
                                 return
@@ -150,11 +148,14 @@ struct CameraView: View {
                     }
                 }, label: {
                     VStack {
-                        Image(systemName: "photo.on.rectangle.angled")
-                            .foregroundColor(.green)
-                            .padding([.top, .bottom], 5)
-                            .padding([.leading, .trailing], 10)
-                        Text("Get Media All")
+                        HStack {
+                            Image(systemName: "photo.on.rectangle.angled")
+                            Image(systemName: "a.circle")
+                        }
+                        .foregroundColor(.green)
+                        .padding([.top, .bottom], 5)
+                        .padding([.leading, .trailing], 10)
+                        Text("Download Media")
                             .foregroundColor(.green)
                             .padding([.top, .bottom], 5)
                             .padding([.leading, .trailing], 10)
@@ -169,21 +170,23 @@ struct CameraView: View {
                 Button(action: {
                     os_log("Remove Media All", type: .info)
                     for mediaUrl in mediaEndPointList ?? [] {
-                        self.camera?.requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
+                        self.camera.requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
                             if error != nil {
                                 os_log("Error: %@", type: .error, error! as CVarArg)
                                 return
                             }
-                            // refresh media list
                         }
                     }
                 }, label: {
                     VStack {
-                        Image(systemName: "trash")
-                            .foregroundColor(.red)
-                            .padding([.top, .bottom], 5)
-                            .padding([.leading, .trailing], 10)
-                        Text("Remove Media All")
+                        HStack {
+                            Image(systemName: "trash")
+                            Image(systemName: "a.circle")
+                        }
+                        .foregroundColor(.red)
+                        .padding([.top, .bottom], 5)
+                        .padding([.leading, .trailing], 10)
+                        Text("Remove Media")
                             .foregroundColor(.red)
                             .padding([.top, .bottom], 5)
                             .padding([.leading, .trailing], 10)
@@ -202,7 +205,7 @@ struct CameraView: View {
                 ForEach(mediaEndPointList ?? [], id: \.self) { mediaEndPoint in
                     Button(action: {
                         os_log("Download Media: %@", type: .info, mediaEndPoint)
-                        self.camera?.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
+                        self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
                             if error != nil {
                                 os_log("Error: %@", type: .error, error! as CVarArg)
                                 return
@@ -218,16 +221,40 @@ struct CameraView: View {
                             Spacer()
                         }
                     })
+                    .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                        Button(action: {
+                            os_log("Download Media: %@", type: .info, mediaEndPoint)
+                            self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
+                                if error != nil {
+                                    os_log("Error: %@", type: .error, error! as CVarArg)
+                                    return
+                                }
+                            }
+                        }, label: {
+                            Text("Download")
+                                .padding([.top, .bottom], 5)
+                                .padding([.leading, .trailing], 10)
+                        })
+                        .tint(.green)
+                    }
                 }
                 .onDelete(perform: deleteMediaItem)
                 .listRowSeparator(.hidden)
             }
+            .refreshable {
+                os_log("Download media list: GoPro %@", type: .info, self.camera.serialNumber)
+                self.camera.requestUsbMediaList { mediaEndPointList, error in
+                    if error != nil {
+                        os_log("Error: %@", type: .error, error! as CVarArg)
+                        return
+                    }
+                    self.mediaEndPointList = mediaEndPointList
+                }
+            }
         })
         .onAppear {
-            self.camera = GoPro(serialNumber: cameraSerialNumber)
-
-            os_log("Get camera info: GoPro %@", type: .info, cameraSerialNumber)
-            self.camera?.requestUsbCameraInfo { cameraInfo, error in
+            os_log("Get camera info: GoPro %@", type: .info, camera.serialNumber)
+            self.camera.requestUsbCameraInfo { cameraInfo, error in
                 if error != nil {
                     os_log("Error: %@", type: .error, error! as CVarArg)
                     return
@@ -235,16 +262,8 @@ struct CameraView: View {
                 self.cameraInfo = cameraInfo
             }
 
-            os_log("Enable Wired USB Control: GoPro %@", type: .info, cameraSerialNumber)
-            self.camera?.requestUsbCommand(command: .enableWiredUsbControl) { error in
-                if error != nil {
-                    os_log("Error: %@", type: .error, error! as CVarArg)
-                    return
-                }
-            }
-
-            os_log("Get media list: GoPro %@", type: .info, cameraSerialNumber)
-            self.camera?.requestUsbMediaList { mediaEndPointList, error in
+            os_log("Download media list: GoPro %@", type: .info, camera.serialNumber)
+            self.camera.requestUsbMediaList { mediaEndPointList, error in
                 if error != nil {
                     os_log("Error: %@", type: .error, error! as CVarArg)
                     return
@@ -252,27 +271,21 @@ struct CameraView: View {
                 self.mediaEndPointList = mediaEndPointList
             }
         }
-        .onDisappear {
-            self.camera = nil
-            os_log("Remove camera instance: GoPro %@", type: .info, cameraSerialNumber)
-        }
     }
 
     private func deleteMediaItem(at offsets: IndexSet) {
-        let cameraMediaEndPoint = mediaEndPointList?[offsets.first!]
-        camera?.requestUsbMediaRemove(mediaEndPoint: cameraMediaEndPoint ?? "") { error in
+        camera.requestUsbMediaRemove(mediaEndPoint: mediaEndPointList?[offsets.first!] ?? "") { error in
             if error != nil {
                 os_log("Error: %@", type: .error, error! as CVarArg)
                 return
             }
             self.mediaEndPointList?.remove(atOffsets: offsets)
         }
-        self.mediaEndPointList?.remove(atOffsets: offsets)
     }
 }
 
 struct CameraView_Previews: PreviewProvider {
     static var previews: some View {
-        CameraView(cameraSerialNumber: "")
+        CameraView(camera: GoPro(serialNumber: ""))
     }
 }
