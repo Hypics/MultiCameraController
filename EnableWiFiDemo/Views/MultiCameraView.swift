@@ -181,9 +181,16 @@ struct MultiCameraView: View {
                             }
                         })
                     }
-                    .onDelete(perform: deleteItem)
+                    .onDelete(perform: deleteCameraItem)
+                    .onMove(perform: moveCameraItem)
+                    .onLongPressGesture {
+                        withAnimation {
+                            self.isCameraSerialNumberListEditable = true
+                        }
+                    }
                     .listRowSeparator(.hidden)
                 }
+                .environment(\.editMode, isCameraSerialNumberListEditable ? .constant(.active) : .constant(.inactive))
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -195,8 +202,17 @@ struct MultiCameraView: View {
         .navigationViewStyle(StackNavigationViewStyle())
     }
 
-    private func deleteItem(at offsets: IndexSet) {
+    private func deleteCameraItem(at offsets: IndexSet) {
+            os_log("Remove GoPro %@", type: .info, cameraSerialNumberList[offsets.first!])
         cameraSerialNumberList.remove(atOffsets: offsets)
+    }
+
+    private func moveCameraItem(from source: IndexSet, to destination: Int) {
+            os_log("Move GoPro %@", type: .info, cameraSerialNumberList[source.first!])
+        cameraSerialNumberList.move(fromOffsets: source, toOffset: destination)
+        withAnimation {
+            isCameraSerialNumberListEditable = false
+        }
     }
 }
 
