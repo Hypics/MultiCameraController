@@ -13,6 +13,7 @@ struct MultiCameraView: View {
     @State private var showSettingsView = false
     @State private var showCameraView = false
     @State private var cameraSerialNumberList: [String] = ["123", "317"]
+    @State private var isCameraSerialNumberListEditable = false
     @State private var targetCameraSerialNumber: String = ""
     @State private var newCameraSerialNumber: String = ""
     var body: some View {
@@ -21,9 +22,18 @@ struct MultiCameraView: View {
                 NavigationLink(destination: SettingsView(cameraSerialNumberList: cameraSerialNumberList), isActive: $showSettingsView) { EmptyView() }
                 NavigationLink(destination: CameraView(cameraSerialNumber: targetCameraSerialNumber), isActive: $showCameraView) { EmptyView() }
                 Divider().padding()
-                HStack() {
+                HStack {
                     Button(action: {
                         os_log("Shutter On All", type: .info)
+                        for cameraSerialNumber in cameraSerialNumberList {
+                            let camera = GoPro(serialNumber: cameraSerialNumber)
+                            camera.requestUsbCommand(command: .shutterOn) {error in
+                                if error != nil {
+                                    os_log("Error: %@", type: .error, error! as CVarArg)
+                                    return
+                                }
+                            }
+                        }
                     }, label: {
                         VStack {
                             Image(systemName: "video")
@@ -44,6 +54,15 @@ struct MultiCameraView: View {
                     .padding()
                     Button(action: {
                         os_log("Shutter Off All", type: .info)
+                        for cameraSerialNumber in cameraSerialNumberList {
+                            let camera = GoPro(serialNumber: cameraSerialNumber)
+                            camera.requestUsbCommand(command: .shutterOff) {error in
+                                if error != nil {
+                                    os_log("Error: %@", type: .error, error! as CVarArg)
+                                    return
+                                }
+                            }
+                        }
                     }, label: {
                         VStack {
                             Image(systemName: "stop")
@@ -64,6 +83,28 @@ struct MultiCameraView: View {
                     .padding()
                     Button(action: {
                         os_log("Get Media All", type: .info)
+                        for cameraSerialNumber in cameraSerialNumberList {
+                            let camera = GoPro(serialNumber: cameraSerialNumber)
+                            var cameraMediaEndPointList: [String] = []
+
+                            os_log("Get media list: GoPro %@", type: .info, cameraSerialNumber)
+                            camera.requestUsbMediaList { mediaEndPointList, error in
+                                if error != nil {
+                                    os_log("Error: %@", type: .error, error! as CVarArg)
+                                    return
+                                }
+                                cameraMediaEndPointList = mediaEndPointList ?? []
+                            }
+
+                            for mediaUrl in cameraMediaEndPointList {
+                                camera.requestUsbMediaDownload(mediaEndPoint: mediaUrl) { progress, error in
+                                    if error != nil {
+                                        os_log("Error: %@", type: .error, error! as CVarArg)
+                                        return
+                                    }
+                                }
+                            }
+                        }
                     }, label: {
                         VStack {
                             Image(systemName: "photo.on.rectangle.angled")
@@ -84,6 +125,28 @@ struct MultiCameraView: View {
                     .padding()
                     Button(action: {
                         os_log("Remove Media All", type: .info)
+                        for cameraSerialNumber in cameraSerialNumberList {
+                            let camera = GoPro(serialNumber: cameraSerialNumber)
+                            var cameraMediaEndPointList: [String] = []
+
+                            os_log("Get media list: GoPro %@", type: .info, cameraSerialNumber)
+                            camera.requestUsbMediaList { mediaEndPointList, error in
+                                if error != nil {
+                                    os_log("Error: %@", type: .error, error! as CVarArg)
+                                    return
+                                }
+                                cameraMediaEndPointList = mediaEndPointList ?? []
+                            }
+
+                            for mediaUrl in cameraMediaEndPointList {
+                                camera.requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
+                                    if error != nil {
+                                        os_log("Error: %@", type: .error, error! as CVarArg)
+                                        return
+                                    }
+                                }
+                            }
+                        }
                     }, label: {
                         VStack {
                             Image(systemName: "trash")

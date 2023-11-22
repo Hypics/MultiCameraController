@@ -12,7 +12,7 @@ import os.log
 struct CameraView: View {
     var cameraSerialNumber: String
     @State private var camera: GoPro?
-    @State private var mediaUrlList: [String]?
+    @State private var mediaEndPointList: [String]?
     @State private var cameraInfo: CameraInfo?
     var body: some View {
         VStack(content: {
@@ -84,9 +84,15 @@ struct CameraView: View {
                 .padding()
             }
             Divider().padding()
-            HStack() {
+            HStack {
                 Button(action: {
                     os_log("Shutter On", type: .info)
+                    camera?.requestUsbCommand(command: .shutterOn) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                    }
                 }, label: {
                     VStack {
                         Image(systemName: "video")
@@ -107,6 +113,13 @@ struct CameraView: View {
                 .padding()
                 Button(action: {
                     os_log("Shutter Off", type: .info)
+                    camera?.requestUsbCommand(command: .shutterOff) {error in
+                        if error != nil {
+                            os_log("Error: %@", type: .error, error! as CVarArg)
+                            return
+                        }
+                        // refresh media list
+                    }
                 }, label: {
                     VStack {
                         Image(systemName: "stop")
@@ -127,7 +140,7 @@ struct CameraView: View {
                 .padding()
                 Button(action: {
                     os_log("Get Media All", type: .info)
-                    for mediaUrl in mediaUrlList ?? [] {
+                    for mediaUrl in mediaEndPointList ?? [] {
                         self.camera?.requestUsbMediaDownload(mediaEndPoint: mediaUrl) { progress, error in
                             if error != nil {
                                 os_log("Error: %@", type: .error, error! as CVarArg)
@@ -155,6 +168,15 @@ struct CameraView: View {
                 .padding()
                 Button(action: {
                     os_log("Remove Media All", type: .info)
+                    for mediaUrl in mediaEndPointList ?? [] {
+                        self.camera?.requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                            // refresh media list
+                        }
+                    }
                 }, label: {
                     VStack {
                         Image(systemName: "trash")
@@ -177,10 +199,10 @@ struct CameraView: View {
             Divider().padding()
             Text("Media List").padding()
             List {
-                ForEach(mediaUrlList ?? [], id: \.self) { mediaUrl in
+                ForEach(mediaEndPointList ?? [], id: \.self) { mediaEndPoint in
                     Button(action: {
-                        os_log("Download Media: %@", type: .info, mediaUrl)
-                        self.camera?.requestUsbMediaDownload(mediaEndPoint: mediaUrl) { progress, error in
+                        os_log("Download Media: %@", type: .info, mediaEndPoint)
+                        self.camera?.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
                             if error != nil {
                                 os_log("Error: %@", type: .error, error! as CVarArg)
                                 return
@@ -191,18 +213,19 @@ struct CameraView: View {
                             Spacer()
                             Image(systemName: "photo")
                                 .foregroundColor(.teal)
-                            Text(mediaUrl)
+                            Text(mediaEndPoint)
                                 .foregroundColor(.teal)
                             Spacer()
                         }
                     })
                 }
-                .onDelete(perform: deleteItem)
+                .onDelete(perform: deleteMediaItem)
                 .listRowSeparator(.hidden)
             }
         })
-        .onAppear() {
+        .onAppear {
             self.camera = GoPro(serialNumber: cameraSerialNumber)
+
             os_log("Get camera info: GoPro %@", type: .info, cameraSerialNumber)
             self.camera?.requestUsbCameraInfo { cameraInfo, error in
                 if error != nil {
@@ -211,26 +234,40 @@ struct CameraView: View {
                 }
                 self.cameraInfo = cameraInfo
             }
-            os_log("Get media list: GoPro %@", type: .info, cameraSerialNumber)
-            self.camera?.requestUsbMediaList { mediaUrlList, error in
+
+            os_log("Enable Wired USB Control: GoPro %@", type: .info, cameraSerialNumber)
+            self.camera?.requestUsbCommand(command: .enableWiredUsbControl) { error in
                 if error != nil {
                     os_log("Error: %@", type: .error, error! as CVarArg)
                     return
                 }
-                self.mediaUrlList = mediaUrlList
             }
+
+            os_log("Get media list: GoPro %@", type: .info, cameraSerialNumber)
+            self.camera?.requestUsbMediaList { mediaEndPointList, error in
+                if error != nil {
+                    os_log("Error: %@", type: .error, error! as CVarArg)
+                    return
+                }
+                self.mediaEndPointList = mediaEndPointList
+            }
+        }
+        .onDisappear {
+            self.camera = nil
+            os_log("Remove camera instance: GoPro %@", type: .info, cameraSerialNumber)
         }
     }
 
-    private func deleteItem(at offsets: IndexSet) {
-//        camera?.requestUsbMediaRemove(mediaEndPoint: mediaUrlList?.get(at: offsets)) { progress, error in
-//            if error != nil {
-//                os_log("Error: %@", type: .error, error! as CVarArg)
-//                return
-//            }
-//            self.mediaUrlList?.remove(atOffsets: offsets)
-//        }
-        self.mediaUrlList?.remove(atOffsets: offsets)
+    private func deleteMediaItem(at offsets: IndexSet) {
+        let cameraMediaEndPoint = mediaEndPointList?[offsets.first!]
+        camera?.requestUsbMediaRemove(mediaEndPoint: cameraMediaEndPoint ?? "") { error in
+            if error != nil {
+                os_log("Error: %@", type: .error, error! as CVarArg)
+                return
+            }
+            self.mediaEndPointList?.remove(atOffsets: offsets)
+        }
+        self.mediaEndPointList?.remove(atOffsets: offsets)
     }
 }
 
