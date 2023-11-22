@@ -15,6 +15,17 @@ struct SettingsView: View {
             Divider().padding()
             Button(action: {
                 os_log("4K@120FPS, 16:9, Linear, 60Hz, Off, High, 10bit, Never, Pro", type: .info)
+                for cameraSerialNumber in cameraSerialNumberList {
+                    for presetSetting in goProUsbPreset.mounted_4k_120fps.settings {
+                        let caemra = GoPro(serialNumber: cameraSerialNumber)
+                        caemra.requestUsbSetting(setting: presetSetting) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }
+                }
             }, label: {
                 VStack {
                     Image(systemName: "1.square")
@@ -37,7 +48,16 @@ struct SettingsView: View {
             Divider().padding()
             List {
                 Button(action: {
-                    os_log("Video Resolution: 4K", type: .info)
+                    os_log("Video Resolution: 4K, 16:9", type: .info)
+                    for cameraSerialNumber in cameraSerialNumberList {
+                        let caemra = GoPro(serialNumber: cameraSerialNumber)
+                        caemra.requestUsbSetting(setting: .videoResolution_4k_16_9) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }
                 }, label: {
                     HStack {
                         Spacer()
@@ -51,6 +71,15 @@ struct SettingsView: View {
                 .listRowSeparator(.hidden)
                 Button(action: {
                     os_log("Video FPS: 120Hz", type: .info)
+                    for cameraSerialNumber in cameraSerialNumberList {
+                        let caemra = GoPro(serialNumber: cameraSerialNumber)
+                        caemra.requestUsbSetting(setting: .fps_120) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }
                 }, label: {
                     HStack {
                         Spacer()
@@ -63,20 +92,16 @@ struct SettingsView: View {
                 })
                 .listRowSeparator(.hidden)
                 Button(action: {
-                    os_log("Video Aspect: 16:9", type: .info)
-                }, label: {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "aspectratio")
-                            .foregroundColor(.red)
-                        Text("Video Aspect: 16:9")
-                            .foregroundColor(.red)
-                        Spacer()
-                    }
-                })
-                .listRowSeparator(.hidden)
-                Button(action: {
                     os_log("Video Digital Lens: Linear", type: .info)
+                    for cameraSerialNumber in cameraSerialNumberList {
+                        let caemra = GoPro(serialNumber: cameraSerialNumber)
+                        caemra.requestUsbSetting(setting: .videoDigitalLenses_linear) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }
                 }, label: {
                     HStack {
                         Spacer()
@@ -90,19 +115,37 @@ struct SettingsView: View {
                 .listRowSeparator(.hidden)
                 Button(action: {
                     os_log("Anti Flicker: 60Hz", type: .info)
+                    for cameraSerialNumber in cameraSerialNumberList {
+                        let caemra = GoPro(serialNumber: cameraSerialNumber)
+                        caemra.requestUsbSetting(setting: .antiFlicker_60) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }
                 }, label: {
                     HStack {
                         Spacer()
                         Image(systemName: "warninglight")
-                            .foregroundColor(.orange)
+                            .foregroundColor(.red)
                         Text("Anti Flicker: 60Hz")
-                            .foregroundColor(.orange)
+                            .foregroundColor(.red)
                         Spacer()
                     }
                 })
                 .listRowSeparator(.hidden)
                 Button(action: {
                     os_log("Hypersmooth: Off", type: .info)
+                    for cameraSerialNumber in cameraSerialNumberList {
+                        let caemra = GoPro(serialNumber: cameraSerialNumber)
+                        caemra.requestUsbSetting(setting: .hypersmooth_off) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }
                 }, label: {
                     HStack {
                         Spacer()
@@ -115,7 +158,38 @@ struct SettingsView: View {
                 })
                 .listRowSeparator(.hidden)
                 Button(action: {
+                    os_log("Hindsight: Off", type: .info)
+                    for cameraSerialNumber in cameraSerialNumberList {
+                        let caemra = GoPro(serialNumber: cameraSerialNumber)
+                        caemra.requestUsbSetting(setting: .hindsight_off) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }
+                }, label: {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "aspectratio")
+                            .foregroundColor(.orange)
+                        Text("Hindsight: Off")
+                            .foregroundColor(.orange)
+                        Spacer()
+                    }
+                })
+                .listRowSeparator(.hidden)
+                Button(action: {
                     os_log("System Video Bit Rate: High", type: .info)
+                    for cameraSerialNumber in cameraSerialNumberList {
+                        let caemra = GoPro(serialNumber: cameraSerialNumber)
+                        caemra.requestUsbSetting(setting: .systemVideoBitRate_high) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }
                 }, label: {
                     HStack {
                         Spacer()
@@ -129,6 +203,15 @@ struct SettingsView: View {
                 .listRowSeparator(.hidden)
                 Button(action: {
                     os_log("System Video Bit Depth: 10bit", type: .info)
+                    for cameraSerialNumber in cameraSerialNumberList {
+                        let caemra = GoPro(serialNumber: cameraSerialNumber)
+                        caemra.requestUsbSetting(setting: .systemVideoBitDepth_10bit) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }
                 }, label: {
                     HStack {
                         Spacer()
@@ -142,6 +225,15 @@ struct SettingsView: View {
                 .listRowSeparator(.hidden)
                 Button(action: {
                     os_log("Auto Power Down: Never", type: .info)
+                    for cameraSerialNumber in cameraSerialNumberList {
+                        let caemra = GoPro(serialNumber: cameraSerialNumber)
+                        caemra.requestUsbSetting(setting: .autoPowerDown_never) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }
                 }, label: {
                     HStack {
                         Spacer()
@@ -155,6 +247,15 @@ struct SettingsView: View {
                 .listRowSeparator(.hidden)
                 Button(action: {
                     os_log("Controls Mode: Pro", type: .info)
+                    for cameraSerialNumber in cameraSerialNumberList {
+                        let caemra = GoPro(serialNumber: cameraSerialNumber)
+                        caemra.requestUsbSetting(setting: .controls_pro) {error in
+                            if error != nil {
+                                os_log("Error: %@", type: .error, error! as CVarArg)
+                                return
+                            }
+                        }
+                    }
                 }, label: {
                     HStack {
                         Spacer()
