@@ -6,10 +6,22 @@
 //
 
 import SwiftUI
+import AlertToast
 import os.log
 
 struct SettingsView: View {
     var cameraConnectionInfoList: [CameraConnectionInfo]
+    @State private var showPreset1Toast = false
+    @State private var showVideoResolutionToast = false
+    @State private var showVideoFpsToast = false
+    @State private var showVideoDigitalLensToast = false
+    @State private var showAntiFlickerToast = false
+    @State private var showHypersmoothToast = false
+    @State private var showHindsightToast = false
+    @State private var showSystemVideoBitRateToast = false
+    @State private var showSystemVideoBitDepthToast = false
+    @State private var showAutoPowerDownToast = false
+    @State private var showControlsModeToast = false
     var body: some View {
         VStack {
             Divider().padding()
@@ -25,6 +37,7 @@ struct SettingsView: View {
                         }
                     }
                 }
+                showPreset1Toast.toggle()
             }, label: {
                 VStack {
                     Image(systemName: "1.square")
@@ -56,6 +69,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    showVideoResolutionToast.toggle()
                 }, label: {
                     HStack {
                         Spacer()
@@ -77,6 +91,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    showVideoFpsToast.toggle()
                 }, label: {
                     HStack {
                         Spacer()
@@ -98,6 +113,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    showVideoDigitalLensToast.toggle()
                 }, label: {
                     HStack {
                         Spacer()
@@ -119,6 +135,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    showAntiFlickerToast.toggle()
                 }, label: {
                     HStack {
                         Spacer()
@@ -140,6 +157,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    showHypersmoothToast.toggle()
                 }, label: {
                     HStack {
                         Spacer()
@@ -161,10 +179,11 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    showHindsightToast.toggle()
                 }, label: {
                     HStack {
                         Spacer()
-                        Image(systemName: "aspectratio")
+                        Image(systemName: "arrowshape.turn.up.backward.badge.clock")
                             .foregroundColor(.orange)
                         Text("Hindsight: Off")
                             .foregroundColor(.orange)
@@ -182,6 +201,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    showSystemVideoBitRateToast.toggle()
                 }, label: {
                     HStack {
                         Spacer()
@@ -203,6 +223,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    showSystemVideoBitDepthToast.toggle()
                 }, label: {
                     HStack {
                         Spacer()
@@ -224,6 +245,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    showAutoPowerDownToast.toggle()
                 }, label: {
                     HStack {
                         Spacer()
@@ -245,6 +267,7 @@ struct SettingsView: View {
                             }
                         }
                     }
+                    showControlsModeToast.toggle()
                 }, label: {
                     HStack {
                         Spacer()
@@ -262,6 +285,39 @@ struct SettingsView: View {
             ToolbarItem(placement: .principal) {
                 Text("Settings Control").fontWeight(.bold)
             }
+        }
+        .toast(isPresenting: $showPreset1Toast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("1.square", .pink), title: "Preset 1 :\n\(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .primary))
+        }
+        .toast(isPresenting: $showVideoResolutionToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("camera", .pink), title: "4K :\n\(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .pink))
+        }
+        .toast(isPresenting: $showVideoFpsToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("rectangle.on.rectangle", .pink), title: "120Hz :\n\(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .pink))
+        }
+        .toast(isPresenting: $showVideoDigitalLensToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("field.of.view.wide", .red), title: "Linear :\n\(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .red))
+        }
+        .toast(isPresenting: $showAntiFlickerToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("warninglight", .red), title: "60Hz :\n\(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .red))
+        }
+        .toast(isPresenting: $showHypersmoothToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("circle.and.line.horizontal", .orange), title: "Off :\n\(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .orange))
+        }
+        .toast(isPresenting: $showHindsightToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("arrowshape.turn.up.backward.badge.clock", .orange), title: "Off :\n\(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .orange))
+        }
+        .toast(isPresenting: $showSystemVideoBitRateToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("slider.horizontal.3", .teal), title: "High :\n\(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .teal))
+        }
+        .toast(isPresenting: $showSystemVideoBitDepthToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("slider.vertical.3", .teal), title: "10bit :\n\(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .teal))
+        }
+        .toast(isPresenting: $showAutoPowerDownToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("powersleep", .indigo), title: "Never :\n\(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .indigo))
+        }
+        .toast(isPresenting: $showControlsModeToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("wrench.and.screwdriver", .indigo), title: "Pro :\n\(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .indigo))
         }
     }
 }

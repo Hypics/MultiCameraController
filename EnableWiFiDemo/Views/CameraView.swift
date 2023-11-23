@@ -7,12 +7,20 @@
 //
 
 import SwiftUI
+import AlertToast
 import os.log
 
 struct CameraView: View {
     var camera: GoPro
     @State private var cameraInfo: CameraInfo?
-    @State private var mediaEndPointList: [String]?
+    @State private var mediaEndPointList: [String] = []
+    @State private var downloadMediaUrl: String = ""
+    @State private var downloadProgress: Double = 0.0
+    @State private var showSutterOnToast = false
+    @State private var showSutterOffToast = false
+    @State private var showDownloadMediaToast = false
+    @State private var showRemoveMediaToast = false
+    @State private var showRefreshMediaListToast = false
     var body: some View {
         VStack(content: {
             Divider().padding()
@@ -92,14 +100,15 @@ struct CameraView: View {
                                 return
                             }
                     }
+                    showSutterOnToast.toggle()
                 }, label: {
                     VStack {
                         Image(systemName: "video")
-                            .foregroundColor(.cyan)
+                            .foregroundColor(.teal)
                             .padding([.top, .bottom], 7)
                             .padding([.leading, .trailing], 10)
                         Text("Shutter On")
-                            .foregroundColor(.cyan)
+                            .foregroundColor(.teal)
                             .padding([.top, .bottom], 5)
                             .padding([.leading, .trailing], 10)
                     }
@@ -118,6 +127,7 @@ struct CameraView: View {
                             return
                         }
                     }
+                    showSutterOffToast.toggle()
                 }, label: {
                     VStack {
                         Image(systemName: "stop")
@@ -138,11 +148,19 @@ struct CameraView: View {
                 .padding()
                 Button(action: {
                     os_log("Download Media All", type: .info)
-                    for mediaUrl in mediaEndPointList ?? [] {
-                        self.camera.requestUsbMediaDownload(mediaEndPoint: mediaUrl) { progress, error in
+                    for mediaEndPoint in mediaEndPointList {
+                        showDownloadMediaToast = true
+                        self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
                             if error != nil {
                                 os_log("Error: %@", type: .error, error! as CVarArg)
                                 return
+                            }
+                            if let progress = progress {
+                                if progress > 99.9 {
+                                    showDownloadMediaToast = false
+                                }
+                                self.downloadMediaUrl = mediaEndPoint
+                                self.downloadProgress = progress
                             }
                         }
                     }
@@ -169,7 +187,7 @@ struct CameraView: View {
                 .padding()
                 Button(action: {
                     os_log("Remove Media All", type: .info)
-                    for mediaUrl in mediaEndPointList ?? [] {
+                    for mediaUrl in mediaEndPointList {
                         self.camera.requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
                             if error != nil {
                                 os_log("Error: %@", type: .error, error! as CVarArg)
@@ -177,6 +195,7 @@ struct CameraView: View {
                             }
                         }
                     }
+                    showRemoveMediaToast.toggle()
                 }, label: {
                     VStack {
                         HStack {
@@ -202,13 +221,21 @@ struct CameraView: View {
             Divider().padding()
             Text("Media List").padding()
             List {
-                ForEach(mediaEndPointList ?? [], id: \.self) { mediaEndPoint in
+                ForEach(mediaEndPointList, id: \.self) { mediaEndPoint in
                     Button(action: {
                         os_log("Download Media: %@", type: .info, mediaEndPoint)
+                        showDownloadMediaToast = true
                         self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
                             if error != nil {
                                 os_log("Error: %@", type: .error, error! as CVarArg)
                                 return
+                            }
+                            if let progress = progress {
+                                if progress > 99.9 {
+                                    showDownloadMediaToast = false
+                                }
+                                self.downloadMediaUrl = mediaEndPoint
+                                self.downloadProgress = progress
                             }
                         }
                     }, label: {
@@ -224,10 +251,18 @@ struct CameraView: View {
                     .swipeActions(edge: .leading, allowsFullSwipe: false) {
                         Button(action: {
                             os_log("Download Media: %@", type: .info, mediaEndPoint)
+                            showDownloadMediaToast = true
                             self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
                                 if error != nil {
                                     os_log("Error: %@", type: .error, error! as CVarArg)
                                     return
+                                }
+                                if let progress = progress {
+                                    if progress > 99.9 {
+                                        showDownloadMediaToast = false
+                                    }
+                                    self.downloadMediaUrl = mediaEndPoint
+                                    self.downloadProgress = progress
                                 }
                             }
                         }, label: {
@@ -248,8 +283,9 @@ struct CameraView: View {
                         os_log("Error: %@", type: .error, error! as CVarArg)
                         return
                     }
-                    self.mediaEndPointList = mediaEndPointList
+                    self.mediaEndPointList = mediaEndPointList ?? []
                 }
+                showRefreshMediaListToast.toggle()
             }
         })
         .onAppear {
@@ -268,18 +304,33 @@ struct CameraView: View {
                     os_log("Error: %@", type: .error, error! as CVarArg)
                     return
                 }
-                self.mediaEndPointList = mediaEndPointList
+                self.mediaEndPointList = mediaEndPointList ?? []
             }
+        }
+        .toast(isPresenting: $showSutterOnToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("video", .teal), title: "Shutter On : GoPro \(camera.serialNumber)", style: .style(titleColor: .teal))
+        }
+        .toast(isPresenting: $showSutterOffToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("stop", .pink), title: "Shutter Off : GoPro \(camera.serialNumber)", style: .style(titleColor: .pink))
+        }
+        .toast(isPresenting: $showDownloadMediaToast) {
+            AlertToast(type: .loading, title: self.downloadMediaUrl, subTitle: String(describing: self.downloadProgress) + " %")
+        }
+        .toast(isPresenting: $showRemoveMediaToast, duration: 2, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("trash", .red), title: "GoPro \(camera.serialNumber): \(String(describing: mediaEndPointList.count)) files", style: .style(titleColor: .red))
+        }
+        .toast(isPresenting: $showRefreshMediaListToast, duration: 1, tapToDismiss: true) {
+            AlertToast(displayMode: .alert, type: .systemImage("photo", .teal), title: "GoPro \(camera.serialNumber): \(String(describing: mediaEndPointList.count)) files", style: .style(titleColor: .teal))
         }
     }
 
     private func deleteMediaItem(at offsets: IndexSet) {
-        camera.requestUsbMediaRemove(mediaEndPoint: mediaEndPointList?[offsets.first!] ?? "") { error in
+        camera.requestUsbMediaRemove(mediaEndPoint: mediaEndPointList[offsets.first!]) { error in
             if error != nil {
                 os_log("Error: %@", type: .error, error! as CVarArg)
                 return
             }
-            self.mediaEndPointList?.remove(atOffsets: offsets)
+            self.mediaEndPointList.remove(atOffsets: offsets)
         }
     }
 }

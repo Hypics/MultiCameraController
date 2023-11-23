@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import AlertToast
 import os.log
 
 struct CameraConnectionInfo: Hashable {
@@ -21,6 +22,16 @@ struct MultiCameraView: View {
     @State private var isCameraConnectionInfoListEditable = false
     @State private var targetCameraConnectionInfo: CameraConnectionInfo = CameraConnectionInfo(camera: GoPro(serialNumber: ""))
     @State private var newCameraSerialNumber: String = ""
+    @State private var downloadMediaUrl: String = ""
+    @State private var downloadProgress: Double = 0.0
+    @State private var showCameraToast = false
+    @State private var showSutterOnToast = false
+    @State private var showSutterOffToast = false
+    @State private var showDownloadMediaToast = false
+    @State private var showRemoveMediaToast = false
+    @State private var showRefreshCameraListToast = false
+    @State private var showCameraConnectedToast = false
+    @State private var showCameraEmptyToast = false
     var body: some View {
         NavigationView {
             VStack {
@@ -38,17 +49,18 @@ struct MultiCameraView: View {
                                 }
                             }
                         }
+                        showSutterOnToast.toggle()
                     }, label: {
                         VStack {
                             HStack {
                                 Image(systemName: "video")
                                 Image(systemName: "a.circle")
                             }
-                            .foregroundColor(.cyan)
+                            .foregroundColor(.teal)
                             .padding([.top, .bottom], 7)
                             .padding([.leading, .trailing], 10)
                             Text("Shutter On")
-                                .foregroundColor(.cyan)
+                                .foregroundColor(.teal)
                                 .padding([.top, .bottom], 5)
                                 .padding([.leading, .trailing], 10)
                         }
@@ -69,6 +81,7 @@ struct MultiCameraView: View {
                                 }
                             }
                         }
+                        showSutterOffToast.toggle()
                     }, label: {
                         VStack {
                             HStack {
@@ -100,11 +113,19 @@ struct MultiCameraView: View {
                                     return
                                 }
 
-                                for mediaUrl in mediaEndPointList ?? [] {
-                                    cameraConnectionInfo.camera.requestUsbMediaDownload(mediaEndPoint: mediaUrl) { progress, error in
+                                for mediaEndPoint in mediaEndPointList ?? [] {
+                                    showDownloadMediaToast = true
+                                    cameraConnectionInfo.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
                                         if error != nil {
                                             os_log("Error: %@", type: .error, error! as CVarArg)
                                             return
+                                        }
+                                        if let progress = progress {
+                                            if progress > 99.9 {
+                                                showDownloadMediaToast = false
+                                            }
+                                            self.downloadMediaUrl = mediaEndPoint
+                                            self.downloadProgress = progress 
                                         }
                                     }
                                 }
@@ -152,6 +173,7 @@ struct MultiCameraView: View {
                                 }
                             }
                         }
+                        showRemoveMediaToast.toggle()
                     }, label: {
                         VStack {
                             HStack {
@@ -210,19 +232,27 @@ struct MultiCameraView: View {
                         )
                         .padding()
                     Button(action: {
-                        if newCameraSerialNumber.count == 3 && newCameraSerialNumber.isInt() && cameraConnectionInfoList.filter({ $0.camera.serialNumber != newCameraSerialNumber }).count == 0 {
+                        if newCameraSerialNumber.count == 3 && newCameraSerialNumber.isInt() && cameraConnectionInfoList.filter({ $0.camera.serialNumber == newCameraSerialNumber }).count == 0 {
                             os_log("Add GoPro %@", type: .info, newCameraSerialNumber)
                             cameraConnectionInfoList.append(CameraConnectionInfo(camera: GoPro(serialNumber: newCameraSerialNumber)))
 
-                            os_log("Enable Wired USB Control: GoPro %@", type: .info, cameraConnectionInfoList[-1].camera.serialNumber)
-                            cameraConnectionInfoList[-1].camera.requestUsbCameraInfo { cameraInfo, error in
+                            let index = cameraConnectionInfoList.count - 1
+                            os_log("Enable Wired USB Control: GoPro %@", type: .info, cameraConnectionInfoList[index].camera.serialNumber)
+                            cameraConnectionInfoList[index].camera.requestUsbCameraInfo { cameraInfo, error in
                                 if error != nil {
                                     os_log("Error: %@", type: .error, error! as CVarArg)
-                                    cameraConnectionInfoList[-1].isConnected = false
+                                    if index >= cameraConnectionInfoList.count {
+                                        return
+                                    }
+                                    cameraConnectionInfoList[index].isConnected = false
                                     return
                                 }
-                                cameraConnectionInfoList[-1].isConnected = true
-                                cameraConnectionInfoList[-1].camera.requestUsbCommand(command: .enableWiredUsbControl) { error in
+
+                                if index >= cameraConnectionInfoList.count {
+                                    return
+                                }
+                                cameraConnectionInfoList[index].isConnected = true
+                                cameraConnectionInfoList[index].camera.requestUsbCommand(command: .enableWiredUsbControl) { error in
                                     if error != nil {
                                         os_log("Error: %@", type: .error, error! as CVarArg)
                                         return
@@ -261,6 +291,7 @@ struct MultiCameraView: View {
                                 showCameraView = true
                             } else {
                                 os_log("CameraView is not connected: GoPro %@", type: .error, cameraConnectionInfo.camera.serialNumber)
+                                showCameraEmptyToast.toggle()
                             }
                         }, label: {
                             HStack() {
@@ -288,9 +319,9 @@ struct MultiCameraView: View {
                         })
                         .swipeActions(edge: .leading) {
                             Button(action: {
-                                os_log("Reconnect: GoPro %@", type: .info, cameraConnectionInfo.camera.serialNumber)
+                                os_log("Connect: GoPro %@", type: .info, cameraConnectionInfo.camera.serialNumber)
                                 if let index = cameraConnectionInfoList.firstIndex(of: cameraConnectionInfo) {
-                                    connectCameraItem(index: index)
+                                    connectCameraItem(index: index, showToast: true)
                                 }
                             }, label: {
                                 Text("Connect")
@@ -314,18 +345,44 @@ struct MultiCameraView: View {
                     for idx in 0 ..< cameraConnectionInfoList.count {
                         connectCameraItem(index: idx)
                     }
+                    showRefreshCameraListToast.toggle()
                 }
             }
             .onAppear {
                 for idx in 0 ..< cameraConnectionInfoList.count {
                     connectCameraItem(index: idx)
                 }
+                showCameraToast.toggle()
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Multi Camera Control").fontWeight(.bold)
                 }
+            }
+            .toast(isPresenting: $showCameraToast, duration: 3, tapToDismiss: true) {
+                AlertToast(displayMode: .alert, type: .systemImage("camera", .primary), title: "Connected : \(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .primary))
+            }
+            .toast(isPresenting: $showSutterOnToast, duration: 1, tapToDismiss: true) {
+                AlertToast(displayMode: .alert, type: .systemImage("video", .teal), title: "Shutter On All : \(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .teal))
+            }
+            .toast(isPresenting: $showSutterOffToast, duration: 1, tapToDismiss: true) {
+                AlertToast(displayMode: .alert, type: .systemImage("stop", .pink), title: "Shutter Off All : \(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .pink))
+            }
+            .toast(isPresenting: $showDownloadMediaToast) {
+                AlertToast(type: .loading, title: self.downloadMediaUrl, subTitle: String(describing: self.downloadProgress) + " %")
+            }
+            .toast(isPresenting: $showRemoveMediaToast, duration: 2, tapToDismiss: true) {
+                AlertToast(displayMode: .alert, type: .systemImage("trash", .red), title: "Remove Media All : \(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .red))
+            }
+            .toast(isPresenting: $showRefreshCameraListToast, duration: 1, tapToDismiss: true) {
+                AlertToast(displayMode: .alert, type: .systemImage("camera", .teal), title: "Refresh Camera List : \(cameraConnectionInfoList.filter({ $0.isConnected == true }).count) cams", style: .style(titleColor: .teal))
+            }
+            .toast(isPresenting: $showCameraConnectedToast, duration: 1, tapToDismiss: true) {
+                AlertToast(displayMode: .alert, type: .systemImage("camera", .teal), title: "Success : Camera is connected", style: .style(titleColor: .teal))
+            }
+            .toast(isPresenting: $showCameraEmptyToast, duration: 1, tapToDismiss: true) {
+                AlertToast(displayMode: .alert, type: .systemImage("camera", .pink), title: "Fail : Camera is not connected", style: .style(titleColor: .pink))
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
@@ -344,15 +401,21 @@ struct MultiCameraView: View {
         }
     }
 
-    private func connectCameraItem(index: Int) {
+    private func connectCameraItem(index: Int, showToast: Bool = false) {
         os_log("Connect GoPro %@", type: .info, cameraConnectionInfoList[index].camera.serialNumber)
         cameraConnectionInfoList[index].camera.requestUsbCameraInfo { cameraInfo, error in
             if error != nil {
                 os_log("Error: %@", type: .error, error! as CVarArg)
                 cameraConnectionInfoList[index].isConnected = false
+                if showToast {
+                    showCameraEmptyToast.toggle()
+                }
                 return
             }
             cameraConnectionInfoList[index].isConnected = true
+            if showToast {
+                showCameraConnectedToast.toggle()
+            }
 
             os_log("Enable Wired USB Control: GoPro %@", type: .info, cameraConnectionInfoList[index].camera.serialNumber)
             cameraConnectionInfoList[index].camera.requestUsbCommand(command: .enableWiredUsbControl) { error in

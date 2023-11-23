@@ -7,5 +7,6 @@ target 'EnableWiFiDemo' do
 
   # Pods for EnableWiFiDemo
   pod 'Alamofire', '~> 5.8.1'
+  pod 'AlertToast'
 
 end

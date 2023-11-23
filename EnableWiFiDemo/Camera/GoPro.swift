@@ -205,6 +205,7 @@ struct FileInfo: Codable {
 final class GoPro: NSObject {
     let serialNumber: String
     let url: String
+    let timeoutInterval: Double = 3.0
 
     init(serialNumber: String) {
         self.serialNumber = serialNumber
@@ -224,9 +225,11 @@ final class GoPro: NSObject {
                    method: .get,
                    parameters: nil,
                    encoding: URLEncoding.default,
-                   headers: ["Content-Type":"application/json", "Accept":"application/json"])
-            .validate(statusCode: 200 ..< 300)
-            .responseJSON { response in
+                   headers: ["Content-Type":"application/json", "Accept":"application/json"]) {
+            $0.timeoutInterval = self.timeoutInterval
+        }
+        .validate(statusCode: 200 ..< 300)
+        .responseJSON { response in
             switch response.result{
             case .success:
                 os_log("success url: %@", type: .debug, commandUrl)
@@ -244,9 +247,11 @@ final class GoPro: NSObject {
                    method: .get,
                    parameters: nil,
                    encoding: URLEncoding.default,
-                   headers: ["Content-Type":"application/json", "Accept":"application/json"])
-            .validate(statusCode: 200 ..< 300)
-            .responseJSON { response in
+                   headers: ["Content-Type":"application/json", "Accept":"application/json"]) {
+            $0.timeoutInterval = self.timeoutInterval
+        }
+        .validate(statusCode: 200 ..< 300)
+        .responseJSON { response in
             switch response.result{
             case .success:
                 os_log("success url: %@", type: .debug, settingUrl)
@@ -266,9 +271,11 @@ final class GoPro: NSObject {
                    method: .get,
                    parameters: nil,
                    encoding: URLEncoding.default,
-                   headers: ["Content-Type":"application/json", "Accept":"application/json"])
-            .validate(statusCode: 200 ..< 300)
-            .responseJSON { response in
+                   headers: ["Content-Type":"application/json", "Accept":"application/json"]) {
+            $0.timeoutInterval = self.timeoutInterval
+        }
+        .validate(statusCode: 200 ..< 300)
+        .responseJSON { response in
             switch response.result{
             case .success (let obj):
                 do {
@@ -295,9 +302,11 @@ final class GoPro: NSObject {
                    method: .get,
                    parameters: nil,
                    encoding: URLEncoding.default,
-                   headers: ["Content-Type":"application/json", "Accept":"application/json"])
-            .validate(statusCode: 200 ..< 300)
-            .responseJSON { response in
+                   headers: ["Content-Type":"application/json", "Accept":"application/json"]) {
+            $0.timeoutInterval = self.timeoutInterval
+        }
+        .validate(statusCode: 200 ..< 300)
+        .responseJSON { response in
             switch response.result{
             case .success (let obj):
                 var mediaEndPointList: [String] = []
@@ -333,9 +342,11 @@ final class GoPro: NSObject {
         }
 
         let mediaUrl = self.url + mediaEndPoint
-        AF.download(mediaUrl, method: .get, parameters: nil, encoding: JSONEncoding.default, to: destination).downloadProgress { (progress) in
+        AF.download(mediaUrl, method: .get, parameters: nil, encoding: JSONEncoding.default, to: destination)
+        .downloadProgress { (progress) in
             completion?(Double(progress.fractionCompleted * 100), nil)
-        }.response{ response in
+        }
+        .response{ response in
                 if response.error != nil {
                     os_log("Download failed: %@", type: .error, response.error?.errorDescription ?? "")
                     completion?(nil, nil)
@@ -351,9 +362,11 @@ final class GoPro: NSObject {
                    method: .delete,
                    parameters: nil,
                    encoding: URLEncoding.default,
-                   headers: ["Content-Type":"application/json", "Accept":"application/json"])
-            .validate(statusCode: 200 ..< 300)
-            .responseJSON { response in
+                   headers: ["Content-Type":"application/json", "Accept":"application/json"]) {
+            $0.timeoutInterval = self.timeoutInterval
+        }
+        .validate(statusCode: 200 ..< 300)
+        .responseJSON { response in
             if response.error != nil {
                 os_log("Remove failed: %@", type: .error, response.error?.errorDescription ?? "")
                 completion?(nil)
