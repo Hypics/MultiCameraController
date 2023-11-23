@@ -29,7 +29,7 @@ struct SettingsView: View {
             Button(action: {
                 os_log("4K@120FPS, 16:9, Linear, 60Hz, Off, High, 10bit, Never, Pro", type: .info)
                 for cameraConnectionInfo in cameraConnectionInfoList {
-                    for presetSetting in goProUsbPreset.mounted_4k_120fps.settings {
+                    for presetSetting in goProUsbSettingPreset.mounted_4k_120fps.settings {
                         cameraConnectionInfo.camera.requestUsbSetting(setting: presetSetting) {error in
                             if error != nil {
                                 os_log("Error: %@", type: .error, error! as CVarArg)

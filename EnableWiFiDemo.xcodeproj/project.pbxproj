@@ -10,26 +10,29 @@
 		0BBEE24B3959FD9D3E81F4B4 /* Pods_EnableWiFiDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB77D273124D29CA2CA9C621 /* Pods_EnableWiFiDemo.framework */; };
 		4E17698B2B0C4B23004992DA /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E17698A2B0C4B23004992DA /* ColorExtensions.swift */; };
 		4E17698D2B0CF89D004992DA /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E17698C2B0CF89D004992DA /* StringExtensions.swift */; };
-		4E856A922B0CFADF000C8751 /* Peripheral+WiFi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E856A912B0CFADF000C8751 /* Peripheral+WiFi.swift */; };
+		4ED12E8F2B0F634800AAED35 /* GoProUsbCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED12E8E2B0F634800AAED35 /* GoProUsbCommand.swift */; };
+		4ED12E912B0F636800AAED35 /* GoProUsbSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED12E902B0F636800AAED35 /* GoProUsbSetting.swift */; };
+		4ED12E932B0F641900AAED35 /* GoProMediaInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED12E922B0F641900AAED35 /* GoProMediaInfo.swift */; };
+		4ED12E952B0F642D00AAED35 /* GoProCameraInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED12E942B0F642D00AAED35 /* GoProCameraInfo.swift */; };
 		4ED618C32B0BA5B600464B73 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ED618C22B0BA5B600464B73 /* SettingsView.swift */; };
 		4EF229F92B07BA9B0007CD4B /* GoPro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EF229F82B07BA9B0007CD4B /* GoPro.swift */; };
 		C9401CD62631EF9B00E5208E /* EnableWiFiDemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CD52631EF9B00E5208E /* EnableWiFiDemoApp.swift */; };
 		C9401CD82631EF9B00E5208E /* MultiCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CD72631EF9B00E5208E /* MultiCameraView.swift */; };
 		C9401CDA2631EF9F00E5208E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9401CD92631EF9F00E5208E /* Assets.xcassets */; };
 		C9401CDD2631EF9F00E5208E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9401CDC2631EF9F00E5208E /* Preview Assets.xcassets */; };
-		C9401CE62631EFC300E5208E /* CentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CE52631EFC300E5208E /* CentralManager.swift */; };
-		C9401CE92631EFE200E5208E /* Peripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CE82631EFE200E5208E /* Peripheral.swift */; };
 		C9401CEC2631EFF900E5208E /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CEB2631EFF900E5208E /* Atomic.swift */; };
 		C9401CF22631FBFD00E5208E /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CF12631FBFD00E5208E /* CameraView.swift */; };
-		C9401D04263200C400E5208E /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401D03263200C400E5208E /* CameraError.swift */; };
-		C9401D0B2632015600E5208E /* Peripheral+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401D0A2632015600E5208E /* Peripheral+Camera.swift */; };
+		C9401D04263200C400E5208E /* GoProCameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401D03263200C400E5208E /* GoProCameraError.swift */; };
 		C9628A812636FEEB009101EC /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9628A802636FEEB009101EC /* NetworkExtension.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4E17698A2B0C4B23004992DA /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		4E17698C2B0CF89D004992DA /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
-		4E856A912B0CFADF000C8751 /* Peripheral+WiFi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Peripheral+WiFi.swift"; sourceTree = "<group>"; };
+		4ED12E8E2B0F634800AAED35 /* GoProUsbCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProUsbCommand.swift; sourceTree = "<group>"; };
+		4ED12E902B0F636800AAED35 /* GoProUsbSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProUsbSetting.swift; sourceTree = "<group>"; };
+		4ED12E922B0F641900AAED35 /* GoProMediaInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProMediaInfo.swift; sourceTree = "<group>"; };
+		4ED12E942B0F642D00AAED35 /* GoProCameraInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProCameraInfo.swift; sourceTree = "<group>"; };
 		4ED618C22B0BA5B600464B73 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		4EF229F82B07BA9B0007CD4B /* GoPro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoPro.swift; sourceTree = "<group>"; };
 		866749188365C4BC1A390FC0 /* Pods-EnableWiFiDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EnableWiFiDemo.debug.xcconfig"; path = "Target Support Files/Pods-EnableWiFiDemo/Pods-EnableWiFiDemo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -40,12 +43,9 @@
 		C9401CD92631EF9F00E5208E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C9401CDC2631EF9F00E5208E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C9401CDE2631EF9F00E5208E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C9401CE52631EFC300E5208E /* CentralManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CentralManager.swift; sourceTree = "<group>"; };
-		C9401CE82631EFE200E5208E /* Peripheral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Peripheral.swift; sourceTree = "<group>"; };
 		C9401CEB2631EFF900E5208E /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
 		C9401CF12631FBFD00E5208E /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
-		C9401D03263200C400E5208E /* CameraError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraError.swift; sourceTree = "<group>"; };
-		C9401D0A2632015600E5208E /* Peripheral+Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Peripheral+Camera.swift"; sourceTree = "<group>"; };
+		C9401D03263200C400E5208E /* GoProCameraError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProCameraError.swift; sourceTree = "<group>"; };
 		C9628A7E2636FEEB009101EC /* EnableWiFiDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EnableWiFiDemo.entitlements; sourceTree = "<group>"; };
 		C9628A802636FEEB009101EC /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		F8DF29FE5F57C60408FFAA38 /* Pods-EnableWiFiDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EnableWiFiDemo.release.xcconfig"; path = "Target Support Files/Pods-EnableWiFiDemo/Pods-EnableWiFiDemo.release.xcconfig"; sourceTree = "<group>"; };
@@ -68,6 +68,11 @@
 			isa = PBXGroup;
 			children = (
 				4EF229F82B07BA9B0007CD4B /* GoPro.swift */,
+				4ED12E8E2B0F634800AAED35 /* GoProUsbCommand.swift */,
+				4ED12E902B0F636800AAED35 /* GoProUsbSetting.swift */,
+				4ED12E922B0F641900AAED35 /* GoProMediaInfo.swift */,
+				4ED12E942B0F642D00AAED35 /* GoProCameraInfo.swift */,
+				C9401D03263200C400E5208E /* GoProCameraError.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -79,14 +84,6 @@
 				4E17698C2B0CF89D004992DA /* StringExtensions.swift */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		4E856A902B0CFAC6000C8751 /* WiFi */ = {
-			isa = PBXGroup;
-			children = (
-				4E856A912B0CFADF000C8751 /* Peripheral+WiFi.swift */,
-			);
-			path = WiFi;
 			sourceTree = "<group>";
 		};
 		7F82A9C280955B062DD7C5E2 /* Pods */ = {
@@ -119,14 +116,11 @@
 		C9401CD42631EF9B00E5208E /* EnableWiFiDemo */ = {
 			isa = PBXGroup;
 			children = (
-				4E856A902B0CFAC6000C8751 /* WiFi */,
 				4E1769892B0C4B12004992DA /* Extensions */,
 				4E0C1B8E2B09150B00CEFA24 /* Camera */,
 				C9628A7E2636FEEB009101EC /* EnableWiFiDemo.entitlements */,
-				C9401D07263200F400E5208E /* BLE */,
 				C9401D092632012300E5208E /* Helpers */,
 				C9401D06263200E800E5208E /* Views */,
-				C9401D03263200C400E5208E /* CameraError.swift */,
 				C9401CD52631EF9B00E5208E /* EnableWiFiDemoApp.swift */,
 				C9401CD92631EF9F00E5208E /* Assets.xcassets */,
 				C9401CDE2631EF9F00E5208E /* Info.plist */,
@@ -151,16 +145,6 @@
 				4ED618C22B0BA5B600464B73 /* SettingsView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		C9401D07263200F400E5208E /* BLE */ = {
-			isa = PBXGroup;
-			children = (
-				C9401CE52631EFC300E5208E /* CentralManager.swift */,
-				C9401CE82631EFE200E5208E /* Peripheral.swift */,
-				C9401D0A2632015600E5208E /* Peripheral+Camera.swift */,
-			);
-			path = BLE;
 			sourceTree = "<group>";
 		};
 		C9401D092632012300E5208E /* Helpers */ = {
@@ -294,19 +278,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4ED12E8F2B0F634800AAED35 /* GoProUsbCommand.swift in Sources */,
 				4E17698D2B0CF89D004992DA /* StringExtensions.swift in Sources */,
+				4ED12E952B0F642D00AAED35 /* GoProCameraInfo.swift in Sources */,
+				4ED12E932B0F641900AAED35 /* GoProMediaInfo.swift in Sources */,
 				4E17698B2B0C4B23004992DA /* ColorExtensions.swift in Sources */,
 				C9401CD82631EF9B00E5208E /* MultiCameraView.swift in Sources */,
-				C9401D0B2632015600E5208E /* Peripheral+Camera.swift in Sources */,
 				C9401CF22631FBFD00E5208E /* CameraView.swift in Sources */,
+				4ED12E912B0F636800AAED35 /* GoProUsbSetting.swift in Sources */,
 				C9401CD62631EF9B00E5208E /* EnableWiFiDemoApp.swift in Sources */,
-				C9401CE62631EFC300E5208E /* CentralManager.swift in Sources */,
 				4ED618C32B0BA5B600464B73 /* SettingsView.swift in Sources */,
-				C9401CE92631EFE200E5208E /* Peripheral.swift in Sources */,
 				4EF229F92B07BA9B0007CD4B /* GoPro.swift in Sources */,
-				4E856A922B0CFADF000C8751 /* Peripheral+WiFi.swift in Sources */,
 				C9401CEC2631EFF900E5208E /* Atomic.swift in Sources */,
-				C9401D04263200C400E5208E /* CameraError.swift in Sources */,
+				C9401D04263200C400E5208E /* GoProCameraError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

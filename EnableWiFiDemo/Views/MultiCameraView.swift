@@ -11,11 +11,6 @@ import Foundation
 import AlertToast
 import os.log
 
-struct CameraConnectionInfo: Hashable {
-    var camera: GoPro
-    var isConnected: Bool = false
-}
-
 struct MultiCameraView: View {
     @State private var showSettingsView = false
     @State private var showCameraView = false
