@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Foundation
 import AlertToast
 import os.log
 
@@ -18,12 +19,19 @@ struct CameraConnectionInfo: Hashable {
 struct MultiCameraView: View {
     @State private var showSettingsView = false
     @State private var showCameraView = false
-    @State private var cameraConnectionInfoList: [CameraConnectionInfo] = [CameraConnectionInfo(camera: GoPro(serialNumber: "123")), CameraConnectionInfo(camera: GoPro(serialNumber: "317"))]
+    @State private var goProSerialNumberList: [String] = (UserDefaults.standard.array(forKey: "GoProSerialNumberList") ?? []) as! [String]
+    @State private var cameraConnectionInfoList: [CameraConnectionInfo] = ((UserDefaults.standard.array(forKey: "GoProSerialNumberList") ?? []) as! [String]).reduce([CameraConnectionInfo](), { result, item in
+        var temp = result
+        temp.append(CameraConnectionInfo(camera: GoPro(serialNumber: item)))
+        return temp
+    })
+
     @State private var isCameraConnectionInfoListEditable = false
     @State private var targetCameraConnectionInfo: CameraConnectionInfo = CameraConnectionInfo(camera: GoPro(serialNumber: ""))
     @State private var newCameraSerialNumber: String = ""
     @State private var downloadMediaUrl: String = ""
     @State private var downloadProgress: Double = 0.0
+
     @State private var showCameraToast = false
     @State private var showSutterOnToast = false
     @State private var showSutterOffToast = false
@@ -234,7 +242,9 @@ struct MultiCameraView: View {
                     Button(action: {
                         if newCameraSerialNumber.count == 3 && newCameraSerialNumber.isInt() && cameraConnectionInfoList.filter({ $0.camera.serialNumber == newCameraSerialNumber }).count == 0 {
                             os_log("Add GoPro %@", type: .info, newCameraSerialNumber)
+                            goProSerialNumberList.append(newCameraSerialNumber)
                             cameraConnectionInfoList.append(CameraConnectionInfo(camera: GoPro(serialNumber: newCameraSerialNumber)))
+                            UserDefaults.standard.set(goProSerialNumberList, forKey: "GoProSerialNumberList")
 
                             let index = cameraConnectionInfoList.count - 1
                             os_log("Enable Wired USB Control: GoPro %@", type: .info, cameraConnectionInfoList[index].camera.serialNumber)

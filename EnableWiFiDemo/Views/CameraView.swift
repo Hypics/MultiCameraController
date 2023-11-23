@@ -16,6 +16,7 @@ struct CameraView: View {
     @State private var mediaEndPointList: [String] = []
     @State private var downloadMediaUrl: String = ""
     @State private var downloadProgress: Double = 0.0
+
     @State private var showSutterOnToast = false
     @State private var showSutterOffToast = false
     @State private var showDownloadMediaToast = false

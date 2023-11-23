@@ -11,6 +11,7 @@ import os.log
 
 struct SettingsView: View {
     var cameraConnectionInfoList: [CameraConnectionInfo]
+
     @State private var showPreset1Toast = false
     @State private var showVideoResolutionToast = false
     @State private var showVideoFpsToast = false
