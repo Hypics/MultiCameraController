@@ -1,6 +1,6 @@
 //
 //  SettingsView.swift
-//  EnableWiFiDemo
+//  MultiCameraController
 //
 //  Created by INHWAN WEE on 11/20/23.
 //

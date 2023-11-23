@@ -3,7 +3,7 @@
 
 //
 //  Atomic.swift
-//  EnableWiFiDemo
+//  MultiCameraController
 //
 
 import Foundation

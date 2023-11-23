@@ -3,7 +3,7 @@
 
 //
 //  CameraError.swift
-//  EnableWiFiDemo
+//  MultiCameraController
 //
 
 import Foundation

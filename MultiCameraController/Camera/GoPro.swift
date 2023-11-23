@@ -1,6 +1,6 @@
 //
 //  Peropheral+Media.swift
-//  EnableWiFiDemo
+//  MultiCameraController
 //
 //  Created by INHWAN WEE on 11/18/23.
 //

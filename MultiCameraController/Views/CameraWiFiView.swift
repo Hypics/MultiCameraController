@@ -1,6 +1,6 @@
 //
 //  CameraWiFiView.swift
-//  EnableWiFiDemo
+//  MultiCameraController
 //
 //  Created by INHWAN WEE on 11/18/23.
 //
@@ -44,7 +44,7 @@ struct CameraWiFiView: View {
                 }.padding()
             })
         }
-    
+
 }
 
 struct CameraWiFiView_Previews: PreviewProvider {

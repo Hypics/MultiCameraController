@@ -3,7 +3,7 @@
 
 //
 //  CameraView.swift
-//  EnableWiFiDemo
+//  MultiCameraController
 //
 
 import SwiftUI

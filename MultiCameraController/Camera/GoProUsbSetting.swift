@@ -1,6 +1,6 @@
 //
 //  GoProUsbSetting.swift
-//  EnableWiFiDemo
+//  MultiCameraController
 //
 //  Created by INHWAN WEE on 11/23/23.
 //
