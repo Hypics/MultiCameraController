@@ -6,15 +6,15 @@
 //
 
 struct CameraConnectionInfo: Hashable {
-    var camera: GoPro
-    var isConnected: Bool = false
+  var camera: GoPro
+  var isConnected: Bool = false
 }
 
 struct CameraInfo: Codable {
-    var ap_mac_addr: String
-    var ap_ssid: String
-    var firmware_version: String
-    var model_name: String
-    var model_number: String
-    var serial_number: String
+  var ap_mac_addr: String
+  var ap_ssid: String
+  var firmware_version: String
+  var model_name: String
+  var model_number: String
+  var serial_number: String
 }

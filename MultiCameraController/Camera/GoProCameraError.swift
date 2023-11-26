@@ -10,8 +10,8 @@ import Foundation
 
 /// A simple enum for describing the possible errors that may occur
 enum CameraError: Error {
-    case invalidRequest     // The request sent to the camera is not valid
-    case invalidResponse    // The camera sent an invalid response
-    case networkError       // Network error
-    case responseError      // Response error
+  case invalidRequest // The request sent to the camera is not valid
+  case invalidResponse // The camera sent an invalid response
+  case networkError // Network error
+  case responseError // Response error
 }

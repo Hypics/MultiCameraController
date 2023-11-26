@@ -6,27 +6,27 @@
 //
 
 enum GoProUsbCommand {
-    case getMediaList
-    case getHardwareInfo
-    case shutterOn
-    case shutterOff
-    case disableWiredUsbControl
-    case enableWiredUsbControl
+  case getMediaList
+  case getHardwareInfo
+  case shutterOn
+  case shutterOff
+  case disableWiredUsbControl
+  case enableWiredUsbControl
 
-    var endPoint: String {
-        switch self {
-        case .getMediaList:
-            return "/gopro/media/list"
-        case .getHardwareInfo:
-            return "/gopro/camera/info"
-        case .shutterOn:
-            return "/gopro/camera/shutter/start"
-        case .shutterOff:
-            return "/gopro/camera/shutter/stop"
-        case .disableWiredUsbControl:
-            return "/gopro/camera/control/wired_usb?p=0"
-        case .enableWiredUsbControl:
-            return "/gopro/camera/control/wired_usb?p=1"
-        }
+  var endPoint: String {
+    switch self {
+    case .getMediaList:
+      "/gopro/media/list"
+    case .getHardwareInfo:
+      "/gopro/camera/info"
+    case .shutterOn:
+      "/gopro/camera/shutter/start"
+    case .shutterOff:
+      "/gopro/camera/shutter/stop"
+    case .disableWiredUsbControl:
+      "/gopro/camera/control/wired_usb?p=0"
+    case .enableWiredUsbControl:
+      "/gopro/camera/control/wired_usb?p=1"
     }
+  }
 }

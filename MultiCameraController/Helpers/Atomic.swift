@@ -10,28 +10,27 @@ import Foundation
 
 @propertyWrapper
 struct Atomic<Value> {
+  private var value: Value
+  private let lock = NSLock()
 
-    private var value: Value
-    private let lock = NSLock()
+  init(wrappedValue value: Value) {
+    self.value = value
+  }
 
-    init(wrappedValue value: Value) {
-        self.value = value
-    }
+  var wrappedValue: Value {
+    get { self.load() }
+    set { self.store(newValue: newValue) }
+  }
 
-    var wrappedValue: Value {
-      get { return load() }
-      set { store(newValue: newValue) }
-    }
+  func load() -> Value {
+    self.lock.lock()
+    defer { lock.unlock() }
+    return self.value
+  }
 
-    func load() -> Value {
-        lock.lock()
-        defer { lock.unlock() }
-        return value
-    }
-
-    mutating func store(newValue: Value) {
-        lock.lock()
-        defer { lock.unlock() }
-        value = newValue
-    }
+  mutating func store(newValue: Value) {
+    self.lock.lock()
+    defer { lock.unlock() }
+    self.value = newValue
+  }
 }
