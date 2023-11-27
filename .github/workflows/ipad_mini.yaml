@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Build and Test Multi Camera Controller App
-    runs-on: macos-latest
+    runs-on: macos-13
 
     env:
       XC_VERSION: ${{ '15.0' }}
