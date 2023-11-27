@@ -7,7 +7,7 @@
 
 struct CameraConnectionInfo: Hashable {
   var camera: GoPro
-  var isConnected: Bool = false
+  var isConnected = false
 }
 
 struct CameraInfo: Codable {

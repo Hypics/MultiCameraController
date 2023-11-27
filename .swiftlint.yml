@@ -4,7 +4,6 @@ disabled_rules:
   - notification_center_detachment
 
 opt_in_rules:
-  - anyobject_protocol
   - attributes
   - closure_end_indentation
   - closure_spacing
@@ -19,7 +18,6 @@ opt_in_rules:
   - empty_xctest_method
   - enum_case_associated_values_count
   - explicit_init
-  - explicit_self
   - fallthrough
   - fatal_error_message
   - first_where
@@ -46,10 +44,13 @@ opt_in_rules:
   - toggle_bool
   - untyped_error_in_catch
   - unneeded_parentheses_in_closure_argument
-  - unused_declaration
-  - unused_import
   - vertical_whitespace_between_cases
   - yoda_condition
+
+analyzer_rules:
+  - explicit_self
+  - unused_declaration
+  - unused_import
 
 excluded:
   - Pods
@@ -88,6 +89,12 @@ identifier_name:
     - id
     - x
     - y
+    - to
+    - d
+    - fs
+    - ls
+    - s
+    - n
 
 line_length:
   warning: 120
@@ -106,7 +113,7 @@ function_parameter_count:
 
 type_body_length:
   warning: 300
-  error: 300
+#  error: 300
 
 file_length:
   warning: 1000

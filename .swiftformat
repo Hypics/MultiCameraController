@@ -40,7 +40,7 @@
 --enable redundanttype
 --enable redundantvoidreturntype
 --enable semicolons
---enable sortedimports
+--enable sortImports
 --enable spacearoundbraces
 --enable spacearoundbrackets
 --enable spacearoundcomments

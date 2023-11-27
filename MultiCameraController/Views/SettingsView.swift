@@ -29,10 +29,10 @@ struct SettingsView: View {
       Button(action: {
         os_log("4K@120FPS, 16:9, Linear, 60Hz, Off, High, 10bit, Never, Pro", type: .info)
         for cameraConnectionInfo in self.cameraConnectionInfoList {
-          for presetSetting in goProUsbSettingPreset.mounted_4k_120fps.settings {
+          for presetSetting in GoProUsbSettingPreset.mounted_4k_120fps.settings {
             cameraConnectionInfo.camera.requestUsbSetting(setting: presetSetting) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
+                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
                 return
               }
             }
@@ -65,7 +65,7 @@ struct SettingsView: View {
           for cameraConnectionInfo in self.cameraConnectionInfoList {
             cameraConnectionInfo.camera.requestUsbSetting(setting: .videoResolution_4k_16_9) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
+                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
                 return
               }
             }
@@ -87,7 +87,7 @@ struct SettingsView: View {
           for cameraConnectionInfo in self.cameraConnectionInfoList {
             cameraConnectionInfo.camera.requestUsbSetting(setting: .fps_120) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
+                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
                 return
               }
             }
@@ -109,7 +109,7 @@ struct SettingsView: View {
           for cameraConnectionInfo in self.cameraConnectionInfoList {
             cameraConnectionInfo.camera.requestUsbSetting(setting: .videoDigitalLenses_linear) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
+                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
                 return
               }
             }
@@ -131,7 +131,7 @@ struct SettingsView: View {
           for cameraConnectionInfo in self.cameraConnectionInfoList {
             cameraConnectionInfo.camera.requestUsbSetting(setting: .antiFlicker_60) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
+                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
                 return
               }
             }
@@ -153,7 +153,7 @@ struct SettingsView: View {
           for cameraConnectionInfo in self.cameraConnectionInfoList {
             cameraConnectionInfo.camera.requestUsbSetting(setting: .hypersmooth_off) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
+                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
                 return
               }
             }
@@ -175,7 +175,7 @@ struct SettingsView: View {
           for cameraConnectionInfo in self.cameraConnectionInfoList {
             cameraConnectionInfo.camera.requestUsbSetting(setting: .hindsight_off) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
+                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
                 return
               }
             }
@@ -197,7 +197,7 @@ struct SettingsView: View {
           for cameraConnectionInfo in self.cameraConnectionInfoList {
             cameraConnectionInfo.camera.requestUsbSetting(setting: .systemVideoBitRate_high) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
+                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
                 return
               }
             }
@@ -219,7 +219,7 @@ struct SettingsView: View {
           for cameraConnectionInfo in self.cameraConnectionInfoList {
             cameraConnectionInfo.camera.requestUsbSetting(setting: .systemVideoBitDepth_10bit) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
+                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
                 return
               }
             }
@@ -241,7 +241,7 @@ struct SettingsView: View {
           for cameraConnectionInfo in self.cameraConnectionInfoList {
             cameraConnectionInfo.camera.requestUsbSetting(setting: .autoPowerDown_never) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
+                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
                 return
               }
             }
@@ -263,7 +263,7 @@ struct SettingsView: View {
           for cameraConnectionInfo in self.cameraConnectionInfoList {
             cameraConnectionInfo.camera.requestUsbSetting(setting: .controls_pro) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error! as CVarArg)
+                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
                 return
               }
             }

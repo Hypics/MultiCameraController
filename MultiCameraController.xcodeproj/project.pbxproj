@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0ABC15FE8C8AFA9587A03988 /* Pods_MultiCameraController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70F4DC47CA5EC8C6957452BD /* Pods_MultiCameraController.framework */; };
 		4E931F1E2B0F9E870042B2AA /* MultiCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E931F1C2B0F9E870042B2AA /* MultiCameraView.swift */; };
 		4E931F1F2B0F9E870042B2AA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E931F1D2B0F9E870042B2AA /* SettingsView.swift */; };
 		4EAA6FA02B0F9FFA004DD63E /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6F9E2B0F9FFA004DD63E /* StringExtensions.swift */; };
@@ -18,6 +17,9 @@
 		4EAA6FAB2B0FA002004DD63E /* GoProUsbSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6FA52B0FA002004DD63E /* GoProUsbSetting.swift */; };
 		4EAA6FAC2B0FA002004DD63E /* GoPro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6FA62B0FA002004DD63E /* GoPro.swift */; };
 		4EAA6FAD2B0FA002004DD63E /* GoProCameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6FA72B0FA002004DD63E /* GoProCameraError.swift */; };
+		4EAD950E2B13C5D700D3EC01 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4EAD950C2B13C5D700D3EC01 /* .swiftlint.yml */; };
+		4EAD950F2B13C5D700D3EC01 /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 4EAD950D2B13C5D700D3EC01 /* .swiftformat */; };
+		C2C2CF3B55EB95C17D513E50 /* Pods_MultiCameraController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 573A2C2C7EC36FDE2BA250B0 /* Pods_MultiCameraController.framework */; };
 		C9401CD62631EF9B00E5208E /* MultiCameraControllerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CD52631EF9B00E5208E /* MultiCameraControllerApp.swift */; };
 		C9401CDA2631EF9F00E5208E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9401CD92631EF9F00E5208E /* Assets.xcassets */; };
 		C9401CDD2631EF9F00E5208E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9401CDC2631EF9F00E5208E /* Preview Assets.xcassets */; };
@@ -27,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1D8D0B05B6344CF8490149C1 /* Pods-MultiCameraController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiCameraController.release.xcconfig"; path = "Target Support Files/Pods-MultiCameraController/Pods-MultiCameraController.release.xcconfig"; sourceTree = "<group>"; };
 		4E931F1C2B0F9E870042B2AA /* MultiCameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiCameraView.swift; sourceTree = "<group>"; };
 		4E931F1D2B0F9E870042B2AA /* SettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		4EAA6F9E2B0F9FFA004DD63E /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -37,9 +40,10 @@
 		4EAA6FA52B0FA002004DD63E /* GoProUsbSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoProUsbSetting.swift; sourceTree = "<group>"; };
 		4EAA6FA62B0FA002004DD63E /* GoPro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoPro.swift; sourceTree = "<group>"; };
 		4EAA6FA72B0FA002004DD63E /* GoProCameraError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoProCameraError.swift; sourceTree = "<group>"; };
-		582F072CC64E34BCAC9A8EA8 /* Pods-MultiCameraController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiCameraController.debug.xcconfig"; path = "Target Support Files/Pods-MultiCameraController/Pods-MultiCameraController.debug.xcconfig"; sourceTree = "<group>"; };
-		70F4DC47CA5EC8C6957452BD /* Pods_MultiCameraController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MultiCameraController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		72299DA5899E76851CD900C5 /* Pods-MultiCameraController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiCameraController.release.xcconfig"; path = "Target Support Files/Pods-MultiCameraController/Pods-MultiCameraController.release.xcconfig"; sourceTree = "<group>"; };
+		4EAD950C2B13C5D700D3EC01 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
+		4EAD950D2B13C5D700D3EC01 /* .swiftformat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftformat; sourceTree = SOURCE_ROOT; };
+		573A2C2C7EC36FDE2BA250B0 /* Pods_MultiCameraController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MultiCameraController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		83BFBC48F93051B669907F61 /* Pods-MultiCameraController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultiCameraController.debug.xcconfig"; path = "Target Support Files/Pods-MultiCameraController/Pods-MultiCameraController.debug.xcconfig"; sourceTree = "<group>"; };
 		C9401CD22631EF9B00E5208E /* MultiCameraController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiCameraController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9401CD52631EF9B00E5208E /* MultiCameraControllerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiCameraControllerApp.swift; sourceTree = "<group>"; };
 		C9401CD92631EF9F00E5208E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -57,7 +61,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9628A812636FEEB009101EC /* NetworkExtension.framework in Frameworks */,
-				0ABC15FE8C8AFA9587A03988 /* Pods_MultiCameraController.framework in Frameworks */,
+				C2C2CF3B55EB95C17D513E50 /* Pods_MultiCameraController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,8 +71,8 @@
 		16C702820DC0EC38904DE356 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				582F072CC64E34BCAC9A8EA8 /* Pods-MultiCameraController.debug.xcconfig */,
-				72299DA5899E76851CD900C5 /* Pods-MultiCameraController.release.xcconfig */,
+				83BFBC48F93051B669907F61 /* Pods-MultiCameraController.debug.xcconfig */,
+				1D8D0B05B6344CF8490149C1 /* Pods-MultiCameraController.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -116,6 +120,8 @@
 		C9401CD42631EF9B00E5208E /* MultiCameraController */ = {
 			isa = PBXGroup;
 			children = (
+				4EAD950D2B13C5D700D3EC01 /* .swiftformat */,
+				4EAD950C2B13C5D700D3EC01 /* .swiftlint.yml */,
 				4EAA6F9C2B0F9FD4004DD63E /* Camera */,
 				4EAA6F9D2B0F9FDC004DD63E /* Extensions */,
 				C9401D092632012300E5208E /* Helpers */,
@@ -159,7 +165,7 @@
 			isa = PBXGroup;
 			children = (
 				C9628A802636FEEB009101EC /* NetworkExtension.framework */,
-				70F4DC47CA5EC8C6957452BD /* Pods_MultiCameraController.framework */,
+				573A2C2C7EC36FDE2BA250B0 /* Pods_MultiCameraController.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -171,13 +177,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C9401CE12631EF9F00E5208E /* Build configuration list for PBXNativeTarget "MultiCameraController" */;
 			buildPhases = (
-				3C945E6694AA13AB877AA4D9 /* [CP] Check Pods Manifest.lock */,
+				3C95C4BE832BDFFEBCE2B93F /* [CP] Check Pods Manifest.lock */,
 				C9401CCE2631EF9B00E5208E /* Sources */,
 				C9401CCF2631EF9B00E5208E /* Frameworks */,
 				C9401CD02631EF9B00E5208E /* Resources */,
-				78BF2B7B37494509289624EA /* [CP] Embed Pods Frameworks */,
 				4ED206442B13BAFA00988267 /* SwiftFormat */,
 				4ED206432B13B74800988267 /* SwiftLint */,
+				B0B604A0D99109BAC185FA2E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -194,8 +200,9 @@
 		C9401CCA2631EF9B00E5208E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1240;
-				LastUpgradeCheck = 1240;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					C9401CD12631EF9B00E5208E = {
 						CreatedOnToolsVersion = 12.4;
@@ -225,6 +232,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4EAD950F2B13C5D700D3EC01 /* .swiftformat in Resources */,
+				4EAD950E2B13C5D700D3EC01 /* .swiftlint.yml in Resources */,
 				C9401CDD2631EF9F00E5208E /* Preview Assets.xcassets in Resources */,
 				C9401CDA2631EF9F00E5208E /* Assets.xcassets in Resources */,
 			);
@@ -233,7 +242,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		3C945E6694AA13AB877AA4D9 /* [CP] Check Pods Manifest.lock */ = {
+		3C95C4BE832BDFFEBCE2B93F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -257,6 +266,7 @@
 		};
 		4ED206432B13B74800988267 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -275,6 +285,7 @@
 		};
 		4ED206442B13BAFA00988267 /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -291,7 +302,7 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftformat > /dev/null; then\n  swiftformat .\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
 		};
-		78BF2B7B37494509289624EA /* [CP] Embed Pods Frameworks */ = {
+		B0B604A0D99109BAC185FA2E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -338,6 +349,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -371,6 +383,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -399,6 +412,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -432,6 +446,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -452,7 +467,7 @@
 		};
 		C9401CE22631EF9F00E5208E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 582F072CC64E34BCAC9A8EA8 /* Pods-MultiCameraController.debug.xcconfig */;
+			baseConfigurationReference = 83BFBC48F93051B669907F61 /* Pods-MultiCameraController.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -461,9 +476,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"MultiCameraController/Preview Content\"";
 				DEVELOPMENT_TEAM = 6BMGBDL855;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = MultiCameraController/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -477,7 +493,7 @@
 		};
 		C9401CE32631EF9F00E5208E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72299DA5899E76851CD900C5 /* Pods-MultiCameraController.release.xcconfig */;
+			baseConfigurationReference = 1D8D0B05B6344CF8490149C1 /* Pods-MultiCameraController.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -486,9 +502,10 @@
 				DEVELOPMENT_ASSET_PATHS = "\"MultiCameraController/Preview Content\"";
 				DEVELOPMENT_TEAM = 6BMGBDL855;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = MultiCameraController/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.video";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

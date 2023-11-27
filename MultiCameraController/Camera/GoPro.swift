@@ -42,6 +42,7 @@ final class GoPro: NSObject {
       case .success:
         os_log("success url: %@", type: .debug, commandUrl)
         completion?(nil)
+
       case let .failure(error):
         os_log("error: %@", type: .error, error as CVarArg)
         completion?(error)
@@ -66,6 +67,7 @@ final class GoPro: NSObject {
       case .success:
         os_log("success url: %@", type: .debug, settingUrl)
         completion?(nil)
+
       case let .failure(error):
         os_log("error: %@", type: .error, error as CVarArg)
         completion?(error)
@@ -99,6 +101,7 @@ final class GoPro: NSObject {
           os_log("error: %@", type: .error, error.localizedDescription)
           completion?(nil, error)
         }
+
       case let .failure(error):
         os_log("error: %@", type: .error, error as CVarArg)
         completion?(nil, error)
@@ -139,6 +142,7 @@ final class GoPro: NSObject {
           os_log("error: %@", type: .error, error.localizedDescription)
           completion?(nil, error)
         }
+
       case let .failure(error):
         os_log("error: %@", type: .error, error as CVarArg)
         completion?(nil, error)
@@ -149,7 +153,7 @@ final class GoPro: NSObject {
   func requestUsbMediaDownload(mediaEndPoint: String, _ completion: ((Double?, Error?) -> Void)?) {
     let fileManager = FileManager.default
     let appURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    let fileName: String = URL(string: mediaEndPoint)!.lastPathComponent
+    let fileName: String = URL(string: mediaEndPoint)?.lastPathComponent ?? ""
     let fileURL = appURL.appendingPathComponent(fileName)
     let destination: DownloadRequest.Destination = { _, _ in
       (fileURL, [.removePreviousFile, .createIntermediateDirectories])

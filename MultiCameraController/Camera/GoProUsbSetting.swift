@@ -5,7 +5,7 @@
 //  Created by INHWAN WEE on 11/23/23.
 //
 
-enum goProUsbSettingPreset {
+enum GoProUsbSettingPreset {
   case mounted_4k_120fps
 
   var settings: [GoProUsbSetting] {

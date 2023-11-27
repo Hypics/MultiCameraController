@@ -24,9 +24,9 @@ extension String {
     return String(self[..<toIndex])
   }
 
-  func substring(with r: Range<Int>) -> String {
-    let startIndex = self.index(from: r.lowerBound)
-    let endIndex = self.index(from: r.upperBound)
+  func substring(with range: Range<Int>) -> String {
+    let startIndex = self.index(from: range.lowerBound)
+    let endIndex = self.index(from: range.upperBound)
     return String(self[startIndex ..< endIndex])
   }
 }
