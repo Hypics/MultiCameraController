@@ -16,6 +16,7 @@ jobs:
       XC_WORKSPACE: ${{ 'MultiCameraController.xcworkspace' }}
       XC_PLATFORM: ${{ 'iOS Simulator' }}
       XC_DEVICE: ${{ 'iPad mini (6th generation)' }}
+      XC_OS: ${{ '17.0' }}
 
     steps:
     - uses: actions/checkout@v3
@@ -30,6 +31,6 @@ jobs:
         sudo gem install cocoapods ffi
         pod install
     - name: Build
-      run: xcodebuild build-for-testing -workspace $XC_WORKSPACE -scheme $XC_PROJECT -configuration Release -destination "platform=$XC_PLATFORM,name=$XC_DEVICE"
+      run: xcodebuild build-for-testing -workspace $XC_WORKSPACE -scheme $XC_PROJECT -configuration Release -destination "platform=$XC_PLATFORM,name=$XC_DEVICE,OS=$XC_OS"
     # - name: Test
-    #   run: xcodebuild test-without-building -workspace $XC_WORKSPACE -scheme $XC_PROJECT -destination "platform=$XC_PLATFORM,name=$XC_DEVICE"
+    #   run: xcodebuild test-without-building -workspace $XC_WORKSPACE -scheme $XC_PROJECT -destination "platform=$XC_PLATFORM,name=$XC_DEVICE,OS=$XC_OS"
