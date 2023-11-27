@@ -34,6 +34,6 @@ jobs:
         sudo gem install cocoapods ffi
         pod install
     - name: Build
-      run: xcodebuild build-for-testing -workspace $XC_WORKSPACE -scheme $XC_PROJECT -configuration Release -destination "platform=$XC_PLATFORM,name=$XC_DEVICE,OS=$XC_OS"
+      run: xcodebuild build-for-testing -workspace $XC_WORKSPACE -scheme $XC_PROJECT -configuration Release -destination "platform=$XC_PLATFORM,name=$XC_DEVICE,OS=$XC_OS" -allowProvisioningUpdates -authenticationKeyID ${{ secrets.APPLE_ID_KEY_ID }} # -authenticationKeyIssuerID ${{ secrets.APPLE_ID_ISSUER_ID }}
     # - name: Test
     #   run: xcodebuild test-without-building -workspace $XC_WORKSPACE -scheme $XC_PROJECT -destination "platform=$XC_PLATFORM,name=$XC_DEVICE,OS=$XC_OS"
