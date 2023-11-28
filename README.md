@@ -1,31 +1,5 @@
 # Multi Camera Controller
 
-## Installation
+[![iPad mini 6th gen (iPadOS)](https://github.com/DeepFrost4D/MultiCameraController/actions/workflows/ipad_mini.yaml/badge.svg?branch=main)](https://github.com/DeepFrost4D/MultiCameraController/actions/workflows/ipad_mini.yaml)
 
-### Ruby
-
-```bash
-brew install ruby
-```
-
-```bash
-echo 'if [ -d "/opt/homebrew/opt/ruby/bin" ]; then
-  export PATH=/opt/homebrew/opt/ruby/bin:$PATH
-  export PATH=`gem environment gemdir`/bin:$PATH
-fi' >> ~/.zshrc
-```
-
-### Cocoapods
-
-```bash
-sudo gem pristine ffi --version 1.15.5 \
-  && sudo gem install cocoapods
-```
-
-### Project (Pod)
-
-```bash
-pod install
-```
-
-- Open ***MultiCameraController.xcworkspace***
+- Open ***MultiCameraController.xcodeproj***

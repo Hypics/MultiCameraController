@@ -14,26 +14,16 @@ jobs:
     env:
       XC_VERSION: ${{ '15.0' }}
       XC_PROJECT: ${{ 'MultiCameraController' }}
-      XC_WORKSPACE: ${{ 'MultiCameraController.xcworkspace' }}
+      XC_CODEPROJECT: ${{ 'MultiCameraController.xcodeproj' }}
       XC_PLATFORM: ${{ 'iOS Simulator' }}
       XC_DEVICE: ${{ 'iPad mini (6th generation)' }}
       XC_OS: ${{ '17.0' }}
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/cache@v3
-      with:
-        path: Pods
-        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-pods-
     - name: Select latest Xcode
       run: sudo xcode-select -s /Applications/Xcode_$XC_VERSION.app
-    - name: CocoaPod Install
-      run: |
-        sudo gem install cocoapods ffi
-        pod install
     - name: Build
-      run: xcodebuild build-for-testing -workspace $XC_WORKSPACE -scheme $XC_PROJECT -configuration Release -destination "platform=$XC_PLATFORM,name=$XC_DEVICE,OS=$XC_OS" -allowProvisioningUpdates -authenticationKeyID ${{ secrets.APPLE_ID_KEY_ID }} # -authenticationKeyIssuerID ${{ secrets.APPLE_ID_ISSUER_ID }}
+      run: xcodebuild clean build-for-testing -project $XC_CODEPROJECT -scheme $XC_PROJECT -configuration Release -destination "platform=$XC_PLATFORM,name=$XC_DEVICE,OS=$XC_OS" -allowProvisioningUpdates -authenticationKeyID ${{ secrets.APPLE_ID_KEY_ID }} # -authenticationKeyIssuerID ${{ secrets.APPLE_ID_ISSUER_ID }}
     # - name: Test
-    #   run: xcodebuild test-without-building -workspace $XC_WORKSPACE -scheme $XC_PROJECT -destination "platform=$XC_PLATFORM,name=$XC_DEVICE,OS=$XC_OS"
+    #   run: xcodebuild test-without-building -project $XC_CODEPROJECT -scheme $XC_PROJECT -destination "platform=$XC_PLATFORM,name=$XC_DEVICE,OS=$XC_OS"

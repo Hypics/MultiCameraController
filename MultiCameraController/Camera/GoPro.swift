@@ -6,6 +6,7 @@
 //
 
 import Alamofire
+import Foundation
 import os.log
 
 final class GoPro: NSObject {
