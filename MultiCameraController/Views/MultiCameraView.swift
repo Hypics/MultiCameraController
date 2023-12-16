@@ -10,10 +10,14 @@ import AlertToast
 import Foundation
 import os.log
 import SwiftUI
+import SynologyKit
 
 struct MultiCameraView: View {
+  @State private var showServerView = false
   @State private var showSettingsView = false
   @State private var showCameraView = false
+
+  @State private var client = SynologyClient(host: "ds918pluswee.synology.me", port: 5_001, enableHTTPS: true)
   @State private var goProSerialNumberList =
     UserDefaults.standard
       .array(forKey: "GoProSerialNumberList") as? [String] ?? []
@@ -28,6 +32,9 @@ struct MultiCameraView: View {
       return temp
     }
 
+  @State private var userId: String = UserDefaults.standard
+    .string(forKey: "UserId") ?? ""
+  @State private var userPassword: String = ""
   @State private var isCameraConnectionInfoListEditable = false
   @State private var targetCameraConnectionInfo = CameraConnectionInfo(camera: GoPro(serialNumber: ""))
   @State private var newCameraSerialNumber: String = ""
@@ -45,8 +52,71 @@ struct MultiCameraView: View {
   var body: some View {
     NavigationStack {
       VStack {
-        Divider().padding()
+        Divider()
+          .padding([.top, .bottom], 5)
         HStack {
+          Spacer()
+          Spacer()
+          Text("Synology NAS")
+            .padding(5)
+          TextField("ID", text: self.$userId)
+            .padding(10)
+            .overlay(
+              RoundedRectangle(cornerRadius: 15)
+                .stroke(.gray, lineWidth: 1.0)
+            )
+            .frame(width: 140)
+            .fixedSize(horizontal: true, vertical: false)
+            .padding(5)
+          SecureField("Password", text: self.$userPassword)
+            .padding(10)
+            .overlay(
+              RoundedRectangle(cornerRadius: 15)
+                .stroke(.gray, lineWidth: 1.0)
+            )
+            .frame(width: 140)
+            .fixedSize(horizontal: true, vertical: false)
+            .padding(5)
+          Spacer()
+          Button(action: {
+            if !self.userId.isEmpty {
+              os_log("login", type: .info)
+              UserDefaults.standard.set(self.userId, forKey: "UserId")
+              self.client.login(account: self.userId, passwd: self.userPassword) { response in
+                switch response {
+                case let .success(authRes):
+                  self.client.updateSessionID(authRes.sid)
+                  os_log("Synology SID: %@", type: .error, authRes.sid)
+                  self.showServerView = true
+                case let .failure(error):
+                  os_log("Error: %@", type: .error, error.description)
+                }
+              }
+            } else {
+              os_log("%@ is empty", type: .error, self.userId)
+            }
+          }, label: {
+            HStack {
+              Image(systemName: "network")
+                .foregroundColor(.teal)
+              Text("Login")
+                .foregroundColor(.teal)
+            }
+          })
+          .padding(10)
+          .overlay(
+            RoundedRectangle(cornerRadius: 15)
+              .stroke(.gray, lineWidth: 1.0)
+          )
+          .padding(5)
+          Spacer()
+          Spacer()
+        }
+        Divider()
+          .padding([.top, .bottom], 5)
+        HStack {
+          Spacer()
+          Spacer()
           Button(action: {
             os_log("Shutter On All", type: .info)
             for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
@@ -65,12 +135,9 @@ struct MultiCameraView: View {
                 Image(systemName: "a.circle")
               }
               .foregroundColor(.teal)
-              .padding([.top, .bottom], 7)
-              .padding([.leading, .trailing], 10)
+              .padding([.top, .bottom], 2)
               Text("Shutter On")
                 .foregroundColor(.teal)
-                .padding([.top, .bottom], 5)
-                .padding([.leading, .trailing], 10)
             }
           })
           .padding()
@@ -78,7 +145,9 @@ struct MultiCameraView: View {
             RoundedRectangle(cornerRadius: 15)
               .stroke(.gray, lineWidth: 1.0)
           )
-          .padding()
+          .padding([.top, .bottom], 5)
+          .padding([.leading, .trailing], 3)
+          Spacer()
           Button(action: {
             os_log("Shutter Off All", type: .info)
             for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
@@ -97,12 +166,9 @@ struct MultiCameraView: View {
                 Image(systemName: "a.circle")
               }
               .foregroundColor(.pink)
-              .padding([.top, .bottom], 7)
-              .padding([.leading, .trailing], 10)
+              .padding([.top, .bottom], 2)
               Text("Shutter Off")
                 .foregroundColor(.pink)
-                .padding([.top, .bottom], 5)
-                .padding([.leading, .trailing], 10)
             }
           })
           .padding()
@@ -110,7 +176,9 @@ struct MultiCameraView: View {
             RoundedRectangle(cornerRadius: 15)
               .stroke(.gray, lineWidth: 1.0)
           )
-          .padding()
+          .padding([.top, .bottom], 5)
+          .padding([.leading, .trailing], 3)
+          Spacer()
           Button(action: {
             os_log("Download Media All", type: .info)
             for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
@@ -152,12 +220,9 @@ struct MultiCameraView: View {
                 Image(systemName: "a.circle")
               }
               .foregroundColor(.green)
-              .padding([.top, .bottom], 5)
-              .padding([.leading, .trailing], 10)
+              .padding([.top, .bottom], 2)
               Text("Download Media")
                 .foregroundColor(.green)
-                .padding([.top, .bottom], 5)
-                .padding([.leading, .trailing], 10)
             }
           })
           .padding()
@@ -165,7 +230,9 @@ struct MultiCameraView: View {
             RoundedRectangle(cornerRadius: 15)
               .stroke(.gray, lineWidth: 1.0)
           )
-          .padding()
+          .padding([.top, .bottom], 5)
+          .padding([.leading, .trailing], 3)
+          Spacer()
           Button(action: {
             os_log("Remove Media All", type: .info)
             for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
@@ -196,12 +263,9 @@ struct MultiCameraView: View {
                 Image(systemName: "a.circle")
               }
               .foregroundColor(.red)
-              .padding([.top, .bottom], 5)
-              .padding([.leading, .trailing], 10)
+              .padding([.top, .bottom], 2)
               Text("Remove Media")
                 .foregroundColor(.red)
-                .padding([.top, .bottom], 5)
-                .padding([.leading, .trailing], 10)
             }
           })
           .padding()
@@ -209,7 +273,9 @@ struct MultiCameraView: View {
             RoundedRectangle(cornerRadius: 15)
               .stroke(.gray, lineWidth: 1.0)
           )
-          .padding()
+          .padding([.top, .bottom], 5)
+          .padding([.leading, .trailing], 3)
+          Spacer()
           Button(action: {
             os_log("SettingsView", type: .info)
             self.showSettingsView = true
@@ -220,12 +286,9 @@ struct MultiCameraView: View {
                 Image(systemName: "a.circle")
               }
               .foregroundColor(.orange)
-              .padding([.top, .bottom], 5)
-              .padding([.leading, .trailing], 10)
+              .padding([.top, .bottom], 2)
               Text("Settings")
                 .foregroundColor(.orange)
-                .padding([.top, .bottom], 5)
-                .padding([.leading, .trailing], 10)
             }
           })
           .padding()
@@ -233,78 +296,87 @@ struct MultiCameraView: View {
             RoundedRectangle(cornerRadius: 15)
               .stroke(.gray, lineWidth: 1.0)
           )
-          .padding()
+          .padding([.top, .bottom], 5)
+          .padding([.leading, .trailing], 3)
+          Spacer()
+          Spacer()
         }
-        Divider().padding()
-        Text("GoPro List").padding()
-        HStack {
-          TextField("GoPro Serial Number (last 3 digits)", text: self.$newCameraSerialNumber)
-            .padding()
+        Divider()
+          .padding([.top, .bottom], 5)
+        ZStack {
+          HStack {
+            Text("GoPro List").padding()
+          }
+          HStack {
+            Spacer()
+            TextField("Serial Number (last 3 digits)", text: self.$newCameraSerialNumber)
+              .font(.system(size: 13, weight: .bold, design: .rounded))
+              .padding(10)
+              .overlay(
+                RoundedRectangle(cornerRadius: 15)
+                  .stroke(.gray, lineWidth: 1.0)
+              )
+              .frame(width: 200)
+              .fixedSize(horizontal: true, vertical: false)
+            Button(action: {
+              if self.newCameraSerialNumber.count == 3, self.newCameraSerialNumber.isInt(),
+                 !self.cameraConnectionInfoList.contains(where: { $0.camera.serialNumber == newCameraSerialNumber })
+              {
+                os_log("Add GoPro %@", type: .info, self.newCameraSerialNumber)
+                self.goProSerialNumberList.append(self.newCameraSerialNumber)
+                self.cameraConnectionInfoList
+                  .append(CameraConnectionInfo(camera: GoPro(serialNumber: self.newCameraSerialNumber)))
+
+                let index = self.cameraConnectionInfoList.count - 1
+                os_log(
+                  "Enable Wired USB Control: GoPro %@",
+                  type: .info,
+                  self.cameraConnectionInfoList[index].camera.serialNumber
+                )
+                self.cameraConnectionInfoList[index].camera.requestUsbCameraInfo { _, error in
+                  if error != nil {
+                    os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                    if index >= self.cameraConnectionInfoList.count {
+                      return
+                    }
+                    self.cameraConnectionInfoList[index].isConnected = false
+                    return
+                  }
+
+                  if index >= self.cameraConnectionInfoList.count {
+                    return
+                  }
+                  self.cameraConnectionInfoList[index].isConnected = true
+                  self.cameraConnectionInfoList[index].camera
+                    .requestUsbCommand(command: .enableWiredUsbControl) { error in
+                      if error != nil {
+                        os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                        return
+                      }
+                    }
+                }
+              } else {
+                os_log("%@ is not a serial number (3 digits)", type: .error, self.newCameraSerialNumber)
+              }
+            }, label: {
+              HStack {
+                Image(systemName: "plus.square")
+                  .foregroundColor(.red)
+                Text("Add")
+                  .foregroundColor(.red)
+              }
+            })
+            .padding(10)
             .overlay(
               RoundedRectangle(cornerRadius: 15)
                 .stroke(.gray, lineWidth: 1.0)
             )
-            .padding()
-          Button(action: {
-            if self.newCameraSerialNumber.count == 3, self.newCameraSerialNumber.isInt(),
-               !self.cameraConnectionInfoList.contains(where: { $0.camera.serialNumber == newCameraSerialNumber })
-            {
-              os_log("Add GoPro %@", type: .info, self.newCameraSerialNumber)
-              self.goProSerialNumberList.append(self.newCameraSerialNumber)
-              self.cameraConnectionInfoList
-                .append(CameraConnectionInfo(camera: GoPro(serialNumber: self.newCameraSerialNumber)))
-
-              let index = self.cameraConnectionInfoList.count - 1
-              os_log(
-                "Enable Wired USB Control: GoPro %@",
-                type: .info,
-                self.cameraConnectionInfoList[index].camera.serialNumber
-              )
-              self.cameraConnectionInfoList[index].camera.requestUsbCameraInfo { _, error in
-                if error != nil {
-                  os_log("Error: %@", type: .error, error as? CVarArg ?? "")
-                  if index >= self.cameraConnectionInfoList.count {
-                    return
-                  }
-                  self.cameraConnectionInfoList[index].isConnected = false
-                  return
-                }
-
-                if index >= self.cameraConnectionInfoList.count {
-                  return
-                }
-                self.cameraConnectionInfoList[index].isConnected = true
-                self.cameraConnectionInfoList[index].camera
-                  .requestUsbCommand(command: .enableWiredUsbControl) { error in
-                    if error != nil {
-                      os_log("Error: %@", type: .error, error as? CVarArg ?? "")
-                      return
-                    }
-                  }
-              }
-            } else {
-              os_log("%@ is not a serial number (3 digits)", type: .error, self.newCameraSerialNumber)
-            }
-          }, label: {
-            VStack {
-              Image(systemName: "plus.square")
-                .foregroundColor(.orange)
-                .padding([.top, .bottom], 5)
-                .padding([.leading, .trailing], 10)
-              Text("Add Camera")
-                .foregroundColor(.orange)
-                .padding([.top, .bottom], 5)
-                .padding([.leading, .trailing], 10)
-            }
-          })
-          .padding()
-          .overlay(
-            RoundedRectangle(cornerRadius: 15)
-              .stroke(.gray, lineWidth: 1.0)
-          )
-          .padding()
+            .padding([.leading], 10)
+            .padding([.trailing], 15)
+          }
         }
         Divider()
+          .padding([.top, .bottom], 5)
         List {
           ForEach(self.cameraConnectionInfoList, id: \.self) { cameraConnectionInfo in
             Button(action: {
@@ -383,6 +455,9 @@ struct MultiCameraView: View {
           self.connectCameraItem(index: idx)
         }
         self.showCameraToast.toggle()
+      }
+      .navigationDestination(isPresented: self.$showServerView) {
+        ServerView(client: self.client)
       }
       .navigationDestination(isPresented: self.$showSettingsView) {
         SettingsView(
