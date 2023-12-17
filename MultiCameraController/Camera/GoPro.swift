@@ -110,7 +110,7 @@ final class GoPro: NSObject {
     }
   }
 
-  func requestUsbMediaList(_ completion: (([String]?, Error?) -> Void)?) {
+  func requestUsbMediaList(_ completion: (([String]?, Int, Error?) -> Void)?) {
     let commandUrl = self.url + GoProUsbCommand.getMediaList.endPoint
     os_log("url: %@", type: .info, commandUrl)
 
@@ -132,30 +132,37 @@ final class GoPro: NSObject {
           let dataJSON = try JSONSerialization.data(withJSONObject: obj, options: .prettyPrinted)
           let mediaListJson = try JSONDecoder().decode(MediaListInfo.self, from: dataJSON)
 
+          var creationTimestamp = 2_147_483_648
           for mediaInfo in mediaListJson.media {
             for fileInfo in mediaInfo.fs {
               mediaEndPointList.append("/videos/DCIM/" + mediaInfo.d + "/" + fileInfo.n)
+              creationTimestamp = min(creationTimestamp, Int(fileInfo.cre) ?? creationTimestamp)
             }
           }
           os_log("mediaList: %@", type: .info, mediaEndPointList.description)
-          completion?(mediaEndPointList, nil)
+          os_log("creationTimestamp: %@", type: .info, creationTimestamp.description)
+          completion?(mediaEndPointList, creationTimestamp, nil)
         } catch {
           os_log("error: %@", type: .error, error.localizedDescription)
-          completion?(nil, error)
+          completion?(nil, 0, error)
         }
 
       case let .failure(error):
         os_log("error: %@", type: .error, error.localizedDescription)
-        completion?(nil, error)
+        completion?(nil, 0, error)
       }
     }
   }
 
-  func requestUsbMediaDownload(mediaEndPoint: String, _ completion: ((Double?, Error?) -> Void)?) {
+  func requestUsbMediaDownload(
+    mediaEndPoint: String,
+    timestamp_path: String? = nil,
+    _ completion: ((Double?, Error?) -> Void)?
+  ) {
     let fileManager = FileManager.default
     let appURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     let fileName: String = URL(string: mediaEndPoint)?.lastPathComponent ?? ""
-    let fileURL = appURL.appendingPathComponent(fileName)
+    let fileURL = appURL.appendingPathComponent(timestamp_path ?? "" + self.serialNumber + "_" + fileName)
     let destination: DownloadRequest.Destination = { _, _ in
       (fileURL, [.removePreviousFile, .createIntermediateDirectories])
     }

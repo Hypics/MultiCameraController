@@ -279,7 +279,7 @@ struct CameraView: View {
       }
       .refreshable {
         os_log("Download media list: GoPro %@", type: .info, self.camera.serialNumber)
-        self.camera.requestUsbMediaList { mediaEndPointList, error in
+        self.camera.requestUsbMediaList { mediaEndPointList, _, error in
           if error != nil {
             os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
             return
@@ -300,7 +300,7 @@ struct CameraView: View {
       }
 
       os_log("Download media list: GoPro %@", type: .info, self.camera.serialNumber)
-      self.camera.requestUsbMediaList { mediaEndPointList, error in
+      self.camera.requestUsbMediaList { mediaEndPointList, _, error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return

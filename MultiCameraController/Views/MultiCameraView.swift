@@ -187,7 +187,7 @@ struct MultiCameraView: View {
                 type: .info,
                 cameraConnectionInfo.camera.serialNumber
               )
-              cameraConnectionInfo.camera.requestUsbMediaList { mediaEndPointList, error in
+              cameraConnectionInfo.camera.requestUsbMediaList { mediaEndPointList, creationTimestamp, error in
                 if error != nil {
                   os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                   return
@@ -196,7 +196,10 @@ struct MultiCameraView: View {
                 for mediaEndPoint in mediaEndPointList ?? [] {
                   self.showDownloadMediaToast = true
                   cameraConnectionInfo.camera
-                    .requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
+                    .requestUsbMediaDownload(
+                      mediaEndPoint: mediaEndPoint,
+                      timestamp_path: String(creationTimestamp) + "/"
+                    ) { progress, error in
                       if error != nil {
                         os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                         return
@@ -237,7 +240,7 @@ struct MultiCameraView: View {
             os_log("Remove Media All", type: .info)
             for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
               os_log("Remove media list: GoPro %@", type: .info, cameraConnectionInfo.camera.serialNumber)
-              cameraConnectionInfo.camera.requestUsbMediaList { mediaEndPointList, error in
+              cameraConnectionInfo.camera.requestUsbMediaList { mediaEndPointList, _, error in
                 if error != nil {
                   os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                   return
