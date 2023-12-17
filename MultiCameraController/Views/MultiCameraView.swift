@@ -80,7 +80,7 @@ struct MultiCameraView: View {
           Spacer()
           Button(action: {
             if !self.userId.isEmpty {
-              os_log("login", type: .info)
+              os_log("login: %@", type: .info, self.userId)
               UserDefaults.standard.set(self.userId, forKey: "UserId")
               self.client.login(account: self.userId, passwd: self.userPassword) { response in
                 switch response {
@@ -181,37 +181,45 @@ struct MultiCameraView: View {
           Spacer()
           Button(action: {
             os_log("Download Media All", type: .info)
-            for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
-              os_log(
-                "Download media list: GoPro %@",
-                type: .info,
-                cameraConnectionInfo.camera.serialNumber
-              )
-              cameraConnectionInfo.camera.requestUsbMediaList { mediaEndPointList, creationTimestamp, error in
-                if error != nil {
-                  os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-                  return
-                }
+            self.getCreationTimestamp { creationTimestamp in
+              let creationDate = Date(timeIntervalSince1970: TimeInterval(creationTimestamp))
+              let dateFormatter = DateFormatter()
+              dateFormatter.dateFormat = "YYMMdd_hhmmss"
+              let creationDateString = dateFormatter.string(from: creationDate)
+              os_log("creationTimestamp: %@ from %@", type: .info, creationDateString, creationTimestamp.description)
+              for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
+                os_log(
+                  "Download media list: GoPro %@",
+                  type: .info,
+                  cameraConnectionInfo.camera.serialNumber
+                )
+                cameraConnectionInfo.camera.requestUsbMediaList { mediaEndPointList, _, error in
+                  if error != nil {
+                    os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+                    return
+                  }
 
-                for mediaEndPoint in mediaEndPointList ?? [] {
-                  self.showDownloadMediaToast = true
-                  cameraConnectionInfo.camera
-                    .requestUsbMediaDownload(
-                      mediaEndPoint: mediaEndPoint,
-                      timestamp_path: String(creationTimestamp) + "/"
-                    ) { progress, error in
-                      if error != nil {
-                        os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-                        return
-                      }
-                      if let progress {
-                        if progress > 99.9 {
-                          self.showDownloadMediaToast = false
+                  for mediaEndPoint in mediaEndPointList ?? [] {
+                    self.showDownloadMediaToast = true
+                    cameraConnectionInfo.camera
+                      .requestUsbMediaDownload(
+                        mediaEndPoint: mediaEndPoint,
+                        timestamp_path: creationDateString
+                      ) { progress, error in
+                        if error != nil {
+                          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+                          return
                         }
-                        self.downloadMediaUrl = mediaEndPoint
-                        self.downloadProgress = progress
+                        if let progress {
+                          if progress > 99.9 {
+                            self.showDownloadMediaToast = false
+                          }
+                          self.downloadMediaUrl = "[GoPro " + cameraConnectionInfo.camera
+                            .serialNumber + "] " + (mediaEndPoint.split(separator: "/").last ?? "")
+                          self.downloadProgress = progress
+                        }
                       }
-                    }
+                  }
                 }
               }
             }
@@ -460,7 +468,7 @@ struct MultiCameraView: View {
         self.showCameraToast.toggle()
       }
       .navigationDestination(isPresented: self.$showServerView) {
-        ServerView(client: self.client)
+        ServerView(client: self.client, userId: self.userId)
       }
       .navigationDestination(isPresented: self.$showSettingsView) {
         SettingsView(
@@ -505,7 +513,7 @@ struct MultiCameraView: View {
         AlertToast(
           type: .loading,
           title: self.downloadMediaUrl,
-          subTitle: String(describing: self.downloadProgress) + " %"
+          subTitle: String(format: "%.2f", self.downloadProgress) + " %"
         )
       }
       .toast(isPresenting: self.$showRemoveMediaToast, duration: 2, tapToDismiss: true) {
@@ -594,6 +602,24 @@ struct MultiCameraView: View {
         }
       }
     }
+  }
+
+  private func getCreationTimestamp(completion: @escaping (Int) -> Void) {
+    var creationTimestamp = 2_147_483_647
+    for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
+      cameraConnectionInfo.camera.requestUsbMediaList { _, latestCreationTimestamp, error in
+        if error != nil {
+          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+          return
+        }
+        creationTimestamp = min(creationTimestamp, latestCreationTimestamp)
+
+        if cameraConnectionInfo == self.cameraConnectionInfoList.last {
+          completion(creationTimestamp)
+        }
+      }
+    }
+
   }
 }
 

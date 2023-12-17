@@ -96,7 +96,6 @@ final class GoPro: NSObject {
         do {
           let dataJSON = try JSONSerialization.data(withJSONObject: obj, options: .prettyPrinted)
           let cameraInfoJson = try JSONDecoder().decode(CameraInfo.self, from: dataJSON)
-          print(cameraInfoJson)
           completion?(cameraInfoJson, nil)
         } catch {
           os_log("error: %@", type: .error, error.localizedDescription)
@@ -132,16 +131,16 @@ final class GoPro: NSObject {
           let dataJSON = try JSONSerialization.data(withJSONObject: obj, options: .prettyPrinted)
           let mediaListJson = try JSONDecoder().decode(MediaListInfo.self, from: dataJSON)
 
-          var creationTimestamp = 2_147_483_648
+          var latestCreationTimestamp = 0
           for mediaInfo in mediaListJson.media {
             for fileInfo in mediaInfo.fs {
               mediaEndPointList.append("/videos/DCIM/" + mediaInfo.d + "/" + fileInfo.n)
-              creationTimestamp = min(creationTimestamp, Int(fileInfo.cre) ?? creationTimestamp)
+              latestCreationTimestamp = max(latestCreationTimestamp, Int(fileInfo.cre) ?? latestCreationTimestamp)
             }
           }
           os_log("mediaList: %@", type: .info, mediaEndPointList.description)
-          os_log("creationTimestamp: %@", type: .info, creationTimestamp.description)
-          completion?(mediaEndPointList, creationTimestamp, nil)
+          os_log("creationTimestamp: %@", type: .info, latestCreationTimestamp.description)
+          completion?(mediaEndPointList, latestCreationTimestamp, nil)
         } catch {
           os_log("error: %@", type: .error, error.localizedDescription)
           completion?(nil, 0, error)
@@ -160,14 +159,20 @@ final class GoPro: NSObject {
     _ completion: ((Double?, Error?) -> Void)?
   ) {
     let fileManager = FileManager.default
-    let appURL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+    let appUrl: URL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     let fileName: String = URL(string: mediaEndPoint)?.lastPathComponent ?? ""
-    let fileURL = appURL.appendingPathComponent(timestamp_path ?? "" + self.serialNumber + "_" + fileName)
+    var fileUrl: URL = if let timestamp_path {
+      appUrl.appendingPathComponent(timestamp_path).appendingPathComponent(self.serialNumber + "_" + fileName)
+    } else {
+      appUrl.appendingPathComponent(self.serialNumber + "_" + fileName)
+    }
     let destination: DownloadRequest.Destination = { _, _ in
-      (fileURL, [.removePreviousFile, .createIntermediateDirectories])
+      (fileUrl, [.removePreviousFile, .createIntermediateDirectories])
     }
 
-    let mediaUrl = self.url + mediaEndPoint
+    let mediaUrl: String = self.url + mediaEndPoint
+    os_log("mediaUrl: %@", type: .info, mediaUrl)
+    os_log("fileUrl: %@", type: .info, fileUrl.path())
     AF.download(mediaUrl, method: .get, parameters: nil, encoding: JSONEncoding.default, to: destination)
       .downloadProgress { progress in
         completion?(Double(progress.fractionCompleted * 100), nil)

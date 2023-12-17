@@ -328,7 +328,7 @@ struct CameraView: View {
       AlertToast(
         type: .loading,
         title: self.downloadMediaUrl,
-        subTitle: String(describing: self.downloadProgress) + " %"
+        subTitle: String(format: "%.2f", self.downloadProgress) + " %"
       )
     }
     .toast(isPresenting: self.$showRemoveMediaToast, duration: 2, tapToDismiss: true) {

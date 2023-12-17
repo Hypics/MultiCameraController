@@ -12,7 +12,12 @@ import SynologyKit
 
 struct ServerView: View {
   var client: SynologyClient
-  @State private var appFileUrlList: [FileItem]? = nil
+  var userId: String
+  @State private var appFileUrlList: [FileItem]?
+  @State private var uploadMediaUrl: String = ""
+  @State private var uploadProgress: Double = 0.0
+
+  @State private var showUploadMediaToast = false
 
   var body: some View {
     VStack(content: {
@@ -56,11 +61,81 @@ struct ServerView: View {
       List(self.appFileUrlList ?? [], children: \.childrenItem) { item in
         HStack {
           Image(systemName: item.icon)
-            .foregroundColor(.teal)
+            .foregroundColor((item.url.isDirectory) ? Color.teal : .gray)
           Text(item.url.lastPathComponent)
-            .foregroundColor(.teal)
+            .foregroundColor((item.url.isDirectory) ? Color.teal : .gray)
+        }
+        .swipeActions(edge: .leading, allowsFullSwipe: false) {
+          Button(action: {
+            os_log("Upload Folder: %@", type: .info, item.url.lastPathComponent)
+//            self.showDownloadMediaToast = true
+            guard let folderFileChildrenItems: [FileItem] = item.childrenItem else {
+              os_log("%@ is not directory", type: .info, item.url.lastPathComponent)
+              return
+            }
+            for childrenItem in folderFileChildrenItems {
+              let destinationFolderPath = "/dataset/4DGaussians/" + self.userId + "/" + item.url.lastPathComponent
+              os_log("destination folder path: %@", type: .info, destinationFolderPath)
+
+              self.showUploadMediaToast = true
+              self.client.upload(
+                fileURL: childrenItem.url,
+                filename: childrenItem.url.lastPathComponent,
+                destinationFolderPath: destinationFolderPath,
+                createParents: true,
+                options: nil,
+                progressHandler: { progress in
+//                  if progress.fractionCompleted * 100.0 > 99.9 {
+//                    self.showUploadMediaToast = false
+//                  }
+                  self.uploadMediaUrl = "[" + self.userId + "] " + item.url.lastPathComponent + "/" + childrenItem.url
+                    .lastPathComponent
+                  self.uploadProgress = progress.fractionCompleted * 100.0
+                },
+                completion: { result in
+                  switch result {
+                  case let .success(response):
+                    print(response)
+                    self.showUploadMediaToast = false
+                  case let .failure(error):
+                    os_log("Error: %@", type: .error, error.localizedDescription)
+                    self.showUploadMediaToast = false
+                  }
+                }
+              )
+            }
+          }, label: {
+            Text("Upload")
+              .padding([.top, .bottom], 5)
+              .padding([.leading, .trailing], 10)
+          })
+          .disabled(item.childrenItem == nil)
+          .tint(.green)
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+          Button(action: {
+            os_log("Delete Folder or File: %@", type: .info, item.url.lastPathComponent)
+            do {
+              try FileManager.default.removeItem(at: item.url)
+            } catch {
+              os_log("Could not remove item: %@", type: .info, error.localizedDescription)
+            }
+
+            os_log("Refresh app file list", type: .info)
+            self.getAppFileUrlList()
+          }, label: {
+            Text("Delete")
+              .padding([.top, .bottom], 5)
+              .padding([.leading, .trailing], 10)
+          })
+          .tint(.red)
         }
         .listRowSeparator(.hidden)
+      }
+      .refreshable {
+        os_log("Refresh app file list", type: .info)
+        self.getAppFileUrlList()
+//        self.showRefreshMediaListToast.toggle()
       }
     })
     .onAppear(perform: self.getAppFileUrlList)
@@ -69,6 +144,13 @@ struct ServerView: View {
       self.client.logout { _ in
         os_log("logout: %@", type: .info, self.client.sessionid ?? "")
       }
+    }
+    .toast(isPresenting: self.$showUploadMediaToast) {
+      AlertToast(
+        type: .loading,
+        title: self.uploadMediaUrl,
+        subTitle: String(format: "%.2f", self.uploadProgress) + " %"
+      )
     }
   }
 
@@ -83,13 +165,6 @@ struct ServerView: View {
       os_log("documentDirectory: %@", type: .info, documentDirectory.path)
       self.appFileUrlList = self.getFileItemList(fileUrl: documentDirectory)?
         .filter { $0.url.lastPathComponent != ".Trash" }
-        .sorted(by: { first, second -> Bool in
-          if first.url.isDirectory == second.url.isDirectory {
-            return first.url.lastPathComponent < second.url.lastPathComponent
-          } else {
-            return first.url.isDirectory
-          }
-        })
     } catch {
       os_log("Error: %@", type: .error, error.localizedDescription)
     }
@@ -115,6 +190,13 @@ struct ServerView: View {
           temp.append(FileItem(url: fileContentsUrl, childrenItem: self.getFileItemList(fileUrl: fileContentsUrl)))
           return temp
         }
+        .sorted(by: { first, second -> Bool in
+          if first.url.isDirectory == second.url.isDirectory {
+            return first.url.lastPathComponent < second.url.lastPathComponent
+          } else {
+            return first.url.isDirectory
+          }
+        })
       }
     } else {
       return nil
@@ -124,7 +206,7 @@ struct ServerView: View {
 
 struct ServerView_Previews: PreviewProvider {
   static var previews: some View {
-    ServerView(client: SynologyClient(host: "ds918pluswee.synology.me", port: 5_001, enableHTTPS: true))
+    ServerView(client: SynologyClient(host: "ds918pluswee.synology.me", port: 5_001, enableHTTPS: true), userId: "")
   }
 }
 
