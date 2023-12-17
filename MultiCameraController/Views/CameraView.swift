@@ -97,7 +97,7 @@ struct CameraView: View {
           os_log("Shutter On", type: .info)
           self.camera.requestUsbCommand(command: .shutterOn) { error in
             if error != nil {
-              os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+              os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
               return
             }
           }
@@ -124,7 +124,7 @@ struct CameraView: View {
           os_log("Shutter Off", type: .info)
           self.camera.requestUsbCommand(command: .shutterOff) { error in
             if error != nil {
-              os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+              os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
               return
             }
           }
@@ -153,7 +153,7 @@ struct CameraView: View {
             self.showDownloadMediaToast = true
             self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
               if error != nil {
-                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                 return
               }
               if let progress {
@@ -191,7 +191,7 @@ struct CameraView: View {
           for mediaUrl in self.mediaEndPointList {
             self.camera.requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
               if error != nil {
-                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                 return
               }
             }
@@ -228,7 +228,7 @@ struct CameraView: View {
             self.showDownloadMediaToast = true
             self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
               if error != nil {
-                os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                 return
               }
               if let progress {
@@ -255,7 +255,7 @@ struct CameraView: View {
               self.showDownloadMediaToast = true
               self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
                 if error != nil {
-                  os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                  os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                   return
                 }
                 if let progress {
@@ -281,7 +281,7 @@ struct CameraView: View {
         os_log("Download media list: GoPro %@", type: .info, self.camera.serialNumber)
         self.camera.requestUsbMediaList { mediaEndPointList, error in
           if error != nil {
-            os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+            os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
             return
           }
           self.mediaEndPointList = mediaEndPointList ?? []
@@ -293,7 +293,7 @@ struct CameraView: View {
       os_log("Get camera info: GoPro %@", type: .info, self.camera.serialNumber)
       self.camera.requestUsbCameraInfo { cameraInfo, error in
         if error != nil {
-          os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
         }
         self.cameraInfo = cameraInfo
@@ -302,7 +302,7 @@ struct CameraView: View {
       os_log("Download media list: GoPro %@", type: .info, self.camera.serialNumber)
       self.camera.requestUsbMediaList { mediaEndPointList, error in
         if error != nil {
-          os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
         }
         self.mediaEndPointList = mediaEndPointList ?? []
@@ -352,7 +352,7 @@ struct CameraView: View {
   private func deleteMediaItem(at offsets: IndexSet) {
     self.camera.requestUsbMediaRemove(mediaEndPoint: self.mediaEndPointList[offsets[offsets.startIndex]]) { error in
       if error != nil {
-        os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+        os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
         return
       }
       self.mediaEndPointList.remove(atOffsets: offsets)

@@ -122,7 +122,7 @@ struct MultiCameraView: View {
             for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
               cameraConnectionInfo.camera.requestUsbCommand(command: .shutterOn) { error in
                 if error != nil {
-                  os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                  os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                   return
                 }
               }
@@ -153,7 +153,7 @@ struct MultiCameraView: View {
             for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
               cameraConnectionInfo.camera.requestUsbCommand(command: .shutterOff) { error in
                 if error != nil {
-                  os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                  os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                   return
                 }
               }
@@ -189,7 +189,7 @@ struct MultiCameraView: View {
               )
               cameraConnectionInfo.camera.requestUsbMediaList { mediaEndPointList, error in
                 if error != nil {
-                  os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                  os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                   return
                 }
 
@@ -198,7 +198,7 @@ struct MultiCameraView: View {
                   cameraConnectionInfo.camera
                     .requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
                       if error != nil {
-                        os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                        os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                         return
                       }
                       if let progress {
@@ -239,7 +239,7 @@ struct MultiCameraView: View {
               os_log("Remove media list: GoPro %@", type: .info, cameraConnectionInfo.camera.serialNumber)
               cameraConnectionInfo.camera.requestUsbMediaList { mediaEndPointList, error in
                 if error != nil {
-                  os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                  os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                   return
                 }
 
@@ -247,7 +247,7 @@ struct MultiCameraView: View {
                   cameraConnectionInfo.camera
                     .requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
                       if error != nil {
-                        os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                        os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                         return
                       }
                     }
@@ -335,7 +335,7 @@ struct MultiCameraView: View {
                 )
                 self.cameraConnectionInfoList[index].camera.requestUsbCameraInfo { _, error in
                   if error != nil {
-                    os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                    os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                     if index >= self.cameraConnectionInfoList.count {
                       return
                     }
@@ -350,7 +350,7 @@ struct MultiCameraView: View {
                   self.cameraConnectionInfoList[index].camera
                     .requestUsbCommand(command: .enableWiredUsbControl) { error in
                       if error != nil {
-                        os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+                        os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
                         return
                       }
                     }
@@ -567,7 +567,7 @@ struct MultiCameraView: View {
     os_log("Connect GoPro %@", type: .info, self.cameraConnectionInfoList[index].camera.serialNumber)
     self.cameraConnectionInfoList[index].camera.requestUsbCameraInfo { _, error in
       if error != nil {
-        os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+        os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
         self.cameraConnectionInfoList[index].isConnected = false
         if showToast {
           self.showCameraEmptyToast.toggle()
@@ -586,7 +586,7 @@ struct MultiCameraView: View {
       )
       self.cameraConnectionInfoList[index].camera.requestUsbCommand(command: .enableWiredUsbControl) { error in
         if error != nil {
-          os_log("Error: %@", type: .error, error as? CVarArg ?? "")
+          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
         }
       }

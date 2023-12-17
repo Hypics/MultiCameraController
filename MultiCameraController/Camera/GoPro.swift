@@ -45,7 +45,7 @@ final class GoPro: NSObject {
         completion?(nil)
 
       case let .failure(error):
-        os_log("error: %@", type: .error, error as CVarArg)
+        os_log("error: %@", type: .error, error.localizedDescription)
         completion?(error)
       }
     }
@@ -70,7 +70,7 @@ final class GoPro: NSObject {
         completion?(nil)
 
       case let .failure(error):
-        os_log("error: %@", type: .error, error as CVarArg)
+        os_log("error: %@", type: .error, error.localizedDescription)
         completion?(error)
       }
     }
@@ -104,7 +104,7 @@ final class GoPro: NSObject {
         }
 
       case let .failure(error):
-        os_log("error: %@", type: .error, error as CVarArg)
+        os_log("error: %@", type: .error, error.localizedDescription)
         completion?(nil, error)
       }
     }
@@ -145,7 +145,7 @@ final class GoPro: NSObject {
         }
 
       case let .failure(error):
-        os_log("error: %@", type: .error, error as CVarArg)
+        os_log("error: %@", type: .error, error.localizedDescription)
         completion?(nil, error)
       }
     }
