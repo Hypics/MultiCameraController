@@ -24,75 +24,70 @@ struct CameraView: View {
   @State private var showRefreshMediaListToast = false
   var body: some View {
     VStack(content: {
-      Divider().padding()
+      Divider()
+        .padding([.top, .bottom], 5)
       HStack {
+        Spacer()
+        Spacer()
         VStack {
           Text("Model Name")
             .foregroundColor(.orange)
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
           Divider()
           Text(self.cameraInfo?.model_name ?? "")
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
         }
-        .padding()
+        .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
             .stroke(.gray, lineWidth: 1.0)
         )
-        .padding()
+        .padding(5)
+        Spacer()
         VStack {
           Text("Serial Number")
             .foregroundColor(.orange)
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
           Divider()
           Text(self.cameraInfo?.serial_number ?? "")
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
         }
-        .padding()
+        .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
             .stroke(.gray, lineWidth: 1.0)
         )
-        .padding()
+        .padding(5)
+        Spacer()
         VStack {
           Text("AP SSID")
             .foregroundColor(.orange)
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
           Divider()
           Text(self.cameraInfo?.ap_ssid ?? "")
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
         }
-        .padding()
+        .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
             .stroke(.gray, lineWidth: 1.0)
         )
-        .padding()
+        .padding(5)
+        Spacer()
         VStack {
           Text("Firmware Version")
             .foregroundColor(.orange)
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
           Divider()
           Text(self.cameraInfo?.firmware_version ?? "")
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
         }
-        .padding()
+        .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
             .stroke(.gray, lineWidth: 1.0)
         )
-        .padding()
+        .padding(5)
+        Spacer()
+        Spacer()
       }
-      Divider().padding()
+      Divider()
+        .padding([.top, .bottom], 5)
       HStack {
+        Spacer()
+        Spacer()
         Button(action: {
           os_log("Shutter On", type: .info)
           self.camera.requestUsbCommand(command: .shutterOn) { error in
@@ -106,20 +101,18 @@ struct CameraView: View {
           VStack {
             Image(systemName: "video")
               .foregroundColor(.teal)
-              .padding([.top, .bottom], 7)
-              .padding([.leading, .trailing], 10)
+              .padding([.top, .bottom], 2)
             Text("Shutter On")
               .foregroundColor(.teal)
-              .padding([.top, .bottom], 5)
-              .padding([.leading, .trailing], 10)
           }
         })
-        .padding()
+        .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
             .stroke(.gray, lineWidth: 1.0)
         )
-        .padding()
+        .padding(5)
+        Spacer()
         Button(action: {
           os_log("Shutter Off", type: .info)
           self.camera.requestUsbCommand(command: .shutterOff) { error in
@@ -133,20 +126,18 @@ struct CameraView: View {
           VStack {
             Image(systemName: "stop")
               .foregroundColor(.pink)
-              .padding([.top, .bottom], 7)
-              .padding([.leading, .trailing], 10)
+              .padding([.top, .bottom], 2)
             Text("Shutter Off")
               .foregroundColor(.pink)
-              .padding([.top, .bottom], 5)
-              .padding([.leading, .trailing], 10)
           }
         })
-        .padding()
+        .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
             .stroke(.gray, lineWidth: 1.0)
         )
-        .padding()
+        .padding(5)
+        Spacer()
         Button(action: {
           os_log("Download Media All", type: .info)
           for mediaEndPoint in self.mediaEndPointList {
@@ -172,20 +163,18 @@ struct CameraView: View {
               Image(systemName: "a.circle")
             }
             .foregroundColor(.green)
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
+            .padding([.top, .bottom], 2)
             Text("Download Media")
               .foregroundColor(.green)
-              .padding([.top, .bottom], 5)
-              .padding([.leading, .trailing], 10)
           }
         })
-        .padding()
+        .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
             .stroke(.gray, lineWidth: 1.0)
         )
-        .padding()
+        .padding(5)
+        Spacer()
         Button(action: {
           os_log("Remove Media All", type: .info)
           for mediaUrl in self.mediaEndPointList {
@@ -204,22 +193,22 @@ struct CameraView: View {
               Image(systemName: "a.circle")
             }
             .foregroundColor(.red)
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
+            .padding([.top, .bottom], 2)
             Text("Remove Media")
               .foregroundColor(.red)
-              .padding([.top, .bottom], 5)
-              .padding([.leading, .trailing], 10)
           }
         })
-        .padding()
+        .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
             .stroke(.gray, lineWidth: 1.0)
         )
-        .padding()
+        .padding(5)
+        Spacer()
+        Spacer()
       }
-      Divider().padding()
+      Divider()
+        .padding([.top, .bottom], 5)
       Text("Media List").padding()
       List {
         ForEach(self.mediaEndPointList, id: \.self) { mediaEndPoint in

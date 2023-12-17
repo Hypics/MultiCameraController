@@ -25,40 +25,50 @@ struct SettingsView: View {
   @State private var showControlsModeToast = false
   var body: some View {
     VStack {
-      Divider().padding()
-      Button(action: {
-        os_log("4K@120FPS, 16:9, Linear, 60Hz, Off, High, 10bit, Never, Pro", type: .info)
-        for cameraConnectionInfo in self.cameraConnectionInfoList {
-          for presetSetting in GoProUsbSettingPreset.mounted_4k_120fps.settings {
-            cameraConnectionInfo.camera.requestUsbSetting(setting: presetSetting) { error in
-              if error != nil {
-                os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-                return
+      Divider()
+        .padding([.top, .bottom], 5)
+      HStack {
+        Spacer()
+        Spacer()
+        Button(action: {
+          os_log("4K@120FPS, 16:9, Linear, 60Hz, Off, High, 10bit, Never, Pro", type: .info)
+          for cameraConnectionInfo in self.cameraConnectionInfoList {
+            for presetSetting in GoProUsbSettingPreset.mounted_4k_120fps.settings {
+              cameraConnectionInfo.camera.requestUsbSetting(setting: presetSetting) { error in
+                if error != nil {
+                  os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+                  return
+                }
               }
             }
           }
-        }
-        self.showPreset1Toast.toggle()
-      }, label: {
-        VStack {
-          Image(systemName: "1.square")
-            .foregroundColor(.pink)
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
-          Text("4K@120FPS, 16:9, Linear")
-            .foregroundColor(.primary)
-          Text("60Hz, Off, High, 10bit, Never, Pro")
-            .foregroundColor(.primary)
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
-        }
-      })
-      .padding()
-      .overlay(
-        RoundedRectangle(cornerRadius: 15)
-          .stroke(.gray, lineWidth: 1.0)
-      )
-      Divider().padding()
+          self.showPreset1Toast.toggle()
+        }, label: {
+          VStack {
+            Image(systemName: "1.square")
+              .foregroundColor(.pink)
+              .padding([.top, .bottom], 5)
+              .padding([.leading, .trailing], 10)
+            Text("4K@120FPS, 16:9, Linear")
+              .foregroundColor(.primary)
+            Text("60Hz, Off, High, 10bit, Never, Pro")
+              .foregroundColor(.primary)
+              .padding([.top, .bottom], 5)
+              .padding([.leading, .trailing], 10)
+          }
+        })
+        .padding(10)
+        .overlay(
+          RoundedRectangle(cornerRadius: 15)
+            .stroke(.gray, lineWidth: 1.0)
+        )
+        .padding(5)
+        Spacer()
+        Spacer()
+      }
+      Divider()
+        .padding([.top, .bottom], 5)
+      Text("Configure List").padding()
       List {
         Button(action: {
           os_log("Video Resolution: 4K, 16:9", type: .info)

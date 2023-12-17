@@ -21,42 +21,41 @@ struct ServerView: View {
 
   var body: some View {
     VStack(content: {
-      Divider().padding()
+      Divider()
+        .padding([.top, .bottom], 5)
       HStack {
+        Spacer()
+        Spacer()
         VStack {
           Text("Session ID")
             .foregroundColor(.orange)
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
           Divider()
           Text(self.client.sessionid ?? "")
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
         }
-        .padding()
+        .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
             .stroke(.gray, lineWidth: 1.0)
         )
-        .padding()
+        .padding(5)
+        Spacer()
         VStack {
           Text("Connected")
             .foregroundColor(.orange)
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
           Divider()
           Text(self.client.connected.description)
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 10)
         }
-        .padding()
+        .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
             .stroke(.gray, lineWidth: 1.0)
         )
-        .padding()
+        .padding(5)
+        Spacer()
+        Spacer()
       }
-      Divider().padding()
+      Divider()
+        .padding([.top, .bottom], 5)
       Text("Folder List").padding()
       List(self.appFileUrlList ?? [], children: \.childrenItem) { item in
         HStack {

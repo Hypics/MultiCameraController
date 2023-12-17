@@ -386,8 +386,6 @@ struct MultiCameraView: View {
             .padding([.trailing], 15)
           }
         }
-        Divider()
-          .padding([.top, .bottom], 5)
         List {
           ForEach(self.cameraConnectionInfoList, id: \.self) { cameraConnectionInfo in
             Button(action: {
