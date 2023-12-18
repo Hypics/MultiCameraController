@@ -17,8 +17,8 @@ struct CameraView: View {
   @State private var downloadMediaUrl: String = ""
   @State private var downloadProgress: Double = 0.0
 
-  @State private var showSutterOnToast = false
-  @State private var showSutterOffToast = false
+  @State private var showShutterOnToast = false
+  @State private var showShutterOffToast = false
   @State private var showDownloadMediaToast = false
   @State private var showRemoveMediaToast = false
   @State private var showRefreshMediaListToast = false
@@ -96,7 +96,7 @@ struct CameraView: View {
               return
             }
           }
-          self.showSutterOnToast.toggle()
+          self.showShutterOnToast.toggle()
         }, label: {
           VStack {
             Image(systemName: "video")
@@ -121,7 +121,7 @@ struct CameraView: View {
               return
             }
           }
-          self.showSutterOffToast.toggle()
+          self.showShutterOffToast.toggle()
         }, label: {
           VStack {
             Image(systemName: "stop")
@@ -297,7 +297,7 @@ struct CameraView: View {
         self.mediaEndPointList = mediaEndPointList ?? []
       }
     }
-    .toast(isPresenting: self.$showSutterOnToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$showShutterOnToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("video", .teal),
@@ -305,7 +305,7 @@ struct CameraView: View {
         style: .style(titleColor: .teal)
       )
     }
-    .toast(isPresenting: self.$showSutterOffToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$showShutterOffToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("stop", .pink),

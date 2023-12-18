@@ -42,8 +42,8 @@ struct MultiCameraView: View {
   @State private var downloadProgress: Double = 0.0
 
   @State private var showCameraToast = false
-  @State private var showSutterOnToast = false
-  @State private var showSutterOffToast = false
+  @State private var showShutterOnToast = false
+  @State private var showShutterOffToast = false
   @State private var showDownloadMediaToast = false
   @State private var showRemoveMediaToast = false
   @State private var showRefreshCameraListToast = false
@@ -127,7 +127,7 @@ struct MultiCameraView: View {
                 }
               }
             }
-            self.showSutterOnToast.toggle()
+            self.showShutterOnToast.toggle()
           }, label: {
             VStack {
               HStack {
@@ -158,7 +158,7 @@ struct MultiCameraView: View {
                 }
               }
             }
-            self.showSutterOffToast.toggle()
+            self.showShutterOffToast.toggle()
           }, label: {
             VStack {
               HStack {
@@ -491,7 +491,7 @@ struct MultiCameraView: View {
           style: .style(titleColor: .primary)
         )
       }
-      .toast(isPresenting: self.$showSutterOnToast, duration: 1, tapToDismiss: true) {
+      .toast(isPresenting: self.$showShutterOnToast, duration: 1, tapToDismiss: true) {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("video", .teal),
@@ -499,7 +499,7 @@ struct MultiCameraView: View {
           style: .style(titleColor: .teal)
         )
       }
-      .toast(isPresenting: self.$showSutterOffToast, duration: 1, tapToDismiss: true) {
+      .toast(isPresenting: self.$showShutterOffToast, duration: 1, tapToDismiss: true) {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("stop", .pink),

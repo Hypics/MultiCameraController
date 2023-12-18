@@ -73,7 +73,7 @@ struct ServerView: View {
               return
             }
             for childrenItem in folderFileChildrenItems {
-              let destinationFolderPath = "/dataset/4DGaussians/" + self.userId + "/" + item.url.lastPathComponent
+              let destinationFolderPath = "/dataset/4DGaussians/data/" + self.userId + "/" + item.url.lastPathComponent
               os_log("destination folder path: %@", type: .info, destinationFolderPath)
 
               self.showUploadMediaToast = true
