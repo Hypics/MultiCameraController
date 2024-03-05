@@ -11,6 +11,8 @@ import SwiftUI
 import SynologyKit
 
 struct ServerView: View {
+  @StateObject var serverViewModel = ServerViewModel()
+
   var client: SynologyClient
   var userId: String
   @State private var appFileUrlList: [FileItem]?
