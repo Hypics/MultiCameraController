@@ -414,7 +414,7 @@ struct MultiCameraView: View {
         )
       }
       .navigationDestination(isPresented: self.$showCameraView) {
-        CameraView(camera: self.targetCameraConnectionInfo.camera)
+        CameraView(cameraViewModel: CameraViewModel(camera: self.targetCameraConnectionInfo.camera))
       }
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
