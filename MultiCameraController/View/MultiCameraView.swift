@@ -405,7 +405,7 @@ struct MultiCameraView: View {
         self.showCameraToast.toggle()
       }
       .navigationDestination(isPresented: self.$dataServerViewModel.showDataServerView) {
-        ServerView(dataServerViewModel: self.dataServerViewModel)
+        DataServerView(dataServerViewModel: self.dataServerViewModel)
       }
       .navigationDestination(isPresented: self.$showSettingsView) {
         SettingsView(
