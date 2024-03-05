@@ -10,14 +10,13 @@ import AlertToast
 import Foundation
 import os.log
 import SwiftUI
-import SynologyKit
 
 struct MultiCameraView: View {
-  @State private var showServerView = false
+  @StateObject var dataServerViewModel = DataServerViewModel()
+
   @State private var showSettingsView = false
   @State private var showCameraView = false
 
-  @State private var client = SynologyClient(host: "ds918pluswee.synology.me", port: 5_001, enableHTTPS: true)
   @State private var goProSerialNumberList =
     UserDefaults.standard
       .array(forKey: "GoProSerialNumberList") as? [String] ?? []
@@ -32,9 +31,6 @@ struct MultiCameraView: View {
       return temp
     }
 
-  @State private var userId: String = UserDefaults.standard
-    .string(forKey: "UserId") ?? ""
-  @State private var userPassword: String = ""
   @State private var isCameraConnectionInfoListEditable = false
   @State private var targetCameraConnectionInfo = CameraConnectionInfo(camera: GoPro(serialNumber: ""))
   @State private var newCameraSerialNumber: String = ""
@@ -54,64 +50,7 @@ struct MultiCameraView: View {
       VStack {
         Divider()
           .padding([.top, .bottom], 5)
-        HStack {
-          Spacer()
-          Spacer()
-          Text("Synology NAS")
-            .padding(5)
-          TextField("ID", text: self.$userId)
-            .padding(10)
-            .overlay(
-              RoundedRectangle(cornerRadius: 15)
-                .stroke(.gray, lineWidth: 1.0)
-            )
-            .frame(width: 140)
-            .fixedSize(horizontal: true, vertical: false)
-            .padding(5)
-          SecureField("Password", text: self.$userPassword)
-            .padding(10)
-            .overlay(
-              RoundedRectangle(cornerRadius: 15)
-                .stroke(.gray, lineWidth: 1.0)
-            )
-            .frame(width: 140)
-            .fixedSize(horizontal: true, vertical: false)
-            .padding(5)
-          Spacer()
-          Button(action: {
-            if !self.userId.isEmpty {
-              os_log("login: %@", type: .info, self.userId)
-              UserDefaults.standard.set(self.userId, forKey: "UserId")
-              self.client.login(account: self.userId, passwd: self.userPassword) { response in
-                switch response {
-                case let .success(authRes):
-                  self.client.updateSessionID(authRes.sid)
-                  os_log("Synology SID: %@", type: .error, authRes.sid)
-                  self.showServerView = true
-                case let .failure(error):
-                  os_log("Error: %@", type: .error, error.description)
-                }
-              }
-            } else {
-              os_log("%@ is empty", type: .error, self.userId)
-            }
-          }, label: {
-            HStack {
-              Image(systemName: "network")
-                .foregroundColor(.teal)
-              Text("Login")
-                .foregroundColor(.teal)
-            }
-          })
-          .padding(10)
-          .overlay(
-            RoundedRectangle(cornerRadius: 15)
-              .stroke(.gray, lineWidth: 1.0)
-          )
-          .padding(5)
-          Spacer()
-          Spacer()
-        }
+        LoginView(dataServerViewModel: self.dataServerViewModel)
         Divider()
           .padding([.top, .bottom], 5)
         HStack {
@@ -465,8 +404,8 @@ struct MultiCameraView: View {
         }
         self.showCameraToast.toggle()
       }
-      .navigationDestination(isPresented: self.$showServerView) {
-        ServerView(client: self.client, userId: self.userId)
+      .navigationDestination(isPresented: self.$dataServerViewModel.showDataServerView) {
+        ServerView(client: self.dataServerViewModel.client, userId: self.dataServerViewModel.userId)
       }
       .navigationDestination(isPresented: self.$showSettingsView) {
         SettingsView(
