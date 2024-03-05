@@ -73,15 +73,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4EAA6F9C2B0F9FD4004DD63E /* Camera */ = {
+		4E67866E2B97612B0004A7D8 /* Device */ = {
 			isa = PBXGroup;
 			children = (
-				4EAA6FA62B0FA002004DD63E /* GoPro.swift */,
+				4EAA6F9C2B0F9FD4004DD63E /* Camera */,
+			);
+			path = Device;
+			sourceTree = "<group>";
+		};
+		4E67866F2B9761430004A7D8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
 				4EAA6FA72B0FA002004DD63E /* GoProCameraError.swift */,
 				4EAA6FA42B0FA002004DD63E /* GoProCameraInfo.swift */,
 				4EAA6FA32B0FA002004DD63E /* GoProMediaInfo.swift */,
 				4EAA6FA22B0FA001004DD63E /* GoProUsbCommand.swift */,
 				4EAA6FA52B0FA002004DD63E /* GoProUsbSetting.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4E6786702B97614C0004A7D8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		4E6786722B9761E70004A7D8 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				C9401D092632012300E5208E /* Helpers */,
+				4EAA6F9D2B0F9FDC004DD63E /* Extensions */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		4EAA6F9C2B0F9FD4004DD63E /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				4EAA6FA62B0FA002004DD63E /* GoPro.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -116,17 +147,18 @@
 		C9401CD42631EF9B00E5208E /* MultiCameraController */ = {
 			isa = PBXGroup;
 			children = (
+				4E67866E2B97612B0004A7D8 /* Device */,
+				4E67866F2B9761430004A7D8 /* Model */,
+				C9401CDB2631EF9F00E5208E /* Preview Content */,
+				4E6786722B9761E70004A7D8 /* Util */,
+				C9401D06263200E800E5208E /* View */,
+				4E6786702B97614C0004A7D8 /* ViewModel */,
 				4EAD950D2B13C5D700D3EC01 /* .swiftformat */,
 				4EAD950C2B13C5D700D3EC01 /* .swiftlint.yml */,
-				4EAA6F9C2B0F9FD4004DD63E /* Camera */,
-				4EAA6F9D2B0F9FDC004DD63E /* Extensions */,
-				C9401D092632012300E5208E /* Helpers */,
-				C9401D06263200E800E5208E /* Views */,
 				C9401CD52631EF9B00E5208E /* MultiCameraControllerApp.swift */,
 				C9628A7E2636FEEB009101EC /* MultiCameraController.entitlements */,
 				C9401CD92631EF9F00E5208E /* Assets.xcassets */,
 				C9401CDE2631EF9F00E5208E /* Info.plist */,
-				C9401CDB2631EF9F00E5208E /* Preview Content */,
 			);
 			path = MultiCameraController;
 			sourceTree = "<group>";
@@ -139,7 +171,7 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		C9401D06263200E800E5208E /* Views */ = {
+		C9401D06263200E800E5208E /* View */ = {
 			isa = PBXGroup;
 			children = (
 				4E931F1C2B0F9E870042B2AA /* MultiCameraView.swift */,
@@ -147,7 +179,7 @@
 				4E931F1D2B0F9E870042B2AA /* SettingsView.swift */,
 				4ECB28C12B2E13C4004BA07F /* ServerView.swift */,
 			);
-			path = Views;
+			path = View;
 			sourceTree = "<group>";
 		};
 		C9401D092632012300E5208E /* Helpers */ = {
