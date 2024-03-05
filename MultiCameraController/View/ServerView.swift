@@ -11,8 +11,8 @@ import SwiftUI
 import SynologyKit
 
 struct ServerView: View {
-  var client: SynologyClient
-  var userId: String
+  @ObservedObject var dataServerViewModel: DataServerViewModel
+
   @State private var appFileUrlList: [FileItem]?
   @State private var uploadMediaUrl: String = ""
   @State private var uploadProgress: Double = 0.0
@@ -23,37 +23,7 @@ struct ServerView: View {
     VStack(content: {
       Divider()
         .padding([.top, .bottom], 5)
-      HStack {
-        Spacer()
-        Spacer()
-        VStack {
-          Text("Session ID")
-            .foregroundColor(.orange)
-          Divider()
-          Text(self.client.sessionid ?? "")
-        }
-        .padding(10)
-        .overlay(
-          RoundedRectangle(cornerRadius: 15)
-            .stroke(.gray, lineWidth: 1.0)
-        )
-        .padding(5)
-        Spacer()
-        VStack {
-          Text("Connected")
-            .foregroundColor(.orange)
-          Divider()
-          Text(self.client.connected.description)
-        }
-        .padding(10)
-        .overlay(
-          RoundedRectangle(cornerRadius: 15)
-            .stroke(.gray, lineWidth: 1.0)
-        )
-        .padding(5)
-        Spacer()
-        Spacer()
-      }
+      SessionStateView(client: self.$dataServerViewModel.client)
       Divider()
         .padding([.top, .bottom], 5)
       Text("Folder List").padding()
@@ -73,11 +43,12 @@ struct ServerView: View {
               return
             }
             for childrenItem in folderFileChildrenItems {
-              let destinationFolderPath = "/dataset/4DGaussians/data/" + self.userId + "/" + item.url.lastPathComponent
+              let destinationFolderPath = "/dataset/4DGaussians/data/" + self.dataServerViewModel.userId + "/" + item
+                .url.lastPathComponent
               os_log("destination folder path: %@", type: .info, destinationFolderPath)
 
               self.showUploadMediaToast = true
-              self.client.upload(
+              self.dataServerViewModel.client.upload(
                 fileURL: childrenItem.url,
                 filename: childrenItem.url.lastPathComponent,
                 destinationFolderPath: destinationFolderPath,
@@ -87,7 +58,8 @@ struct ServerView: View {
 //                  if progress.fractionCompleted * 100.0 > 99.9 {
 //                    self.showUploadMediaToast = false
 //                  }
-                  self.uploadMediaUrl = "[" + self.userId + "] " + item.url.lastPathComponent + "/" + childrenItem.url
+                  self.uploadMediaUrl = "[" + self.dataServerViewModel.userId + "] " + item.url
+                    .lastPathComponent + "/" + childrenItem.url
                     .lastPathComponent
                   self.uploadProgress = progress.fractionCompleted * 100.0
                 },
@@ -140,8 +112,8 @@ struct ServerView: View {
     .onAppear(perform: self.getAppFileUrlList)
     .onDisappear {
       // This block is not called when the view goes back.
-      self.client.logout { _ in
-        os_log("logout: %@", type: .info, self.client.sessionid ?? "")
+      self.dataServerViewModel.client.logout { _ in
+        os_log("logout: %@", type: .info, self.dataServerViewModel.client.sessionid ?? "")
       }
     }
     .toast(isPresenting: self.$showUploadMediaToast) {
@@ -205,7 +177,7 @@ struct ServerView: View {
 
 struct ServerView_Previews: PreviewProvider {
   static var previews: some View {
-    ServerView(client: SynologyClient(host: "ds918pluswee.synology.me", port: 5_001, enableHTTPS: true), userId: "")
+    ServerView(dataServerViewModel: DataServerViewModel())
   }
 }
 
