@@ -5,6 +5,8 @@
 //  Created by INHWAN WEE on 11/21/23.
 //
 
+import Foundation
+
 extension String {
   func isInt() -> Bool {
     Int(self) != nil
@@ -28,5 +30,20 @@ extension String {
     let startIndex = self.index(from: range.lowerBound)
     let endIndex = self.index(from: range.upperBound)
     return String(self[startIndex ..< endIndex])
+  }
+
+  func toDate(format: String) -> Date? {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = format
+    return dateFormatter.date(from: self)
+  }
+
+  func toDate(format: String, timeZone: TimeZone?) -> Date? {
+    let dateFormatter = DateFormatter()
+    if let timeZone {
+      dateFormatter.timeZone = timeZone
+    }
+    dateFormatter.dateFormat = format
+    return dateFormatter.date(from: self)
   }
 }
