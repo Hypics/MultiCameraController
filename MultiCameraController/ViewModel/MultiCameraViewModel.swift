@@ -12,22 +12,12 @@ class MultiCameraViewModel: ObservableObject {
   @Published var goProSerialNumberList =
     UserDefaults.standard
       .array(forKey: "GoProSerialNumberList") as? [String] ?? []
-  @Published var cameraConnectionInfoList: [CameraConnectionInfo] =
-    (
-      UserDefaults.standard
-        .array(forKey: "GoProSerialNumberList") as? [String] ?? []
-    )
-    .reduce([CameraConnectionInfo]()) { result, item in
-      var temp = result
-      temp.append(CameraConnectionInfo(camera: GoPro(serialNumber: item)))
-      return temp
-    }
 
   @Published var showSettingView = false
   @Published var showCameraView = false
 
   @Published var cameraConnectionInfoListEditable = false
-  @Published var targetCameraConnectionInfo = CameraConnectionInfo(camera: GoPro(serialNumber: ""))
+  @Published var targetCamera: any Camera = GoPro(serialNumber: "")
   @Published var newCameraSerialNumber: String = ""
   @Published var downloadMediaUrl: String = ""
   @Published var downloadProgress: Double = 0.0
@@ -53,21 +43,21 @@ class MultiCameraViewModel: ObservableObject {
   @Published var showAutoPowerDownToast = false
   @Published var showControlsModeToast = false
 
-  func getConnectedCameraList() -> [CameraConnectionInfo] {
-    self.cameraConnectionInfoList.filter { $0.isConnected == true }
+  func getConnectedCameraList() -> [any Camera] {
+    CameraManager.instance.cameraContainer.filter { $0.isConnected == true }
   }
 
   func getCreationTimestamp(completion: @escaping (Int) -> Void) {
     var creationTimestamp = 2_147_483_647
-    for cameraConnectionInfo in self.getConnectedCameraList() {
-      cameraConnectionInfo.camera.requestUsbMediaList { _, latestCreationTimestamp, error in
+    for (index, camera) in self.getConnectedCameraList().enumerated() {
+      camera.requestUsbMediaList { _, latestCreationTimestamp, error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
         }
         creationTimestamp = min(creationTimestamp, latestCreationTimestamp)
 
-        if cameraConnectionInfo == self.cameraConnectionInfoList.last {
+        if index == self.getConnectedCameraList().count - 1 {
           completion(creationTimestamp)
         }
       }
@@ -76,40 +66,31 @@ class MultiCameraViewModel: ObservableObject {
 
   func registerCamera(newCameraSerialNumber: String) {
     if self.newCameraSerialNumber.count == 3, self.newCameraSerialNumber.isInt(),
-       !self.cameraConnectionInfoList.contains(where: { $0.camera.serialNumber == newCameraSerialNumber })
+       !CameraManager.instance.cameraContainer.contains(where: { $0.serialNumber == newCameraSerialNumber })
     {
       os_log("Add GoPro %@", type: .info, self.newCameraSerialNumber)
       self.goProSerialNumberList.append(self.newCameraSerialNumber)
-      self.cameraConnectionInfoList
-        .append(CameraConnectionInfo(camera: GoPro(serialNumber: self.newCameraSerialNumber)))
+      CameraManager.instance.cameraContainer
+        .append(GoPro(serialNumber: self.newCameraSerialNumber))
 
-      let index = self.cameraConnectionInfoList.count - 1
       os_log(
         "Enable Wired USB Control: GoPro %@",
         type: .info,
-        self.cameraConnectionInfoList[index].camera.serialNumber
+        CameraManager.instance.cameraContainer.last?.serialNumber ?? ""
       )
-      self.cameraConnectionInfoList[index].camera.requestUsbCameraInfo { _, error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          if index >= self.cameraConnectionInfoList.count {
-            return
-          }
-          self.cameraConnectionInfoList[index].isConnected = false
+      CameraManager.instance.cameraContainer.last?.requestUsbCameraInfo { _, error in
+        if let error {
+          os_log("Error: %@", type: .error, error.localizedDescription)
           return
         }
 
-        if index >= self.cameraConnectionInfoList.count {
-          return
-        }
-        self.cameraConnectionInfoList[index].isConnected = true
-        self.cameraConnectionInfoList[index].camera
-          .requestUsbCommand(command: .enableWiredUsbControl) { error in
-            if error != nil {
-              os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-              return
-            }
+        CameraManager.instance.cameraContainer[CameraManager.instance.cameraContainer.count - 1].isConnected = true
+        CameraManager.instance.cameraContainer.last?.requestUsbCommand(command: .enableWiredUsbControl) { error in
+          if error != nil {
+            os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+            return
           }
+        }
       }
     } else {
       os_log("%@ is not a serial number (3 digits)", type: .error, self.newCameraSerialNumber)
@@ -120,24 +101,26 @@ class MultiCameraViewModel: ObservableObject {
     os_log(
       "Remove GoPro %@",
       type: .info,
-      self.cameraConnectionInfoList[offsets[offsets.startIndex]].camera.serialNumber
+      CameraManager.instance.cameraContainer[offsets[offsets.startIndex]].serialNumber
     )
     self.goProSerialNumberList.remove(atOffsets: offsets)
-    self.cameraConnectionInfoList.remove(atOffsets: offsets)
+    CameraManager.instance.cameraContainer.remove(atOffsets: offsets)
   }
 
-  func connectCameraItem(index: Int, showToast: Bool = false) {
-    os_log("Connect GoPro %@", type: .info, self.cameraConnectionInfoList[index].camera.serialNumber)
-    self.cameraConnectionInfoList[index].camera.requestUsbCameraInfo { _, error in
+  func connectCameraItem(camera: any Camera, showToast: Bool = false) {
+    os_log("Connect GoPro %@", type: .info, camera.serialNumber)
+    guard let index = CameraManager.instance.cameraContainer
+      .firstIndex(where: { $0.serialNumber == camera.serialNumber }) else { return }
+    camera.requestUsbCameraInfo { _, error in
       if error != nil {
         os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-        self.cameraConnectionInfoList[index].isConnected = false
+        CameraManager.instance.cameraContainer[index].isConnected = false
         if showToast {
           self.showCameraEmptyToast.toggle()
         }
         return
       }
-      self.cameraConnectionInfoList[index].isConnected = true
+      CameraManager.instance.cameraContainer[index].isConnected = true
       if showToast {
         self.showCameraConnectedToast.toggle()
       }
@@ -145,11 +128,11 @@ class MultiCameraViewModel: ObservableObject {
       os_log(
         "Enable Wired USB Control: GoPro %@",
         type: .info,
-        self.cameraConnectionInfoList[index].camera.serialNumber
+        camera.serialNumber
       )
-      self.cameraConnectionInfoList[index].camera.requestUsbCommand(command: .enableWiredUsbControl) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+      camera.requestUsbCommand(command: .enableWiredUsbControl) { error in
+        if let error {
+          os_log("Error: %@", type: .error, error.localizedDescription)
           return
         }
       }
@@ -158,10 +141,10 @@ class MultiCameraViewModel: ObservableObject {
 
   func startShootingAll() {
     os_log("Shutter On All", type: .info)
-    for cameraConnectionInfo in self.getConnectedCameraList() {
-      cameraConnectionInfo.camera.requestUsbCommand(command: .shutterOn) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbCommand(command: .shutterOn) { error in
+        if let error {
+          os_log("Error: %@", type: .error, error.localizedDescription)
           return
         }
       }
@@ -171,10 +154,10 @@ class MultiCameraViewModel: ObservableObject {
 
   func stopShootingAll() {
     os_log("Shutter Off All", type: .info)
-    for cameraConnectionInfo in self.getConnectedCameraList() {
-      cameraConnectionInfo.camera.requestUsbCommand(command: .shutterOff) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbCommand(command: .shutterOff) { error in
+        if let error {
+          os_log("Error: %@", type: .error, error.localizedDescription)
           return
         }
       }
@@ -186,25 +169,24 @@ class MultiCameraViewModel: ObservableObject {
     os_log("Download Media All", type: .info)
     self.getCreationTimestamp { creationTimestamp in
       let creationDate = Date(timeIntervalSince1970: TimeInterval(creationTimestamp))
-      let dateFormatter = DateFormatter()
-      dateFormatter.dateFormat = "YYMMdd_hhmmss"
-      let creationDateString = dateFormatter.string(from: creationDate)
+      let creationDateString = creationDate.toString(CustomDateFormat.simpleYearToSecond.rawValue)
+
       os_log("creationTimestamp: %@ from %@", type: .info, creationDateString, creationTimestamp.description)
-      for cameraConnectionInfo in self.getConnectedCameraList() {
+      for camera in self.getConnectedCameraList() {
         os_log(
           "Download media list: GoPro %@",
           type: .info,
-          cameraConnectionInfo.camera.serialNumber
+          camera.serialNumber
         )
-        cameraConnectionInfo.camera.requestUsbMediaList { mediaEndPointList, _, error in
-          if error != nil {
-            os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+        camera.requestUsbMediaList { mediaEndPointList, _, error in
+          if let error {
+            os_log("Error: %@", type: .error, error.localizedDescription)
             return
           }
 
           for mediaEndPoint in mediaEndPointList ?? [] {
             self.showDownloadMediaToast = true
-            cameraConnectionInfo.camera
+            camera
               .requestUsbMediaDownload(
                 mediaEndPoint: mediaEndPoint,
                 timestamp_path: creationDateString
@@ -217,7 +199,7 @@ class MultiCameraViewModel: ObservableObject {
                   if progress > 99.9 {
                     self.showDownloadMediaToast = false
                   }
-                  self.downloadMediaUrl = "[GoPro " + cameraConnectionInfo.camera
+                  self.downloadMediaUrl = "[GoPro " + camera
                     .serialNumber + "] " + (mediaEndPoint.split(separator: "/").last ?? "")
                   self.downloadProgress = progress
                 }
@@ -230,16 +212,16 @@ class MultiCameraViewModel: ObservableObject {
 
   func removeMediaAll() {
     os_log("Remove Media All", type: .info)
-    for cameraConnectionInfo in self.getConnectedCameraList() {
-      os_log("Remove media list: GoPro %@", type: .info, cameraConnectionInfo.camera.serialNumber)
-      cameraConnectionInfo.camera.requestUsbMediaList { mediaEndPointList, _, error in
+    for camera in self.getConnectedCameraList() {
+      os_log("Remove media list: GoPro %@", type: .info, camera.serialNumber)
+      camera.requestUsbMediaList { mediaEndPointList, _, error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
         }
 
         for mediaUrl in mediaEndPointList ?? [] {
-          cameraConnectionInfo.camera
+          camera
             .requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
               if error != nil {
                 os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
@@ -254,9 +236,9 @@ class MultiCameraViewModel: ObservableObject {
 
   func applyPreset1() {
     os_log("4K@120FPS, 16:9, Linear, 60Hz, Off, High, 10bit, Never, Pro", type: .info)
-    for cameraConnectionInfo in self.getConnectedCameraList() {
+    for camera in self.getConnectedCameraList() {
       for presetSetting in GoProUsbSettingPreset.mounted_4k_120fps.settings {
-        cameraConnectionInfo.camera.requestUsbSetting(setting: presetSetting) { error in
+        camera.requestUsbSetting(setting: presetSetting) { error in
           if error != nil {
             os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
             return
@@ -269,8 +251,8 @@ class MultiCameraViewModel: ObservableObject {
 
   func setVideoResolution4K() {
     os_log("Video Resolution: 4K, 16:9", type: .info)
-    for cameraConnectionInfo in self.cameraConnectionInfoList {
-      cameraConnectionInfo.camera.requestUsbSetting(setting: .videoResolution_4k_16_9) { error in
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbSetting(setting: .videoResolution_4k_16_9) { error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
@@ -282,8 +264,8 @@ class MultiCameraViewModel: ObservableObject {
 
   func setVideoFps120Hz() {
     os_log("Video FPS: 120Hz", type: .info)
-    for cameraConnectionInfo in self.cameraConnectionInfoList {
-      cameraConnectionInfo.camera.requestUsbSetting(setting: .fps_120) { error in
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbSetting(setting: .fps_120) { error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
@@ -295,8 +277,8 @@ class MultiCameraViewModel: ObservableObject {
 
   func setVideoDigitalLensLinear() {
     os_log("Video Digital Lens: Linear", type: .info)
-    for cameraConnectionInfo in self.cameraConnectionInfoList {
-      cameraConnectionInfo.camera.requestUsbSetting(setting: .videoDigitalLenses_linear) { error in
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbSetting(setting: .videoDigitalLenses_linear) { error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
@@ -308,8 +290,8 @@ class MultiCameraViewModel: ObservableObject {
 
   func setAntiFlicker60Hz() {
     os_log("Anti Flicker: 60Hz", type: .info)
-    for cameraConnectionInfo in self.cameraConnectionInfoList {
-      cameraConnectionInfo.camera.requestUsbSetting(setting: .antiFlicker_60) { error in
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbSetting(setting: .antiFlicker_60) { error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
@@ -321,8 +303,8 @@ class MultiCameraViewModel: ObservableObject {
 
   func setHyperSmoothOff() {
     os_log("Hypersmooth: Off", type: .info)
-    for cameraConnectionInfo in self.cameraConnectionInfoList {
-      cameraConnectionInfo.camera.requestUsbSetting(setting: .hypersmooth_off) { error in
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbSetting(setting: .hypersmooth_off) { error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
@@ -334,8 +316,8 @@ class MultiCameraViewModel: ObservableObject {
 
   func setHindsightOff() {
     os_log("Hindsight: Off", type: .info)
-    for cameraConnectionInfo in self.cameraConnectionInfoList {
-      cameraConnectionInfo.camera.requestUsbSetting(setting: .hindsight_off) { error in
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbSetting(setting: .hindsight_off) { error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
@@ -347,8 +329,8 @@ class MultiCameraViewModel: ObservableObject {
 
   func setVideoBitRateHigh() {
     os_log("System Video Bit Rate: High", type: .info)
-    for cameraConnectionInfo in self.cameraConnectionInfoList {
-      cameraConnectionInfo.camera.requestUsbSetting(setting: .systemVideoBitRate_high) { error in
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbSetting(setting: .systemVideoBitRate_high) { error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
@@ -360,8 +342,8 @@ class MultiCameraViewModel: ObservableObject {
 
   func setVideoBitDepth10bit() {
     os_log("System Video Bit Depth: 10bit", type: .info)
-    for cameraConnectionInfo in self.cameraConnectionInfoList {
-      cameraConnectionInfo.camera.requestUsbSetting(setting: .systemVideoBitDepth_10bit) { error in
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbSetting(setting: .systemVideoBitDepth_10bit) { error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
@@ -373,8 +355,8 @@ class MultiCameraViewModel: ObservableObject {
 
   func setAutoPowerDownNever() {
     os_log("Auto Power Down: Never", type: .info)
-    for cameraConnectionInfo in self.cameraConnectionInfoList {
-      cameraConnectionInfo.camera.requestUsbSetting(setting: .autoPowerDown_never) { error in
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbSetting(setting: .autoPowerDown_never) { error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
@@ -386,8 +368,8 @@ class MultiCameraViewModel: ObservableObject {
 
   func setControlsModePro() {
     os_log("Controls Mode: Pro", type: .info)
-    for cameraConnectionInfo in self.cameraConnectionInfoList {
-      cameraConnectionInfo.camera.requestUsbSetting(setting: .controls_pro) { error in
+    for camera in self.getConnectedCameraList() {
+      camera.requestUsbSetting(setting: .controls_pro) { error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
