@@ -1,8 +1,8 @@
-/* CameraSelectionView.swift/Open GoPro, Version 2.0 (C) Copyright 2021 GoPro, Inc. (http://gopro.com/OpenGoPro). */
+/* MultiCameraView.swift/Open GoPro, Version 2.0 (C) Copyright 2021 GoPro, Inc. (http://gopro.com/OpenGoPro). */
 /* This copyright was auto-generated on Wed, Sep  1, 2021  5:06:10 PM */
 
 //
-//  CameraSelectionView.swift
+//  MultiCameraView.swift
 //  MultiCameraController
 //
 
@@ -12,26 +12,12 @@ import os.log
 import SwiftUI
 
 struct MultiCameraView: View {
+  @StateObject var multiCameraViewModel = MultiCameraViewModel()
   @StateObject var dataServerViewModel = DataServerViewModel()
 
-  @State private var showSettingsView = false
+  @State private var showSettingView = false
   @State private var showCameraView = false
 
-  @State private var goProSerialNumberList =
-    UserDefaults.standard
-      .array(forKey: "GoProSerialNumberList") as? [String] ?? []
-  @State private var cameraConnectionInfoList: [CameraConnectionInfo] =
-    (
-      UserDefaults.standard
-        .array(forKey: "GoProSerialNumberList") as? [String] ?? []
-    )
-    .reduce([CameraConnectionInfo]()) { result, item in
-      var temp = result
-      temp.append(CameraConnectionInfo(camera: GoPro(serialNumber: item)))
-      return temp
-    }
-
-  @State private var isCameraConnectionInfoListEditable = false
   @State private var targetCameraConnectionInfo = CameraConnectionInfo(camera: GoPro(serialNumber: ""))
   @State private var newCameraSerialNumber: String = ""
   @State private var downloadMediaUrl: String = ""
@@ -58,7 +44,7 @@ struct MultiCameraView: View {
           Spacer()
           Button(action: {
             os_log("Shutter On All", type: .info)
-            for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
+            for cameraConnectionInfo in self.multiCameraViewModel.getConnectedCameraList() {
               cameraConnectionInfo.camera.requestUsbCommand(command: .shutterOn) { error in
                 if error != nil {
                   os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
@@ -89,7 +75,7 @@ struct MultiCameraView: View {
           Spacer()
           Button(action: {
             os_log("Shutter Off All", type: .info)
-            for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
+            for cameraConnectionInfo in self.multiCameraViewModel.getConnectedCameraList() {
               cameraConnectionInfo.camera.requestUsbCommand(command: .shutterOff) { error in
                 if error != nil {
                   os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
@@ -126,7 +112,7 @@ struct MultiCameraView: View {
               dateFormatter.dateFormat = "YYMMdd_hhmmss"
               let creationDateString = dateFormatter.string(from: creationDate)
               os_log("creationTimestamp: %@ from %@", type: .info, creationDateString, creationTimestamp.description)
-              for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
+              for cameraConnectionInfo in self.multiCameraViewModel.getConnectedCameraList() {
                 os_log(
                   "Download media list: GoPro %@",
                   type: .info,
@@ -185,7 +171,7 @@ struct MultiCameraView: View {
           Spacer()
           Button(action: {
             os_log("Remove Media All", type: .info)
-            for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
+            for cameraConnectionInfo in self.multiCameraViewModel.getConnectedCameraList() {
               os_log("Remove media list: GoPro %@", type: .info, cameraConnectionInfo.camera.serialNumber)
               cameraConnectionInfo.camera.requestUsbMediaList { mediaEndPointList, _, error in
                 if error != nil {
@@ -227,8 +213,8 @@ struct MultiCameraView: View {
           .padding([.leading, .trailing], 3)
           Spacer()
           Button(action: {
-            os_log("SettingsView", type: .info)
-            self.showSettingsView = true
+            os_log("SettingView", type: .info)
+            self.showSettingView = true
           }, label: {
             VStack {
               HStack {
@@ -237,7 +223,7 @@ struct MultiCameraView: View {
               }
               .foregroundColor(.orange)
               .padding([.top, .bottom], 2)
-              Text("Settings")
+              Text("Setting")
                 .foregroundColor(.orange)
             }
           })
@@ -270,34 +256,35 @@ struct MultiCameraView: View {
               .fixedSize(horizontal: true, vertical: false)
             Button(action: {
               if self.newCameraSerialNumber.count == 3, self.newCameraSerialNumber.isInt(),
-                 !self.cameraConnectionInfoList.contains(where: { $0.camera.serialNumber == newCameraSerialNumber })
+                 !self.multiCameraViewModel.cameraConnectionInfoList
+                 .contains(where: { $0.camera.serialNumber == newCameraSerialNumber })
               {
                 os_log("Add GoPro %@", type: .info, self.newCameraSerialNumber)
-                self.goProSerialNumberList.append(self.newCameraSerialNumber)
-                self.cameraConnectionInfoList
+                self.multiCameraViewModel.goProSerialNumberList.append(self.newCameraSerialNumber)
+                self.multiCameraViewModel.cameraConnectionInfoList
                   .append(CameraConnectionInfo(camera: GoPro(serialNumber: self.newCameraSerialNumber)))
 
-                let index = self.cameraConnectionInfoList.count - 1
+                let index = self.multiCameraViewModel.cameraConnectionInfoList.count - 1
                 os_log(
                   "Enable Wired USB Control: GoPro %@",
                   type: .info,
-                  self.cameraConnectionInfoList[index].camera.serialNumber
+                  self.multiCameraViewModel.cameraConnectionInfoList[index].camera.serialNumber
                 )
-                self.cameraConnectionInfoList[index].camera.requestUsbCameraInfo { _, error in
+                self.multiCameraViewModel.cameraConnectionInfoList[index].camera.requestUsbCameraInfo { _, error in
                   if error != nil {
                     os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-                    if index >= self.cameraConnectionInfoList.count {
+                    if index >= self.multiCameraViewModel.cameraConnectionInfoList.count {
                       return
                     }
-                    self.cameraConnectionInfoList[index].isConnected = false
+                    self.multiCameraViewModel.cameraConnectionInfoList[index].isConnected = false
                     return
                   }
 
-                  if index >= self.cameraConnectionInfoList.count {
+                  if index >= self.multiCameraViewModel.cameraConnectionInfoList.count {
                     return
                   }
-                  self.cameraConnectionInfoList[index].isConnected = true
-                  self.cameraConnectionInfoList[index].camera
+                  self.multiCameraViewModel.cameraConnectionInfoList[index].isConnected = true
+                  self.multiCameraViewModel.cameraConnectionInfoList[index].camera
                     .requestUsbCommand(command: .enableWiredUsbControl) { error in
                       if error != nil {
                         os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
@@ -326,7 +313,7 @@ struct MultiCameraView: View {
           }
         }
         List {
-          ForEach(self.cameraConnectionInfoList, id: \.self) { cameraConnectionInfo in
+          ForEach(self.multiCameraViewModel.cameraConnectionInfoList, id: \.self) { cameraConnectionInfo in
             Button(action: {
               if cameraConnectionInfo.isConnected {
                 os_log("CameraView: GoPro %@", type: .info, cameraConnectionInfo.camera.serialNumber)
@@ -367,7 +354,7 @@ struct MultiCameraView: View {
             .swipeActions(edge: .leading) {
               Button(action: {
                 os_log("Connect: GoPro %@", type: .info, cameraConnectionInfo.camera.serialNumber)
-                if let index = cameraConnectionInfoList.firstIndex(of: cameraConnectionInfo) {
+                if let index = multiCameraViewModel.cameraConnectionInfoList.firstIndex(of: cameraConnectionInfo) {
                   self.connectCameraItem(index: index, showToast: true)
                 }
               }, label: {
@@ -382,24 +369,24 @@ struct MultiCameraView: View {
           .onMove(perform: self.moveCameraItem)
           .onLongPressGesture {
             withAnimation {
-              self.isCameraConnectionInfoListEditable = true
+              self.multiCameraViewModel.cameraConnectionInfoListEditable = true
             }
           }
           .listRowSeparator(.hidden)
         }
         .environment(
           \.editMode,
-          self.isCameraConnectionInfoListEditable ? .constant(.active) : .constant(.inactive)
+          self.multiCameraViewModel.cameraConnectionInfoListEditable ? .constant(.active) : .constant(.inactive)
         )
         .refreshable {
-          for idx in 0 ..< self.cameraConnectionInfoList.count {
+          for idx in 0 ..< self.multiCameraViewModel.cameraConnectionInfoList.count {
             self.connectCameraItem(index: idx)
           }
           self.showRefreshCameraListToast.toggle()
         }
       }
       .onAppear {
-        for idx in 0 ..< self.cameraConnectionInfoList.count {
+        for idx in 0 ..< self.multiCameraViewModel.cameraConnectionInfoList.count {
           self.connectCameraItem(index: idx)
         }
         self.showCameraToast.toggle()
@@ -407,10 +394,9 @@ struct MultiCameraView: View {
       .navigationDestination(isPresented: self.$dataServerViewModel.showDataServerView) {
         DataServerView(dataServerViewModel: self.dataServerViewModel)
       }
-      .navigationDestination(isPresented: self.$showSettingsView) {
-        SettingsView(
-          cameraConnectionInfoList: self.cameraConnectionInfoList
-            .filter { $0.isConnected == true }
+      .navigationDestination(isPresented: self.$showSettingView) {
+        SettingView(
+          multiCameraViewModel: self.multiCameraViewModel
         )
       }
       .navigationDestination(isPresented: self.$showCameraView) {
@@ -426,7 +412,7 @@ struct MultiCameraView: View {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("camera", .primary),
-          title: "Connected : \(self.cameraConnectionInfoList.filter { $0.isConnected == true }.count) cams",
+          title: "Connected : \(self.multiCameraViewModel.getConnectedCameraList().count) cams",
           style: .style(titleColor: .primary)
         )
       }
@@ -434,7 +420,7 @@ struct MultiCameraView: View {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("video", .teal),
-          title: "Shutter On All : \(self.cameraConnectionInfoList.filter { $0.isConnected == true }.count) cams",
+          title: "Shutter On All : \(self.multiCameraViewModel.getConnectedCameraList().count) cams",
           style: .style(titleColor: .teal)
         )
       }
@@ -442,7 +428,7 @@ struct MultiCameraView: View {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("stop", .pink),
-          title: "Shutter Off All : \(self.cameraConnectionInfoList.filter { $0.isConnected == true }.count) cams",
+          title: "Shutter Off All : \(self.multiCameraViewModel.getConnectedCameraList().count) cams",
           style: .style(titleColor: .pink)
         )
       }
@@ -457,7 +443,7 @@ struct MultiCameraView: View {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("trash", .red),
-          title: "Remove Media All : \(self.cameraConnectionInfoList.filter { $0.isConnected == true }.count) cams",
+          title: "Remove Media All : \(self.multiCameraViewModel.getConnectedCameraList().count) cams",
           style: .style(titleColor: .red)
         )
       }
@@ -465,7 +451,7 @@ struct MultiCameraView: View {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("camera", .teal),
-          title: "Refresh Camera List : \(self.cameraConnectionInfoList.filter { $0.isConnected == true }.count) cams",
+          title: "Refresh Camera List : \(self.multiCameraViewModel.getConnectedCameraList().count) cams",
           style: .style(titleColor: .teal)
         )
       }
@@ -485,8 +471,8 @@ struct MultiCameraView: View {
           style: .style(titleColor: .pink)
         )
       }
-      .onChange(of: self.goProSerialNumberList) {
-        UserDefaults.standard.set(self.goProSerialNumberList, forKey: "GoProSerialNumberList")
+      .onChange(of: self.multiCameraViewModel.goProSerialNumberList) {
+        UserDefaults.standard.set(self.multiCameraViewModel.goProSerialNumberList, forKey: "GoProSerialNumberList")
       }
     }
     .navigationViewStyle(StackNavigationViewStyle())
@@ -496,33 +482,41 @@ struct MultiCameraView: View {
     os_log(
       "Remove GoPro %@",
       type: .info,
-      self.cameraConnectionInfoList[offsets[offsets.startIndex]].camera.serialNumber
+      self.multiCameraViewModel.cameraConnectionInfoList[offsets[offsets.startIndex]].camera.serialNumber
     )
-    self.goProSerialNumberList.remove(atOffsets: offsets)
-    self.cameraConnectionInfoList.remove(atOffsets: offsets)
+    self.multiCameraViewModel.goProSerialNumberList.remove(atOffsets: offsets)
+    self.multiCameraViewModel.cameraConnectionInfoList.remove(atOffsets: offsets)
   }
 
   private func moveCameraItem(from source: IndexSet, to destination: Int) {
-    os_log("Move GoPro %@", type: .info, self.cameraConnectionInfoList[source[source.startIndex]].camera.serialNumber)
-    self.goProSerialNumberList.move(fromOffsets: source, toOffset: destination)
-    self.cameraConnectionInfoList.move(fromOffsets: source, toOffset: destination)
+    os_log(
+      "Move GoPro %@",
+      type: .info,
+      self.multiCameraViewModel.cameraConnectionInfoList[source[source.startIndex]].camera.serialNumber
+    )
+    self.multiCameraViewModel.goProSerialNumberList.move(fromOffsets: source, toOffset: destination)
+    self.multiCameraViewModel.cameraConnectionInfoList.move(fromOffsets: source, toOffset: destination)
     withAnimation {
-      self.isCameraConnectionInfoListEditable = false
+      self.multiCameraViewModel.cameraConnectionInfoListEditable = false
     }
   }
 
   private func connectCameraItem(index: Int, showToast: Bool = false) {
-    os_log("Connect GoPro %@", type: .info, self.cameraConnectionInfoList[index].camera.serialNumber)
-    self.cameraConnectionInfoList[index].camera.requestUsbCameraInfo { _, error in
+    os_log(
+      "Connect GoPro %@",
+      type: .info,
+      self.multiCameraViewModel.cameraConnectionInfoList[index].camera.serialNumber
+    )
+    self.multiCameraViewModel.cameraConnectionInfoList[index].camera.requestUsbCameraInfo { _, error in
       if error != nil {
         os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-        self.cameraConnectionInfoList[index].isConnected = false
+        self.multiCameraViewModel.cameraConnectionInfoList[index].isConnected = false
         if showToast {
           self.showCameraEmptyToast.toggle()
         }
         return
       }
-      self.cameraConnectionInfoList[index].isConnected = true
+      self.multiCameraViewModel.cameraConnectionInfoList[index].isConnected = true
       if showToast {
         self.showCameraConnectedToast.toggle()
       }
@@ -530,20 +524,21 @@ struct MultiCameraView: View {
       os_log(
         "Enable Wired USB Control: GoPro %@",
         type: .info,
-        self.cameraConnectionInfoList[index].camera.serialNumber
+        self.multiCameraViewModel.cameraConnectionInfoList[index].camera.serialNumber
       )
-      self.cameraConnectionInfoList[index].camera.requestUsbCommand(command: .enableWiredUsbControl) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
+      self.multiCameraViewModel.cameraConnectionInfoList[index].camera
+        .requestUsbCommand(command: .enableWiredUsbControl) { error in
+          if error != nil {
+            os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+            return
+          }
         }
-      }
     }
   }
 
   private func getCreationTimestamp(completion: @escaping (Int) -> Void) {
     var creationTimestamp = 2_147_483_647
-    for cameraConnectionInfo in self.cameraConnectionInfoList.filter({ $0.isConnected == true }) {
+    for cameraConnectionInfo in self.multiCameraViewModel.getConnectedCameraList() {
       cameraConnectionInfo.camera.requestUsbMediaList { _, latestCreationTimestamp, error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
@@ -551,7 +546,7 @@ struct MultiCameraView: View {
         }
         creationTimestamp = min(creationTimestamp, latestCreationTimestamp)
 
-        if cameraConnectionInfo == self.cameraConnectionInfoList.last {
+        if cameraConnectionInfo == self.multiCameraViewModel.cameraConnectionInfoList.last {
           completion(creationTimestamp)
         }
       }
