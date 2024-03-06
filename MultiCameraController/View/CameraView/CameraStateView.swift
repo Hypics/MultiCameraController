@@ -18,7 +18,7 @@ struct CameraStateView: View {
         Text("Model Name")
           .foregroundColor(.orange)
         Divider()
-        Text(self.cameraViewModel.goProInfo?.model_name ?? "")
+        Text(self.cameraViewModel.camera.getCameraInfo()?.model_name ?? "")
       }
       .padding(10)
       .overlay(
@@ -31,7 +31,7 @@ struct CameraStateView: View {
         Text("Serial Number")
           .foregroundColor(.orange)
         Divider()
-        Text(self.cameraViewModel.goProInfo?.serial_number ?? "")
+        Text(self.cameraViewModel.camera.getCameraInfo()?.serial_number ?? "")
       }
       .padding(10)
       .overlay(
@@ -44,7 +44,7 @@ struct CameraStateView: View {
         Text("AP SSID")
           .foregroundColor(.orange)
         Divider()
-        Text(self.cameraViewModel.goProInfo?.ap_ssid ?? "")
+        Text(self.cameraViewModel.camera.getCameraInfo()?.ap_ssid ?? "")
       }
       .padding(10)
       .overlay(
@@ -57,7 +57,7 @@ struct CameraStateView: View {
         Text("Firmware Version")
           .foregroundColor(.orange)
         Divider()
-        Text(self.cameraViewModel.goProInfo?.firmware_version ?? "")
+        Text(self.cameraViewModel.camera.getCameraInfo()?.firmware_version ?? "")
       }
       .padding(10)
       .overlay(

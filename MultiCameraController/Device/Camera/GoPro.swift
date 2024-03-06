@@ -39,6 +39,14 @@ class GoPro: Camera {
     hasher.combine(self.serialNumber)
   }
 
+  func setCameraInfo(cameraInfo: CameraInfo) {
+    self.goProInfo = cameraInfo as? GoProInfo
+  }
+
+  func getCameraInfo() -> CameraInfo? {
+    self.goProInfo
+  }
+
   func startShoot(_ completion: @escaping (Result<Bool, Error>) -> Void) {
     os_log("Shutter On", type: .info)
     self.requestUsbCommand(command: .shutterOn) { error in

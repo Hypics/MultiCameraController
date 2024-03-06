@@ -11,6 +11,9 @@ protocol Camera: Hashable {
   var serialNumber: String { get set }
   var isConnected: Bool { get set }
 
+  func setCameraInfo(cameraInfo: CameraInfo)
+  func getCameraInfo() -> CameraInfo?
+
   func startShoot(_ completion: @escaping (Result<Bool, Error>) -> Void)
   func stopShoot(_ completion: @escaping (Result<Bool, Error>) -> Void)
 
