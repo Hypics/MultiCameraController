@@ -14,7 +14,10 @@ struct MultiCameraControlView: View {
     HStack {
       Spacer()
       Spacer()
-      Button(action: self.multiCameraViewModel.startShootingAll, label: {
+      Button(action: {
+        CameraManager.instance.startShootAll()
+        self.multiCameraViewModel.showShutterOnToast.toggle()
+      }, label: {
         VStack {
           HStack {
             Image(systemName: "video")
@@ -34,7 +37,10 @@ struct MultiCameraControlView: View {
       .padding([.top, .bottom], 5)
       .padding([.leading, .trailing], 3)
       Spacer()
-      Button(action: self.multiCameraViewModel.stopShootingAll, label: {
+      Button(action: {
+        CameraManager.instance.stopShootAll()
+        self.multiCameraViewModel.showShutterOffToast.toggle()
+      }, label: {
         VStack {
           HStack {
             Image(systemName: "stop")
@@ -75,7 +81,7 @@ struct MultiCameraControlView: View {
       .padding([.top, .bottom], 5)
       .padding([.leading, .trailing], 3)
       Spacer()
-      Button(action: self.multiCameraViewModel.removeMediaAll, label: {
+      Button(action: self.multiCameraViewModel.removeAllMedia, label: {
         VStack {
           HStack {
             Image(systemName: "trash")

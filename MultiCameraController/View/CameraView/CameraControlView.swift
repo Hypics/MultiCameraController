@@ -15,7 +15,7 @@ struct CameraControlView: View {
     HStack {
       Spacer()
       Spacer()
-      Button(action: self.cameraViewModel.startShooting, label: {
+      Button(action: self.cameraViewModel.startShoot, label: {
         VStack {
           Image(systemName: "video")
             .foregroundColor(.teal)
@@ -31,7 +31,7 @@ struct CameraControlView: View {
       )
       .padding(5)
       Spacer()
-      Button(action: self.cameraViewModel.stopShooting, label: {
+      Button(action: self.cameraViewModel.stopShoot, label: {
         VStack {
           Image(systemName: "stop")
             .foregroundColor(.pink)
@@ -66,7 +66,7 @@ struct CameraControlView: View {
       )
       .padding(5)
       Spacer()
-      Button(action: self.cameraViewModel.removeMediaAll, label: {
+      Button(action: self.cameraViewModel.removeAllMedia, label: {
         VStack {
           HStack {
             Image(systemName: "trash")

@@ -16,15 +16,11 @@ struct CameraListView: View {
       ForEach(CameraManager.instance.cameraContainer, id: \.self.serialNumber) { camera in
         Button(action: {
           if camera.isConnected {
-            os_log("CameraView: GoPro %@", type: .info, camera.serialNumber)
+            os_log("CameraView: %@", type: .info, camera.cameraName)
             self.multiCameraViewModel.targetCamera = camera
             self.multiCameraViewModel.showCameraView = true
           } else {
-            os_log(
-              "CameraView is not connected: GoPro %@",
-              type: .error,
-              camera.serialNumber
-            )
+            os_log("CameraView is not connected: %@", type: .error, camera.cameraName)
             self.multiCameraViewModel.showCameraEmptyToast.toggle()
           }
         }, label: {
@@ -53,8 +49,10 @@ struct CameraListView: View {
         })
         .swipeActions(edge: .leading) {
           Button(action: {
-            os_log("Connect: GoPro %@", type: .info, camera.serialNumber)
-            self.multiCameraViewModel.connectCameraItem(camera: camera, showToast: true)
+            os_log("Connect: %@", type: .info, camera.cameraName)
+            camera.checkConnection(nil)
+            camera.enableWiredUsbControl(nil)
+            self.multiCameraViewModel.showCameraConnectedToast.toggle()
           }, label: {
             Text("Connect")
               .padding([.top, .bottom], 5)
@@ -77,21 +75,15 @@ struct CameraListView: View {
       self.multiCameraViewModel.cameraConnectionInfoListEditable ? .constant(.active) : .constant(.inactive)
     )
     .refreshable {
-      for camera in CameraManager.instance.cameraContainer {
-        self.multiCameraViewModel.connectCameraItem(camera: camera)
-      }
+      CameraManager.instance.checkCameraAll()
+      CameraManager.instance.enableWiredUsbControlAll()
       self.multiCameraViewModel.showRefreshCameraListToast.toggle()
     }
   }
 
   private func moveCameraItem(from source: IndexSet, to destination: Int) {
-    os_log(
-      "Move GoPro %@",
-      type: .info,
-      CameraManager.instance.cameraContainer[source[source.startIndex]].serialNumber
-    )
-    self.multiCameraViewModel.goProSerialNumberList.move(fromOffsets: source, toOffset: destination)
-    CameraManager.instance.cameraContainer.move(fromOffsets: source, toOffset: destination)
+    os_log("Move GoPro %@", type: .info, CameraManager.instance.cameraContainer[source[source.startIndex]].serialNumber)
+    CameraManager.instance.moveCamera(from: source, to: destination)
     withAnimation {
       self.multiCameraViewModel.cameraConnectionInfoListEditable = false
     }

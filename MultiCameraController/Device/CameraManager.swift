@@ -10,6 +10,11 @@ import os.log
 
 class CameraManager {
   static let instance: CameraManager = .init()
+
+  public var cameraSerialNumberList =
+    UserDefaults.standard
+      .array(forKey: "GoProSerialNumberList") as? [String] ?? []
+
   public var cameraContainer: [any Camera] = (
     UserDefaults.standard
       .array(forKey: "GoProSerialNumberList") as? [String] ?? []
@@ -20,7 +25,33 @@ class CameraManager {
     return temp
   }
 
-  func addCamera(camera _: any Camera) {}
+  func getConnectedCameraContainer() -> [any Camera] {
+    self.cameraContainer.filter { $0.isConnected == true }
+  }
+
+  func addCamera(newCameraSerialNumber: String) {
+    if newCameraSerialNumber.count == 3, newCameraSerialNumber.isInt(),
+       !self.cameraContainer.contains(where: { $0.serialNumber == newCameraSerialNumber })
+    {
+      self.cameraSerialNumberList.append(newCameraSerialNumber)
+      self.cameraContainer
+        .append(GoPro(serialNumber: newCameraSerialNumber))
+      self.cameraContainer.last?.checkConnection(nil)
+      self.cameraContainer.last?.enableWiredUsbControl(nil)
+    } else {
+      os_log("%@ is not a serial number (3 digits)", type: .error, newCameraSerialNumber)
+    }
+  }
+
+  func moveCamera(from source: IndexSet, to destination: Int) {
+    self.cameraSerialNumberList.move(fromOffsets: source, toOffset: destination)
+    self.cameraContainer.move(fromOffsets: source, toOffset: destination)
+  }
+
+  func removeCamera(at offsets: IndexSet) {
+    self.cameraSerialNumberList.remove(atOffsets: offsets)
+    self.cameraContainer.remove(atOffsets: offsets)
+  }
 
   func removeCamera(camera _: any Camera) {}
 
@@ -37,8 +68,22 @@ class CameraManager {
   }
 
   func checkCameraAll() {
-    for camera in self.cameraContainer {
+    for camera in self.getConnectedCameraContainer() {
       camera.checkConnection { result in
+        switch result {
+        case let .success(response):
+          os_log("Success: %@: %@", type: .info, #function, response)
+
+        case let .failure(error):
+          os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        }
+      }
+    }
+  }
+
+  func enableWiredUsbControlAll() {
+    for camera in self.getConnectedCameraContainer() {
+      camera.enableWiredUsbControl { result in
         switch result {
         case let .success(response):
           os_log("Success: %@: %@", type: .info, #function, response)
@@ -53,7 +98,7 @@ class CameraManager {
 
 extension CameraManager {
   func startShootAll() {
-    for camera in self.cameraContainer {
+    for camera in self.getConnectedCameraContainer() {
       camera.startShoot { result in
         switch result {
         case let .success(response):
@@ -67,7 +112,7 @@ extension CameraManager {
   }
 
   func stopShootAll() {
-    for camera in self.cameraContainer {
+    for camera in self.getConnectedCameraContainer() {
       camera.stopShoot { result in
         switch result {
         case let .success(response):
@@ -95,7 +140,7 @@ extension CameraManager {
   }
 
   func downloadAllMediaFromCamera(camera: any Camera) {
-    camera.downloadAllMedia { result, _ in
+    camera.downloadAllMedia { result, _, _ in
       switch result {
       case let .success(response):
         os_log("Success: %@: %@", type: .info, #function, response)
@@ -107,9 +152,9 @@ extension CameraManager {
   }
 
   func downloadAllMediaFromAllCamera() {
-    for (index, camera) in self.cameraContainer.enumerated() {
-      os_log("Download All Media (%@/%@", type: .info, index + 1, self.cameraContainer.count)
-      camera.downloadAllMedia { result, _ in
+    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+      os_log("Download All Media (%@/%@)", type: .info, index + 1, self.cameraContainer.count)
+      camera.downloadAllMedia { result, _, _ in
         switch result {
         case let .success(response):
           os_log("Success: %@: %@", type: .info, #function, response)
@@ -146,7 +191,7 @@ extension CameraManager {
   }
 
   func removeAllMediaFromAllCamera() {
-    for (index, camera) in self.cameraContainer.enumerated() {
+    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
       os_log("Rmove All Media (%@/%@)", type: .info, index + 1, self.cameraContainer.count)
       camera.removeAllMedia { result in
         switch result {

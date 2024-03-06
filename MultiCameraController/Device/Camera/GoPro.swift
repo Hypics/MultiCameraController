@@ -11,16 +11,22 @@ import os.log
 
 class GoPro: Camera {
   var serialNumber: String
+  var cameraName: String
   var isConnected: Bool
+  var mediaUrlStringList: [String]
 
   var goProInfo: GoProInfo?
 
   let url: String
-  let timeoutInterval: Double = 3.0
+  let timeoutInterval: Double
 
   init(serialNumber: String) {
     self.serialNumber = serialNumber
+    self.cameraName = "GoPro \(self.serialNumber)"
     self.isConnected = false
+    self.mediaUrlStringList = []
+    self.timeoutInterval = 3.0
+
     if serialNumber.isEmpty {
       self.url = ""
       return
@@ -47,64 +53,6 @@ class GoPro: Camera {
     self.goProInfo
   }
 
-  func startShoot(_ completion: @escaping (Result<Bool, Error>) -> Void) {
-    os_log("Shutter On", type: .info)
-    self.requestUsbCommand(command: .shutterOn) { error in
-      if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
-        completion(.failure(error))
-      } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
-        completion(.success(true))
-      }
-    }
-  }
-
-  func stopShoot(_ completion: @escaping (Result<Bool, Error>) -> Void) {
-    os_log("Shutter Off", type: .info)
-    self.requestUsbCommand(command: .shutterOff) { error in
-      if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
-        completion(.failure(error))
-      } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
-        completion(.success(true))
-      }
-    }
-  }
-
-  func checkConnection(_ completion: @escaping (Result<Bool, Error>) -> Void) {
-    os_log("Get camera info: GoPro %@", type: .info, self.serialNumber)
-    self.requestUsbCameraInfo { goProInfo, error in
-      if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
-        self.isConnected = false
-        self.goProInfo = nil
-        completion(.failure(error))
-      } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
-        self.isConnected = true
-        self.goProInfo = goProInfo
-        completion(.success(true))
-      }
-    }
-  }
-
   func downloadMedia(mediaUrl: String, _ completion: @escaping (Result<Bool, Error>, Double?) -> Void) {
     os_log("Download Media: %@", type: .info, mediaUrl)
     self.requestUsbMediaDownload(mediaEndPoint: mediaUrl, timestamp_path: nil) { progress, error in
@@ -123,26 +71,17 @@ class GoPro: Camera {
     }
   }
 
-  func downloadAllMedia(_ completion: @escaping (Result<Bool, Error>, Double?) -> Void) {
-    os_log("Download media list: GoPro %@", type: .info, self.serialNumber)
-    self.requestUsbMediaList { mediaEndPointList, _, error in
-      if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
-        completion(.failure(error), nil)
-      } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
-        guard let mediaEndPointList else { return }
-        for (index, mediaUrl) in mediaEndPointList.enumerated() {
-          os_log("Download Media (%@/%@: %@", type: .info, index + 1, mediaEndPointList.count, mediaUrl)
+  func downloadAllMedia(_ completion: @escaping (Result<Bool, Error>, String?, Double?) -> Void) {
+    self.updateMediaUrlStringList { result, mediaUrlStringList in
+      switch result {
+      case .success:
+        guard let mediaUrlStringList else { return }
+        for (index, mediaUrl) in mediaUrlStringList.enumerated() {
+          os_log("Download Media (%@/%@): %@", type: .info, index + 1, mediaUrlStringList.count, mediaUrl)
           self.requestUsbMediaDownload(mediaEndPoint: mediaUrl, timestamp_path: nil) { progress, error in
             if let error {
               os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
-              completion(.failure(error), nil)
+              completion(.failure(error), nil, nil)
             } else {
               os_log(
                 "Success: %@: %@",
@@ -150,10 +89,15 @@ class GoPro: Camera {
                 #function,
                 Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
               )
-              completion(.success(true), progress)
+              completion(.success(true), mediaUrl, progress)
             }
           }
         }
+
+      case let .failure(error):
+        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        completion(.failure(error), nil, nil)
+        return
       }
     }
   }
@@ -171,31 +115,37 @@ class GoPro: Camera {
           #function,
           Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
         )
+        // TODO: remove item?
         completion(.success(true))
       }
     }
   }
 
-  func removeAllMedia(_ completion: @escaping (Result<Bool, Error>) -> Void) {
-    os_log("Remove media list: GoPro %@", type: .info, self.serialNumber)
-    self.requestUsbMediaList { mediaEndPointList, _, error in
-      if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
-        completion(.failure(error))
-      } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
-        guard let mediaEndPointList else { return }
-        for (index, mediaUrl) in mediaEndPointList.enumerated() {
-          os_log("Download Media (%@/%@: %@", type: .info, index + 1, mediaEndPointList.count, mediaUrl)
+  func removeMedia(at offsets: IndexSet) {
+    self
+      .requestUsbMediaRemove(
+        mediaEndPoint: self
+          .mediaUrlStringList[offsets[offsets.startIndex]]
+      ) { error in
+        if let error {
+          os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+          return
+        }
+        self.mediaUrlStringList.remove(atOffsets: offsets)
+      }
+  }
+
+  func removeAllMedia(_ completion: ((Result<Bool, Error>) -> Void)?) {
+    self.updateMediaUrlStringList { result, mediaUrlStringList in
+      switch result {
+      case .success:
+        guard let mediaUrlStringList else { return }
+        for (index, mediaUrl) in mediaUrlStringList.enumerated() {
+          os_log("Download Media (%@/%@): %@", type: .info, index + 1, mediaUrlStringList.count, mediaUrl)
           self.requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
             if let error {
               os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
-              completion(.failure(error))
+              completion?(.failure(error))
             } else {
               os_log(
                 "Success: %@: %@",
@@ -203,10 +153,15 @@ class GoPro: Camera {
                 #function,
                 Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
               )
-              completion(.success(true))
+              completion?(.success(true))
             }
           }
         }
+
+      case let .failure(error):
+        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        completion?(.failure(error))
+        return
       }
     }
   }

@@ -27,8 +27,7 @@ struct AddCameraView: View {
           .frame(width: 200)
           .fixedSize(horizontal: true, vertical: false)
         Button(action: {
-          self.multiCameraViewModel
-            .registerCamera(newCameraSerialNumber: self.multiCameraViewModel.newCameraSerialNumber)
+          CameraManager.instance.addCamera(newCameraSerialNumber: self.multiCameraViewModel.newCameraSerialNumber)
         }, label: {
           HStack {
             Image(systemName: "plus.square")
