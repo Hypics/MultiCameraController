@@ -9,8 +9,8 @@ import Foundation
 import os.log
 
 class CameraViewModel: ObservableObject {
-  @Published var camera: GoPro
-  @Published var cameraInfo: CameraInfo?
+  @Published var camera: any Camera
+  @Published var goProInfo: GoProInfo?
 
   @Published var mediaEndPointList: [String] = []
 
@@ -23,7 +23,7 @@ class CameraViewModel: ObservableObject {
   @Published var showRemoveMediaToast = false
   @Published var showRefreshMediaListToast = false
 
-  init(camera: GoPro) {
+  init(camera: any Camera) {
     self.camera = camera
   }
 
@@ -59,12 +59,12 @@ class CameraViewModel: ObservableObject {
 
   func getCameraInfo() {
     os_log("Get camera info: GoPro %@", type: .info, self.camera.serialNumber)
-    self.camera.requestUsbCameraInfo { cameraInfo, error in
+    self.camera.requestUsbCameraInfo { goProInfo, error in
       if error != nil {
         os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
         return
       }
-      self.cameraInfo = cameraInfo
+      self.goProInfo = goProInfo
     }
 
   }
@@ -75,7 +75,7 @@ extension CameraViewModel {
     os_log("Download Media All", type: .info)
     for mediaEndPoint in self.mediaEndPointList {
       self.showDownloadMediaToast = true
-      self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
+      self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint, timestamp_path: nil) { progress, error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
           return
@@ -107,7 +107,7 @@ extension CameraViewModel {
   func downloadMedia(mediaEndPoint: String) {
     os_log("Download Media: %@", type: .info, mediaEndPoint)
     self.showDownloadMediaToast = true
-    self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint) { progress, error in
+    self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint, timestamp_path: nil) { progress, error in
       if error != nil {
         os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
         return

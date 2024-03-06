@@ -29,8 +29,8 @@ struct MultiCameraView: View {
         CameraListView(multiCameraViewModel: self.multiCameraViewModel)
       }
       .onAppear {
-        for idx in 0 ..< self.multiCameraViewModel.cameraConnectionInfoList.count {
-          self.multiCameraViewModel.connectCameraItem(index: idx)
+        for camera in CameraManager.instance.cameraContainer {
+          self.multiCameraViewModel.connectCameraItem(camera: camera)
         }
         self.multiCameraViewModel.showCameraToast.toggle()
       }
@@ -44,8 +44,7 @@ struct MultiCameraView: View {
       }
       .navigationDestination(isPresented: self.$multiCameraViewModel.showCameraView) {
         CameraView(cameraViewModel: CameraViewModel(
-          camera: self.multiCameraViewModel.targetCameraConnectionInfo
-            .camera
+          camera: self.multiCameraViewModel.targetCamera
         ))
       }
       .navigationBarTitleDisplayMode(.inline)

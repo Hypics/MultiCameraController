@@ -13,27 +13,27 @@ struct CameraListView: View {
 
   var body: some View {
     List {
-      ForEach(self.multiCameraViewModel.cameraConnectionInfoList, id: \.self) { cameraConnectionInfo in
+      ForEach(CameraManager.instance.cameraContainer, id: \.self.serialNumber) { camera in
         Button(action: {
-          if cameraConnectionInfo.isConnected {
-            os_log("CameraView: GoPro %@", type: .info, cameraConnectionInfo.camera.serialNumber)
-            self.multiCameraViewModel.targetCameraConnectionInfo = cameraConnectionInfo
+          if camera.isConnected {
+            os_log("CameraView: GoPro %@", type: .info, camera.serialNumber)
+            self.multiCameraViewModel.targetCamera = camera
             self.multiCameraViewModel.showCameraView = true
           } else {
             os_log(
               "CameraView is not connected: GoPro %@",
               type: .error,
-              cameraConnectionInfo.camera.serialNumber
+              camera.serialNumber
             )
             self.multiCameraViewModel.showCameraEmptyToast.toggle()
           }
         }, label: {
           HStack {
             Spacer()
-            if cameraConnectionInfo.isConnected {
+            if camera.isConnected {
               Image(systemName: "camera")
                 .foregroundColor(.teal)
-              Text("GoPro " + cameraConnectionInfo.camera.serialNumber)
+              Text("GoPro " + camera.serialNumber)
                 .foregroundColor(.teal)
               Spacer()
               Image(systemName: "chevron.right")
@@ -42,7 +42,7 @@ struct CameraListView: View {
             } else {
               Image(systemName: "camera")
                 .foregroundColor(.pink)
-              Text("GoPro " + cameraConnectionInfo.camera.serialNumber)
+              Text("GoPro " + camera.serialNumber)
                 .foregroundColor(.pink)
               Spacer()
               Image(systemName: "chevron.right")
@@ -53,10 +53,8 @@ struct CameraListView: View {
         })
         .swipeActions(edge: .leading) {
           Button(action: {
-            os_log("Connect: GoPro %@", type: .info, cameraConnectionInfo.camera.serialNumber)
-            if let index = multiCameraViewModel.cameraConnectionInfoList.firstIndex(of: cameraConnectionInfo) {
-              self.multiCameraViewModel.connectCameraItem(index: index, showToast: true)
-            }
+            os_log("Connect: GoPro %@", type: .info, camera.serialNumber)
+            self.multiCameraViewModel.connectCameraItem(camera: camera, showToast: true)
           }, label: {
             Text("Connect")
               .padding([.top, .bottom], 5)
@@ -79,8 +77,8 @@ struct CameraListView: View {
       self.multiCameraViewModel.cameraConnectionInfoListEditable ? .constant(.active) : .constant(.inactive)
     )
     .refreshable {
-      for idx in 0 ..< self.multiCameraViewModel.cameraConnectionInfoList.count {
-        self.multiCameraViewModel.connectCameraItem(index: idx)
+      for camera in CameraManager.instance.cameraContainer {
+        self.multiCameraViewModel.connectCameraItem(camera: camera)
       }
       self.multiCameraViewModel.showRefreshCameraListToast.toggle()
     }
@@ -90,10 +88,10 @@ struct CameraListView: View {
     os_log(
       "Move GoPro %@",
       type: .info,
-      self.multiCameraViewModel.cameraConnectionInfoList[source[source.startIndex]].camera.serialNumber
+      CameraManager.instance.cameraContainer[source[source.startIndex]].serialNumber
     )
     self.multiCameraViewModel.goProSerialNumberList.move(fromOffsets: source, toOffset: destination)
-    self.multiCameraViewModel.cameraConnectionInfoList.move(fromOffsets: source, toOffset: destination)
+    CameraManager.instance.cameraContainer.move(fromOffsets: source, toOffset: destination)
     withAnimation {
       self.multiCameraViewModel.cameraConnectionInfoListEditable = false
     }

@@ -1,16 +1,11 @@
 //
-//  GoProCameraInfo.swift
+//  GoProInfo.swift
 //  MultiCameraController
 //
 //  Created by INHWAN WEE on 11/23/23.
 //
 
-struct CameraConnectionInfo: Hashable {
-  var camera: GoPro
-  var isConnected = false
-}
-
-struct CameraInfo: Codable {
+struct GoProInfo: Codable {
   var ap_mac_addr: String
   var ap_ssid: String
   var firmware_version: String

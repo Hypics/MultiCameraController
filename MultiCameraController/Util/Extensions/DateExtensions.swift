@@ -121,13 +121,10 @@ extension Date {
 }
 
 enum CustomDateFormat: String {
-  case yearToSecond = "yyyyMMdd HH:mm:ss"
-  case simpleYearToFractionalSecond = "yyMMdd-HHmmss.SSSZ"
-  case yearToFractionalSecond = "yyyy-MM-dd HHmmss.SSSZ"
+  case yearToDay = "yyyyMMdd"
+  case yearToSecond = "yyyyMMdd HHmmss"
+  case yearToFractionalSecond = "yyyyMMdd HHmmss.SSSZ"
   case yearToFractionalSecondSquareBracket = "[yyyy-MM-dd HH:mm:ss.SSSZ]"
-  case yearToDay = "yyyy-MM-dd"
-  case photoMetadata = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-  case photoDateText = "yyyy/MM/dd 'T' HH:mm"
-  case hourMinute = "HH:mm"
-  case djiMediaManager = "yyyy-MM-dd kk:mm:ss"
+  case simpleYearToSecond = "yyMMdd_HHmmss"
+  case simpleYearToFractionalSecond = "yyMMdd-HHmmss.SSSZ"
 }
