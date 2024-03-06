@@ -161,7 +161,7 @@ final class GoPro: NSObject {
     let fileManager = FileManager.default
     let appUrl: URL = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
     let fileName: String = URL(string: mediaEndPoint)?.lastPathComponent ?? ""
-    var fileUrl: URL = if let timestamp_path {
+    let fileUrl: URL = if let timestamp_path {
       appUrl.appendingPathComponent(timestamp_path).appendingPathComponent(self.serialNumber + "_" + fileName)
     } else {
       appUrl.appendingPathComponent(self.serialNumber + "_" + fileName)
