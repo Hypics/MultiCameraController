@@ -25,8 +25,8 @@ struct CameraView: View {
       DownloadMediaView(cameraViewModel: self.cameraViewModel)
     })
     .onAppear {
-      self.cameraViewModel.getCameraInfo()
-      self.cameraViewModel.downloadMediaList()
+      self.cameraViewModel.camera.checkConnection(nil)
+      self.cameraViewModel.camera.updateMediaUrlStringList(nil)
     }
     .toast(isPresenting: self.$cameraViewModel.showShutterOnToast, duration: 1, tapToDismiss: true) {
       AlertToast(
@@ -55,7 +55,7 @@ struct CameraView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("trash", .red),
-        title: "\(self.cameraViewModel.getCameraSerialNumber()): \(self.cameraViewModel.getMediaListCount())",
+        title: "\(self.cameraViewModel.camera.cameraName): \(self.cameraViewModel.getMediaListCount())",
         style: .style(titleColor: .red)
       )
     }
@@ -63,7 +63,7 @@ struct CameraView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("photo", .teal),
-        title: "\(self.cameraViewModel.getCameraSerialNumber()): \(self.cameraViewModel.getMediaListCount())",
+        title: "\(self.cameraViewModel.camera.cameraName): \(self.cameraViewModel.getMediaListCount())",
         style: .style(titleColor: .teal)
       )
     }

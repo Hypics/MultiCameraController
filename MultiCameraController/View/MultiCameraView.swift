@@ -29,9 +29,8 @@ struct MultiCameraView: View {
         CameraListView(multiCameraViewModel: self.multiCameraViewModel)
       }
       .onAppear {
-        for camera in CameraManager.instance.cameraContainer {
-          self.multiCameraViewModel.connectCameraItem(camera: camera)
-        }
+        CameraManager.instance.checkCameraAll()
+        CameraManager.instance.enableWiredUsbControlAll()
         self.multiCameraViewModel.showCameraToast.toggle()
       }
       .navigationDestination(isPresented: self.$dataServerViewModel.showDataServerView) {
@@ -116,8 +115,8 @@ struct MultiCameraView: View {
           style: .style(titleColor: .pink)
         )
       }
-      .onChange(of: self.multiCameraViewModel.goProSerialNumberList) {
-        UserDefaults.standard.set(self.multiCameraViewModel.goProSerialNumberList, forKey: "GoProSerialNumberList")
+      .onChange(of: CameraManager.instance.cameraSerialNumberList) {
+        UserDefaults.standard.set(CameraManager.instance.cameraSerialNumberList, forKey: "GoProSerialNumberList")
       }
     }
     .navigationViewStyle(StackNavigationViewStyle())

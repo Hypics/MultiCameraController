@@ -9,10 +9,6 @@ import Foundation
 import os.log
 
 class MultiCameraViewModel: ObservableObject {
-  @Published var goProSerialNumberList =
-    UserDefaults.standard
-      .array(forKey: "GoProSerialNumberList") as? [String] ?? []
-
   @Published var showSettingView = false
   @Published var showCameraView = false
 
@@ -64,105 +60,9 @@ class MultiCameraViewModel: ObservableObject {
     }
   }
 
-  func registerCamera(newCameraSerialNumber: String) {
-    if self.newCameraSerialNumber.count == 3, self.newCameraSerialNumber.isInt(),
-       !CameraManager.instance.cameraContainer.contains(where: { $0.serialNumber == newCameraSerialNumber })
-    {
-      os_log("Add GoPro %@", type: .info, self.newCameraSerialNumber)
-      self.goProSerialNumberList.append(self.newCameraSerialNumber)
-      CameraManager.instance.cameraContainer
-        .append(GoPro(serialNumber: self.newCameraSerialNumber))
-
-      os_log(
-        "Enable Wired USB Control: GoPro %@",
-        type: .info,
-        CameraManager.instance.cameraContainer.last?.serialNumber ?? ""
-      )
-      CameraManager.instance.cameraContainer.last?.requestUsbCameraInfo { _, error in
-        if let error {
-          os_log("Error: %@", type: .error, error.localizedDescription)
-          return
-        }
-
-        CameraManager.instance.cameraContainer[CameraManager.instance.cameraContainer.count - 1].isConnected = true
-        CameraManager.instance.cameraContainer.last?.requestUsbCommand(command: .enableWiredUsbControl) { error in
-          if error != nil {
-            os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-            return
-          }
-        }
-      }
-    } else {
-      os_log("%@ is not a serial number (3 digits)", type: .error, self.newCameraSerialNumber)
-    }
-  }
-
   func deleteCameraItem(at offsets: IndexSet) {
-    os_log(
-      "Remove GoPro %@",
-      type: .info,
-      CameraManager.instance.cameraContainer[offsets[offsets.startIndex]].serialNumber
-    )
-    self.goProSerialNumberList.remove(atOffsets: offsets)
-    CameraManager.instance.cameraContainer.remove(atOffsets: offsets)
-  }
-
-  func connectCameraItem(camera: any Camera, showToast: Bool = false) {
-    os_log("Connect GoPro %@", type: .info, camera.serialNumber)
-    guard let index = CameraManager.instance.cameraContainer
-      .firstIndex(where: { $0.serialNumber == camera.serialNumber }) else { return }
-    camera.requestUsbCameraInfo { _, error in
-      if error != nil {
-        os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-        CameraManager.instance.cameraContainer[index].isConnected = false
-        if showToast {
-          self.showCameraEmptyToast.toggle()
-        }
-        return
-      }
-      CameraManager.instance.cameraContainer[index].isConnected = true
-      if showToast {
-        self.showCameraConnectedToast.toggle()
-      }
-
-      os_log(
-        "Enable Wired USB Control: GoPro %@",
-        type: .info,
-        camera.serialNumber
-      )
-      camera.requestUsbCommand(command: .enableWiredUsbControl) { error in
-        if let error {
-          os_log("Error: %@", type: .error, error.localizedDescription)
-          return
-        }
-      }
-    }
-  }
-
-  func startShootingAll() {
-    os_log("Shutter On All", type: .info)
-    for camera in self.getConnectedCameraList() {
-      camera.requestUsbCommand(command: .shutterOn) { error in
-        if let error {
-          os_log("Error: %@", type: .error, error.localizedDescription)
-          return
-        }
-      }
-    }
-    self.showShutterOnToast.toggle()
-  }
-
-  func stopShootingAll() {
-    os_log("Shutter Off All", type: .info)
-    for camera in self.getConnectedCameraList() {
-      camera.requestUsbCommand(command: .shutterOff) { error in
-        if let error {
-          os_log("Error: %@", type: .error, error.localizedDescription)
-          return
-        }
-      }
-    }
-    self.showShutterOffToast.toggle()
+    os_log("Remove %@", type: .info, CameraManager.instance.cameraContainer[offsets[offsets.startIndex]].cameraName)
+    CameraManager.instance.removeCamera(at: offsets)
   }
 
   func downloadMediaAll() {
@@ -173,11 +73,7 @@ class MultiCameraViewModel: ObservableObject {
 
       os_log("creationTimestamp: %@ from %@", type: .info, creationDateString, creationTimestamp.description)
       for camera in self.getConnectedCameraList() {
-        os_log(
-          "Download media list: GoPro %@",
-          type: .info,
-          camera.serialNumber
-        )
+        os_log("Download media list: %@", type: .info, camera.cameraName)
         camera.requestUsbMediaList { mediaEndPointList, _, error in
           if let error {
             os_log("Error: %@", type: .error, error.localizedDescription)
@@ -210,27 +106,8 @@ class MultiCameraViewModel: ObservableObject {
     }
   }
 
-  func removeMediaAll() {
-    os_log("Remove Media All", type: .info)
-    for camera in self.getConnectedCameraList() {
-      os_log("Remove media list: GoPro %@", type: .info, camera.serialNumber)
-      camera.requestUsbMediaList { mediaEndPointList, _, error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
-        }
-
-        for mediaUrl in mediaEndPointList ?? [] {
-          camera
-            .requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
-              if error != nil {
-                os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-                return
-              }
-            }
-        }
-      }
-    }
+  func removeAllMedia() {
+    CameraManager.instance.removeAllMediaFromAllCamera()
     self.showRemoveMediaToast.toggle()
   }
 

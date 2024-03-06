@@ -11,8 +11,6 @@ import os.log
 class CameraViewModel: ObservableObject {
   @Published var camera: any Camera
 
-  @Published var mediaEndPointList: [String] = []
-
   @Published var downloadMediaUrl: String = ""
   @Published var downloadProgress: Double = 0.0
 
@@ -26,45 +24,32 @@ class CameraViewModel: ObservableObject {
     self.camera = camera
   }
 
-  func getCameraSerialNumber() -> String {
-    "GoPro \(self.camera.serialNumber)"
-  }
-
   func getMediaListCount() -> String {
-    "\(String(describing: self.mediaEndPointList.count)) files"
+    "\(String(describing: self.camera.mediaUrlStringList.count)) files"
   }
 
-  func startShooting() {
-    os_log("Shutter On", type: .info)
-    self.camera.requestUsbCommand(command: .shutterOn) { error in
-      if let error {
-        os_log("Error: %@", type: .error, error.localizedDescription)
+  func startShoot() {
+    self.camera.startShoot { result in
+      switch result {
+      case .success:
+        self.showShutterOnToast.toggle()
+
+      case let .failure(error):
+        os_log("Error: %@: %@", type: .error, #function, error.localizedDescription)
         return
       }
     }
-    self.showShutterOnToast.toggle()
   }
 
-  func stopShooting() {
-    os_log("Shutter Off", type: .info)
-    self.camera.requestUsbCommand(command: .shutterOff) { error in
-      if let error {
-        os_log("Error: %@", type: .error, error.localizedDescription)
-        return
-      }
-    }
-    self.showShutterOffToast.toggle()
-  }
+  func stopShoot() {
+    self.camera.stopShoot { result in
+      switch result {
+      case .success:
+        self.showShutterOffToast.toggle()
 
-  func getCameraInfo() {
-    os_log("Get camera info: GoPro %@", type: .info, self.camera.serialNumber)
-    self.camera.requestUsbCameraInfo { goProInfo, error in
-      if let error {
-        os_log("Error: %@", type: .error, error.localizedDescription)
+      case let .failure(error):
+        os_log("Error: %@: %@", type: .error, #function, error.localizedDescription)
         return
-      }
-      if let goProInfo {
-        self.camera.setCameraInfo(cameraInfo: goProInfo)
       }
     }
   }
@@ -72,36 +57,40 @@ class CameraViewModel: ObservableObject {
 
 extension CameraViewModel {
   func downloadMediaAll() {
-    os_log("Download Media All", type: .info)
-    for mediaEndPoint in self.mediaEndPointList {
+    self.camera.downloadAllMedia { result, mediaUrl, progress in
       self.showDownloadMediaToast = true
-      self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint, timestamp_path: nil) { progress, error in
-        if let error {
-          os_log("Error: %@", type: .error, error.localizedDescription)
-          return
-        }
-        if let progress {
-          if progress > 99.9 {
-            self.showDownloadMediaToast = false
-          }
-          self.downloadMediaUrl = mediaEndPoint
-          self.downloadProgress = progress
-        }
+
+      switch result {
+      case let .success(response):
+        os_log("Success: %@: %@", type: .info, #function, response)
+
+      case let .failure(error):
+        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+      }
+
+      guard let mediaUrl else { return }
+      guard let progress else { return }
+
+      self.downloadMediaUrl = mediaUrl
+      self.downloadProgress = progress
+
+      if progress > 99.9 {
+        self.showDownloadMediaToast = false
       }
     }
   }
 
-  func removeMediaAll() {
-    os_log("Remove Media All", type: .info)
-    for mediaUrl in self.mediaEndPointList {
-      self.camera.requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
-        if let error {
-          os_log("Error: %@", type: .error, error.localizedDescription)
-          return
-        }
+  func removeAllMedia() {
+    self.camera.removeAllMedia { result in
+      switch result {
+      case .success:
+        self.showRemoveMediaToast.toggle()
+
+      case let .failure(error):
+        os_log("Error: %@: %@", type: .error, #function, error.localizedDescription)
+        return
       }
     }
-    self.showRemoveMediaToast.toggle()
   }
 
   func downloadMedia(mediaEndPoint: String) {
@@ -120,31 +109,5 @@ extension CameraViewModel {
         self.downloadProgress = progress
       }
     }
-  }
-
-  func downloadMediaList() {
-    os_log("Download media list: GoPro %@", type: .info, self.camera.serialNumber)
-    self.camera.requestUsbMediaList { mediaEndPointList, _, error in
-      if let error {
-        os_log("Error: %@", type: .error, error.localizedDescription)
-        return
-      }
-      self.mediaEndPointList = mediaEndPointList ?? []
-    }
-    self.showRefreshMediaListToast.toggle()
-  }
-
-  func deleteMediaItem(at offsets: IndexSet) {
-    self.camera
-      .requestUsbMediaRemove(
-        mediaEndPoint: self
-          .mediaEndPointList[offsets[offsets.startIndex]]
-      ) { error in
-        if let error {
-          os_log("Error: %@", type: .error, error.localizedDescription)
-          return
-        }
-        self.mediaEndPointList.remove(atOffsets: offsets)
-      }
   }
 }
