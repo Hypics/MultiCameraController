@@ -5,7 +5,7 @@
 //  Created by INHWAN WEE on 11/23/23.
 //
 
-struct GoProInfo: Codable {
+struct GoProInfo: CameraInfo, Decodable {
   var ap_mac_addr: String
   var ap_ssid: String
   var firmware_version: String
