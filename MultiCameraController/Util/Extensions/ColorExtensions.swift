@@ -30,4 +30,22 @@ extension Color {
       opacity: alpha
     )
   }
+
+  static func initWithHexadecimal(red: Double, green: Double, blue: Double, opacity: Double) -> Color {
+    self.init(red: red / 255.0, green: green / 255.0, blue: blue / 255.0, opacity: opacity)
+  }
+
+  static func initWithHexadecimal(red: Double, green: Double, blue: Double) -> Color {
+    self.initWithHexadecimal(red: red, green: green, blue: blue, opacity: 1.0)
+  }
+}
+
+extension Color {
+  // Color names are from https://colornames.org/search/
+
+  static let skyishMyish: Color = .init(hex: "#80ffd5") // .opacity(0.5)
+  static let pearlPrincess: Color = .init(hex: "#ffcaca")
+  static let summerMorningSkyline: Color = .init(hex: "#c9e9ff")
+  static let lightRosea: Color = .init(hex: "#ffbde7")
+  static let rawChicien: Color = .init(hex: "#ffb7b0")
 }
