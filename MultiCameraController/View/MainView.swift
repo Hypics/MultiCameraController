@@ -1,5 +1,5 @@
 //
-//  mainView.swift
+//  MainView.swift
 //  MultiCameraController
 //
 //  Created by INHWAN WEE on 3/7/24.
@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct MainView: View {
-  @StateObject var multiCameraViewModel = MultiCameraViewModel()
   @StateObject var dataServerViewModel = DataServerViewModel()
-
-  @State var showMultiCameraView = false
+  @StateObject var multiCameraViewModel = MultiCameraViewModel()
+  @StateObject var settingViewModel = SettingViewModel()
+  @State var viewInfoList: [ViewInfo] = []
 
   var body: some View {
-    NavigationStack(path: self.$multiCameraViewModel.path) {
+    NavigationStack(path: self.$viewInfoList) {
       ZStack {
         Color.hauntedMeadow
 
         Button(
           action: {
-            self.multiCameraViewModel.path.append(StackView(view: .multiCameraView))
+            self.viewInfoList.append(ViewInfo(view: .multiCameraView))
           },
           label: {
             VStack {
@@ -37,25 +37,26 @@ struct MainView: View {
         )
       }
       .ignoresSafeArea()
-      .navigationDestination(for: StackView.self) { stackView in
-        switch stackView.view {
+      .navigationDestination(for: ViewInfo.self) { viewInfo in
+        switch viewInfo.view {
         case .mainView:
           MainView()
 
         case .multiCameraView:
           MultiCameraView(
             multiCameraViewModel: self.multiCameraViewModel,
-            dataServerViewModel: self.dataServerViewModel
+            dataServerViewModel: self.dataServerViewModel,
+            viewInfoList: self.$viewInfoList
           )
 
         case .cameraView:
           CameraView(cameraViewModel: CameraViewModel(
-            camera: stackView
+            camera: viewInfo
               .data as? (any Camera) ?? GoPro(serialNumber: "")
           ))
 
         case .settingView:
-          SettingView(multiCameraViewModel: self.multiCameraViewModel)
+          SettingView(settingViewModel: self.settingViewModel)
 
         case .dataServerView:
           DataServerView(dataServerViewModel: self.dataServerViewModel)

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MultiCameraControlView: View {
   @ObservedObject var multiCameraViewModel: MultiCameraViewModel
+  @Binding var viewInfoList: [ViewInfo]
 
   var body: some View {
     HStack {
@@ -103,7 +104,7 @@ struct MultiCameraControlView: View {
       .padding([.leading, .trailing], 3)
       Spacer()
       Button(action: {
-        self.multiCameraViewModel.path.append(StackView(view: .settingView))
+        self.viewInfoList.append(ViewInfo(view: .settingView))
       }, label: {
         VStack {
           HStack {

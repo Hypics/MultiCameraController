@@ -9,19 +9,19 @@ import AlertToast
 import SwiftUI
 
 struct SettingView: View {
-  @ObservedObject var multiCameraViewModel: MultiCameraViewModel
+  @ObservedObject var settingViewModel: SettingViewModel
 
   var body: some View {
     VStack {
       Divider()
         .padding([.top, .bottom], 5)
-      PresetView(multiCameraViewModel: self.multiCameraViewModel)
+      PresetView(settingViewModel: self.settingViewModel)
       Divider()
         .padding([.top, .bottom], 5)
       Text("Configure List").padding()
       List {
         Button(action: {
-          self.multiCameraViewModel.setVideoResolution(.videoResolution_4k)
+          self.settingViewModel.setVideoResolution(.videoResolution_4k)
         }, label: {
           HStack {
             Spacer()
@@ -34,7 +34,7 @@ struct SettingView: View {
         })
         .listRowSeparator(.hidden)
         Button(action: {
-          self.multiCameraViewModel.setFps(.fps_60)
+          self.settingViewModel.setFps(.fps_60)
         }, label: {
           HStack {
             Spacer()
@@ -47,7 +47,7 @@ struct SettingView: View {
         })
         .listRowSeparator(.hidden)
         Button(action: {
-          self.multiCameraViewModel.setVideoDigitalLens(.linear)
+          self.settingViewModel.setVideoDigitalLens(.linear)
         }, label: {
           HStack {
             Spacer()
@@ -60,7 +60,7 @@ struct SettingView: View {
         })
         .listRowSeparator(.hidden)
         Button(action: {
-          self.multiCameraViewModel.setAntiFlicker(.antiFlicker_60)
+          self.settingViewModel.setAntiFlicker(.antiFlicker_60)
         }, label: {
           HStack {
             Spacer()
@@ -73,7 +73,7 @@ struct SettingView: View {
         })
         .listRowSeparator(.hidden)
         Button(action: {
-          self.multiCameraViewModel.setHypersmooth(.off)
+          self.settingViewModel.setHypersmooth(.off)
         }, label: {
           HStack {
             Spacer()
@@ -86,7 +86,7 @@ struct SettingView: View {
         })
         .listRowSeparator(.hidden)
         Button(action: {
-          self.multiCameraViewModel.setHindsight(.hindsight_off)
+          self.settingViewModel.setHindsight(.hindsight_off)
         }, label: {
           HStack {
             Spacer()
@@ -99,7 +99,7 @@ struct SettingView: View {
         })
         .listRowSeparator(.hidden)
         Button(action: {
-          self.multiCameraViewModel.setVideoBitRate(.high)
+          self.settingViewModel.setVideoBitRate(.high)
         }, label: {
           HStack {
             Spacer()
@@ -112,7 +112,7 @@ struct SettingView: View {
         })
         .listRowSeparator(.hidden)
         Button(action: {
-          self.multiCameraViewModel.setVideoBitDepth(.videoBitDepth_10bit)
+          self.settingViewModel.setVideoBitDepth(.videoBitDepth_10bit)
         }, label: {
           HStack {
             Spacer()
@@ -125,7 +125,7 @@ struct SettingView: View {
         })
         .listRowSeparator(.hidden)
         Button(action: {
-          self.multiCameraViewModel.setAutoPowerDown(.autoPowerDown_never)
+          self.settingViewModel.setAutoPowerDown(.autoPowerDown_never)
         }, label: {
           HStack {
             Spacer()
@@ -138,7 +138,7 @@ struct SettingView: View {
         })
         .listRowSeparator(.hidden)
         Button(action: {
-          self.multiCameraViewModel.setControlsMode(.pro)
+          self.settingViewModel.setControlsMode(.pro)
         }, label: {
           HStack {
             Spacer()
@@ -157,7 +157,7 @@ struct SettingView: View {
         Text("Settings Control").fontWeight(.bold)
       }
     }
-    .toast(isPresenting: self.$multiCameraViewModel.showPreset1Toast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$settingViewModel.showPreset1Toast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("1.square", .pink),
@@ -165,7 +165,7 @@ struct SettingView: View {
         style: .style(titleColor: .primary)
       )
     }
-    .toast(isPresenting: self.$multiCameraViewModel.showVideoResolutionToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$settingViewModel.showVideoResolutionToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("camera", .pink),
@@ -173,7 +173,7 @@ struct SettingView: View {
         style: .style(titleColor: .pink)
       )
     }
-    .toast(isPresenting: self.$multiCameraViewModel.showVideoFpsToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$settingViewModel.showVideoFpsToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("rectangle.on.rectangle", .pink),
@@ -181,7 +181,7 @@ struct SettingView: View {
         style: .style(titleColor: .pink)
       )
     }
-    .toast(isPresenting: self.$multiCameraViewModel.showVideoDigitalLensToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$settingViewModel.showVideoDigitalLensToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("field.of.view.wide", .red),
@@ -189,7 +189,7 @@ struct SettingView: View {
         style: .style(titleColor: .red)
       )
     }
-    .toast(isPresenting: self.$multiCameraViewModel.showAntiFlickerToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$settingViewModel.showAntiFlickerToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("warninglight", .red),
@@ -197,7 +197,7 @@ struct SettingView: View {
         style: .style(titleColor: .red)
       )
     }
-    .toast(isPresenting: self.$multiCameraViewModel.showHypersmoothToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$settingViewModel.showHypersmoothToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("circle.and.line.horizontal", .orange),
@@ -205,7 +205,7 @@ struct SettingView: View {
         style: .style(titleColor: .orange)
       )
     }
-    .toast(isPresenting: self.$multiCameraViewModel.showHindsightToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$settingViewModel.showHindsightToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("arrowshape.turn.up.backward.badge.clock", .orange),
@@ -213,7 +213,7 @@ struct SettingView: View {
         style: .style(titleColor: .orange)
       )
     }
-    .toast(isPresenting: self.$multiCameraViewModel.showSystemVideoBitRateToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$settingViewModel.showSystemVideoBitRateToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("slider.horizontal.3", .teal),
@@ -221,7 +221,7 @@ struct SettingView: View {
         style: .style(titleColor: .teal)
       )
     }
-    .toast(isPresenting: self.$multiCameraViewModel.showSystemVideoBitDepthToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$settingViewModel.showSystemVideoBitDepthToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("slider.vertical.3", .teal),
@@ -229,7 +229,7 @@ struct SettingView: View {
         style: .style(titleColor: .teal)
       )
     }
-    .toast(isPresenting: self.$multiCameraViewModel.showAutoPowerDownToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$settingViewModel.showAutoPowerDownToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("powersleep", .indigo),
@@ -237,7 +237,7 @@ struct SettingView: View {
         style: .style(titleColor: .indigo)
       )
     }
-    .toast(isPresenting: self.$multiCameraViewModel.showControlsModeToast, duration: 1, tapToDismiss: true) {
+    .toast(isPresenting: self.$settingViewModel.showControlsModeToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("wrench.and.screwdriver", .indigo),
@@ -250,6 +250,6 @@ struct SettingView: View {
 
 struct SettingView_Previews: PreviewProvider {
   static var previews: some View {
-    SettingView(multiCameraViewModel: MultiCameraViewModel())
+    SettingView(settingViewModel: SettingViewModel())
   }
 }

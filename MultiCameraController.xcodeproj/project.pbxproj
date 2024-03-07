@@ -15,8 +15,9 @@
 		4E6224292B999ECA00F3503B /* CameraManagerSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224282B999ECA00F3503B /* CameraManagerSetting.swift */; };
 		4E62242B2B99AB4900F3503B /* CameraManagerPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62242A2B99AB4900F3503B /* CameraManagerPreset.swift */; };
 		4E62242D2B99AD2F00F3503B /* GoProPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62242C2B99AD2F00F3503B /* GoProPreset.swift */; };
-		4E62242F2B99DACA00F3503B /* mainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62242E2B99DACA00F3503B /* mainView.swift */; };
-		4E6224312B9A016400F3503B /* StackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224302B9A016400F3503B /* StackView.swift */; };
+		4E62242F2B99DACA00F3503B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62242E2B99DACA00F3503B /* MainView.swift */; };
+		4E6224312B9A016400F3503B /* ViewInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224302B9A016400F3503B /* ViewInfo.swift */; };
+		4E6224332B9A140400F3503B /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224322B9A140400F3503B /* SettingViewModel.swift */; };
 		4E6786752B9767D50004A7D8 /* DataServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */; };
 		4E6786782B97704D0004A7D8 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786772B97704D0004A7D8 /* LoginView.swift */; };
 		4E67867A2B977CC00004A7D8 /* SessionStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786792B977CC00004A7D8 /* SessionStateView.swift */; };
@@ -72,8 +73,9 @@
 		4E6224282B999ECA00F3503B /* CameraManagerSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManagerSetting.swift; sourceTree = "<group>"; };
 		4E62242A2B99AB4900F3503B /* CameraManagerPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManagerPreset.swift; sourceTree = "<group>"; };
 		4E62242C2B99AD2F00F3503B /* GoProPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProPreset.swift; sourceTree = "<group>"; };
-		4E62242E2B99DACA00F3503B /* mainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mainView.swift; sourceTree = "<group>"; };
-		4E6224302B9A016400F3503B /* StackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackView.swift; sourceTree = "<group>"; };
+		4E62242E2B99DACA00F3503B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		4E6224302B9A016400F3503B /* ViewInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewInfo.swift; sourceTree = "<group>"; };
+		4E6224322B9A140400F3503B /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
 		4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServerViewModel.swift; sourceTree = "<group>"; };
 		4E6786772B97704D0004A7D8 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4E6786792B977CC00004A7D8 /* SessionStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateView.swift; sourceTree = "<group>"; };
@@ -157,7 +159,7 @@
 				4E67869E2B98BD210004A7D8 /* CameraInfo.swift */,
 				4E67867D2B97839D0004A7D8 /* FileItemInfo.swift */,
 				4E6224222B99764700F3503B /* CameraSetting.swift */,
-				4E6224302B9A016400F3503B /* StackView.swift */,
+				4E6224302B9A016400F3503B /* ViewInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -165,9 +167,10 @@
 		4E6786702B97614C0004A7D8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */,
 				4E67867F2B978CBF0004A7D8 /* CameraViewModel.swift */,
+				4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */,
 				4E67868B2B988B1A0004A7D8 /* MultiCameraViewModel.swift */,
+				4E6224322B9A140400F3503B /* SettingViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -308,9 +311,9 @@
 				4E6786882B988AA10004A7D8 /* SettingView */,
 				C9401CF12631FBFD00E5208E /* CameraView.swift */,
 				4ECB28C12B2E13C4004BA07F /* DataServerView.swift */,
+				4E62242E2B99DACA00F3503B /* MainView.swift */,
 				4E931F1C2B0F9E870042B2AA /* MultiCameraView.swift */,
 				4E931F1D2B0F9E870042B2AA /* SettingView.swift */,
-				4E62242E2B99DACA00F3503B /* mainView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -458,10 +461,11 @@
 			files = (
 				4EAA6FA82B0FA002004DD63E /* GoProUsbCommand.swift in Sources */,
 				4E62241F2B99659400F3503B /* GoProMedia.swift in Sources */,
+				4E6224332B9A140400F3503B /* SettingViewModel.swift in Sources */,
 				4EAA6FA02B0F9FFA004DD63E /* StringExtensions.swift in Sources */,
 				4E67867E2B97839D0004A7D8 /* FileItemInfo.swift in Sources */,
 				4E67867C2B9782AB0004A7D8 /* UploadMediaView.swift in Sources */,
-				4E6224312B9A016400F3503B /* StackView.swift in Sources */,
+				4E6224312B9A016400F3503B /* ViewInfo.swift in Sources */,
 				4E931F1F2B0F9E870042B2AA /* SettingView.swift in Sources */,
 				4E67869F2B98BD210004A7D8 /* CameraInfo.swift in Sources */,
 				4E67868C2B988B1A0004A7D8 /* MultiCameraViewModel.swift in Sources */,
@@ -485,7 +489,7 @@
 				4E6786912B9893570004A7D8 /* CameraListView.swift in Sources */,
 				4E6224232B99764700F3503B /* CameraSetting.swift in Sources */,
 				4E6786802B978CBF0004A7D8 /* CameraViewModel.swift in Sources */,
-				4E62242F2B99DACA00F3503B /* mainView.swift in Sources */,
+				4E62242F2B99DACA00F3503B /* MainView.swift in Sources */,
 				4EAA6FA92B0FA002004DD63E /* GoProMediaInfo.swift in Sources */,
 				4E6786782B97704D0004A7D8 /* LoginView.swift in Sources */,
 				4E67867A2B977CC00004A7D8 /* SessionStateView.swift in Sources */,

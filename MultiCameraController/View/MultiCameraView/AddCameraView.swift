@@ -10,6 +10,8 @@ import SwiftUI
 struct AddCameraView: View {
   @ObservedObject var multiCameraViewModel: MultiCameraViewModel
 
+  @State var newCameraSerialNumber = ""
+
   var body: some View {
     ZStack {
       HStack {
@@ -17,7 +19,7 @@ struct AddCameraView: View {
       }
       HStack {
         Spacer()
-        TextField("Serial Number (last 3 digits)", text: self.$multiCameraViewModel.newCameraSerialNumber)
+        TextField("Serial Number (last 3 digits)", text: self.$newCameraSerialNumber)
           .font(.system(size: 13, weight: .bold, design: .rounded))
           .padding(10)
           .overlay(
@@ -27,7 +29,7 @@ struct AddCameraView: View {
           .frame(width: 200)
           .fixedSize(horizontal: true, vertical: false)
         Button(action: {
-          CameraManager.instance.addCamera(newCameraSerialNumber: self.multiCameraViewModel.newCameraSerialNumber)
+          CameraManager.instance.addCamera(serialNumber: self.newCameraSerialNumber)
         }, label: {
           HStack {
             Image(systemName: "plus.square")

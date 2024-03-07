@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct LoginView: View {
-  @ObservedObject var multiCameraViewModel: MultiCameraViewModel
   @ObservedObject var dataServerViewModel: DataServerViewModel
+  @Binding var viewInfoList: [ViewInfo]
 
   var body: some View {
     HStack {
@@ -41,7 +41,7 @@ struct LoginView: View {
           self.dataServerViewModel.loginSession { result in
             switch result {
             case .success:
-              self.multiCameraViewModel.path.append(StackView(view: .dataServerView))
+              self.viewInfoList.append(ViewInfo(view: .dataServerView))
 
             case .failure:
               break

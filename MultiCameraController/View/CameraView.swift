@@ -71,7 +71,8 @@ struct CameraView: View {
 }
 
 struct CameraView_Previews: PreviewProvider {
+  @State static var camera = GoPro(serialNumber: "")
   static var previews: some View {
-    CameraView(cameraViewModel: CameraViewModel(camera: GoPro(serialNumber: "")))
+    CameraView(cameraViewModel: CameraViewModel(camera: camera))
   }
 }

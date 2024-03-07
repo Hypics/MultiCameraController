@@ -21,7 +21,7 @@ struct DataServerView: View {
         .padding([.top, .bottom], 5)
       UploadMediaView(dataServerViewModel: self.dataServerViewModel)
     })
-    .onAppear(perform: self.dataServerViewModel.getAppFileUrlList)
+    .onAppear(perform: self.dataServerViewModel.updateAppFileUrlList)
     .onDisappear(perform: self.dataServerViewModel.logoutSession)
     .toast(isPresenting: self.$dataServerViewModel.showUploadMediaToast) {
       AlertToast(
