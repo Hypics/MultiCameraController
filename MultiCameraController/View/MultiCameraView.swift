@@ -12,19 +12,23 @@ import SwiftUI
 struct MultiCameraView: View {
   @ObservedObject var multiCameraViewModel: MultiCameraViewModel
   @ObservedObject var dataServerViewModel: DataServerViewModel
+  @Binding var viewInfoList: [ViewInfo]
 
   var body: some View {
     VStack {
       Divider()
         .padding([.top, .bottom], 5)
-      LoginView(multiCameraViewModel: self.multiCameraViewModel, dataServerViewModel: self.dataServerViewModel)
+      LoginView(
+        dataServerViewModel: self.dataServerViewModel,
+        viewInfoList: self.$viewInfoList
+      )
       Divider()
         .padding([.top, .bottom], 5)
-      MultiCameraControlView(multiCameraViewModel: self.multiCameraViewModel)
+      MultiCameraControlView(multiCameraViewModel: self.multiCameraViewModel, viewInfoList: self.$viewInfoList)
       Divider()
         .padding([.top, .bottom], 5)
       AddCameraView(multiCameraViewModel: self.multiCameraViewModel)
-      CameraListView(multiCameraViewModel: self.multiCameraViewModel)
+      CameraListView(multiCameraViewModel: self.multiCameraViewModel, viewInfoList: self.$viewInfoList)
     }
     .onAppear {
       CameraManager.instance.checkCameraAll()
@@ -107,7 +111,12 @@ struct MultiCameraView: View {
 }
 
 struct MultiCameraView_Previews: PreviewProvider {
+  @State static var viewInfoList: [ViewInfo] = []
   static var previews: some View {
-    MultiCameraView(multiCameraViewModel: MultiCameraViewModel(), dataServerViewModel: DataServerViewModel())
+    MultiCameraView(
+      multiCameraViewModel: MultiCameraViewModel(),
+      dataServerViewModel: DataServerViewModel(),
+      viewInfoList: $viewInfoList
+    )
   }
 }

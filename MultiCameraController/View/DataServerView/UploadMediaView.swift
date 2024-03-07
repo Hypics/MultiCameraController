@@ -34,7 +34,7 @@ struct UploadMediaView: View {
       .swipeActions(edge: .trailing, allowsFullSwipe: false) {
         Button(action: {
           self.dataServerViewModel.deleteFolder(deleteItem: item)
-          self.dataServerViewModel.getAppFileUrlList()
+          self.dataServerViewModel.updateAppFileUrlList()
         }, label: {
           Text("Delete")
             .padding([.top, .bottom], 5)
@@ -46,7 +46,7 @@ struct UploadMediaView: View {
     }
     .refreshable(
       action: {
-        self.dataServerViewModel.getAppFileUrlList()
+        self.dataServerViewModel.updateAppFileUrlList()
       }
     )
   }

@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct PresetView: View {
-  @ObservedObject var multiCameraViewModel: MultiCameraViewModel
+  @ObservedObject var settingViewModel: SettingViewModel
 
   var body: some View {
     HStack {
       Spacer()
       Spacer()
       Button(action: {
-        self.multiCameraViewModel.setPreset(.mounted_4k_60fps)
+        self.settingViewModel.setPreset(.mounted_4k_60fps)
       }, label: {
         VStack {
           Image(systemName: "1.square")

@@ -32,17 +32,17 @@ class CameraManager {
     self.cameraContainer.filter { $0.isConnected == true }.count
   }
 
-  func addCamera(newCameraSerialNumber: String) {
-    if newCameraSerialNumber.count == 3, newCameraSerialNumber.isInt(),
-       !self.cameraContainer.contains(where: { $0.serialNumber == newCameraSerialNumber })
+  func addCamera(serialNumber: String) {
+    if serialNumber.count == 3, serialNumber.isInt(),
+       !self.cameraContainer.contains(where: { $0.serialNumber == serialNumber })
     {
-      self.cameraSerialNumberList.append(newCameraSerialNumber)
+      self.cameraSerialNumberList.append(serialNumber)
       self.cameraContainer
-        .append(GoPro(serialNumber: newCameraSerialNumber))
+        .append(GoPro(serialNumber: serialNumber))
       self.cameraContainer.last?.checkConnection(nil)
       self.cameraContainer.last?.enableWiredUsbControl(nil)
     } else {
-      os_log("%@ is not a serial number (3 digits)", type: .error, newCameraSerialNumber)
+      os_log("%@ is not a serial number (3 digits)", type: .error, serialNumber)
     }
   }
 

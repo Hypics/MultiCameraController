@@ -51,7 +51,7 @@ class DataServerViewModel: ObservableObject {
 }
 
 extension DataServerViewModel {
-  func getAppFileUrlList() {
+  func updateAppFileUrlList() {
     do {
       let documentDirectory = try FileManager.default.url(
         for: .documentDirectory,

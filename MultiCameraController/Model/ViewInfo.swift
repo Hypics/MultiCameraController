@@ -1,5 +1,5 @@
 //
-//  StackView.swift
+//  ViewInfo.swift
 //  MultiCameraController
 //
 //  Created by INHWAN WEE on 3/7/24.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct StackView: Hashable {
-  static func == (lhs: StackView, rhs: StackView) -> Bool {
+struct ViewInfo: Hashable {
+  static func == (lhs: ViewInfo, rhs: ViewInfo) -> Bool {
     lhs.view == rhs.view
   }
 

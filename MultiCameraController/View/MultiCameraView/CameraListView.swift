@@ -10,6 +10,9 @@ import SwiftUI
 
 struct CameraListView: View {
   @ObservedObject var multiCameraViewModel: MultiCameraViewModel
+  @Binding var viewInfoList: [ViewInfo]
+
+  @State var cameraConnectionInfoListEditable = false
 
   var body: some View {
     List {
@@ -17,7 +20,7 @@ struct CameraListView: View {
         Button(action: {
           if camera.isConnected {
             os_log("CameraView: %@", type: .info, camera.cameraName)
-            self.multiCameraViewModel.path.append(StackView(view: .cameraView, data: camera))
+            self.viewInfoList.append(ViewInfo(view: .cameraView, data: camera))
           } else {
             os_log("CameraView is not connected: %@", type: .error, camera.cameraName)
             self.multiCameraViewModel.showCameraEmptyToast.toggle()
@@ -64,14 +67,14 @@ struct CameraListView: View {
       .onMove(perform: self.moveCameraItem)
       .onLongPressGesture {
         withAnimation {
-          self.multiCameraViewModel.cameraConnectionInfoListEditable = true
+          self.cameraConnectionInfoListEditable = true
         }
       }
       .listRowSeparator(.hidden)
     }
     .environment(
       \.editMode,
-      self.multiCameraViewModel.cameraConnectionInfoListEditable ? .constant(.active) : .constant(.inactive)
+      self.cameraConnectionInfoListEditable ? .constant(.active) : .constant(.inactive)
     )
     .refreshable {
       CameraManager.instance.checkCameraAll()
@@ -84,7 +87,7 @@ struct CameraListView: View {
     os_log("Move GoPro %@", type: .info, CameraManager.instance.cameraContainer[source[source.startIndex]].serialNumber)
     CameraManager.instance.moveCamera(from: source, to: destination)
     withAnimation {
-      self.multiCameraViewModel.cameraConnectionInfoListEditable = false
+      self.cameraConnectionInfoListEditable = false
     }
   }
 }
