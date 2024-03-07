@@ -13,7 +13,6 @@ protocol Camera: Hashable {
   var isConnected: Bool { get set }
   var mediaEndPointList: [String] { get set }
 
-  func setCameraInfo(cameraInfo: CameraInfo)
   func getCameraInfo() -> CameraInfo?
 
   func startShoot(_ completion: ((Result<Bool, Error>) -> Void)?)
