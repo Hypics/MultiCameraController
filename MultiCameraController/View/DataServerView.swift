@@ -26,7 +26,7 @@ struct DataServerView: View {
     .toast(isPresenting: self.$dataServerViewModel.showUploadMediaToast) {
       AlertToast(
         type: .loading,
-        title: self.dataServerViewModel.uploadMediaUrl,
+        title: self.dataServerViewModel.uploadMediaEndPoint,
         subTitle: String(format: "%.2f", self.dataServerViewModel.uploadProgress) + " %"
       )
     }

@@ -10,6 +10,9 @@
 		4E62241F2B99659400F3503B /* GoProMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62241E2B99659400F3503B /* GoProMedia.swift */; };
 		4E6224212B99669000F3503B /* GoProSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224202B99669000F3503B /* GoProSetting.swift */; };
 		4E6224232B99764700F3503B /* CameraSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224222B99764700F3503B /* CameraSettingModel.swift */; };
+		4E6224252B999C5B00F3503B /* CameraManagerCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224242B999C5B00F3503B /* CameraManagerCommand.swift */; };
+		4E6224272B999D0800F3503B /* CameraManagerMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224262B999D0800F3503B /* CameraManagerMedia.swift */; };
+		4E6224292B999ECA00F3503B /* CameraManagerSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224282B999ECA00F3503B /* CameraManagerSetting.swift */; };
 		4E6786752B9767D50004A7D8 /* DataServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */; };
 		4E6786782B97704D0004A7D8 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786772B97704D0004A7D8 /* LoginView.swift */; };
 		4E67867A2B977CC00004A7D8 /* SessionStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786792B977CC00004A7D8 /* SessionStateView.swift */; };
@@ -60,6 +63,9 @@
 		4E62241E2B99659400F3503B /* GoProMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProMedia.swift; sourceTree = "<group>"; };
 		4E6224202B99669000F3503B /* GoProSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProSetting.swift; sourceTree = "<group>"; };
 		4E6224222B99764700F3503B /* CameraSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSettingModel.swift; sourceTree = "<group>"; };
+		4E6224242B999C5B00F3503B /* CameraManagerCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManagerCommand.swift; sourceTree = "<group>"; };
+		4E6224262B999D0800F3503B /* CameraManagerMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManagerMedia.swift; sourceTree = "<group>"; };
+		4E6224282B999ECA00F3503B /* CameraManagerSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraManagerSetting.swift; sourceTree = "<group>"; };
 		4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServerViewModel.swift; sourceTree = "<group>"; };
 		4E6786772B97704D0004A7D8 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4E6786792B977CC00004A7D8 /* SessionStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateView.swift; sourceTree = "<group>"; };
@@ -127,6 +133,9 @@
 				4EAA6F9C2B0F9FD4004DD63E /* Camera */,
 				4E67869A2B9898EE0004A7D8 /* Camera.swift */,
 				4E67869C2B9898FC0004A7D8 /* CameraManager.swift */,
+				4E6224242B999C5B00F3503B /* CameraManagerCommand.swift */,
+				4E6224262B999D0800F3503B /* CameraManagerMedia.swift */,
+				4E6224282B999ECA00F3503B /* CameraManagerSetting.swift */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -443,6 +452,7 @@
 				4E931F1F2B0F9E870042B2AA /* SettingView.swift in Sources */,
 				4E67869F2B98BD210004A7D8 /* CameraInfo.swift in Sources */,
 				4E67868C2B988B1A0004A7D8 /* MultiCameraViewModel.swift in Sources */,
+				4E6224252B999C5B00F3503B /* CameraManagerCommand.swift in Sources */,
 				4E6786872B97918F0004A7D8 /* DownloadMediaView.swift in Sources */,
 				4E6786832B978EB40004A7D8 /* CameraStateView.swift in Sources */,
 				4E6786752B9767D50004A7D8 /* DataServerViewModel.swift in Sources */,
@@ -467,7 +477,9 @@
 				4EAA6FAA2B0FA002004DD63E /* GoProInfo.swift in Sources */,
 				4E67868A2B988AF80004A7D8 /* PresetView.swift in Sources */,
 				4EAA6FAD2B0FA002004DD63E /* CameraError.swift in Sources */,
+				4E6224292B999ECA00F3503B /* CameraManagerSetting.swift in Sources */,
 				4ECB28C42B2E3464004BA07F /* UrlExtensions.swift in Sources */,
+				4E6224272B999D0800F3503B /* CameraManagerMedia.swift in Sources */,
 				C9401CEC2631EFF900E5208E /* Atomic.swift in Sources */,
 				4E6786A12B98EB7A0004A7D8 /* GoProCommand.swift in Sources */,
 				4E931F1E2B0F9E870042B2AA /* MultiCameraView.swift in Sources */,

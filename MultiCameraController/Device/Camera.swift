@@ -34,11 +34,11 @@ protocol Camera: Hashable {
   // Media
   func updateMediaEndPointList(_ completion: ((Result<Bool, Error>, [String]?) -> Void)?)
 
-  func downloadMedia(mediaUrl: String, _ completion: @escaping (Result<Bool, Error>, Double?) -> Void)
+  func downloadMedia(mediaEndPoint: String, _ completion: @escaping (Result<Bool, Error>, Double?) -> Void)
   func downloadAllMedia(_ completion: @escaping (Result<Bool, Error>, String?, Double?) -> Void)
 
   func removeMedia(at offsets: IndexSet)
-  func removeMedia(mediaUrl: String, _ completion: @escaping (Result<Bool, Error>) -> Void)
+  func removeMedia(mediaEndPoint: String, _ completion: @escaping (Result<Bool, Error>) -> Void)
   func removeAllMedia(_ completion: ((Result<Bool, Error>) -> Void)?)
 
   // Setting

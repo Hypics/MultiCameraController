@@ -47,7 +47,7 @@ struct CameraView: View {
     .toast(isPresenting: self.$cameraViewModel.showDownloadMediaToast) {
       AlertToast(
         type: .loading,
-        title: self.cameraViewModel.downloadMediaUrl,
+        title: self.cameraViewModel.downloadMediaEndPoint,
         subTitle: String(format: "%.2f", self.cameraViewModel.downloadProgress) + " %"
       )
     }

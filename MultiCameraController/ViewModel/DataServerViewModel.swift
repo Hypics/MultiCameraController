@@ -17,7 +17,7 @@ class DataServerViewModel: ObservableObject {
   @Published var userPassword: String = ""
 
   @Published var appFileUrlList: [FileItemInfo]?
-  @Published var uploadMediaUrl: String = ""
+  @Published var uploadMediaEndPoint: String = ""
   @Published var uploadProgress: Double = 0.0
 
   @Published var showUploadMediaToast = false
@@ -123,7 +123,7 @@ extension DataServerViewModel {
           //                  if progress.fractionCompleted * 100.0 > 99.9 {
           //                    self.showUploadMediaToast = false
           //                  }
-          self.uploadMediaUrl = "[" + self.userId + "] " + uploadItem.url
+          self.uploadMediaEndPoint = "[" + self.userId + "] " + uploadItem.url
             .lastPathComponent + "/" + childrenItem.url
             .lastPathComponent
           self.uploadProgress = progress.fractionCompleted * 100.0

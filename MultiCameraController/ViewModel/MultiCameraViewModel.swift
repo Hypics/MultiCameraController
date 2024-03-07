@@ -15,7 +15,7 @@ class MultiCameraViewModel: ObservableObject {
   @Published var cameraConnectionInfoListEditable = false
   @Published var targetCamera: any Camera = GoPro(serialNumber: "")
   @Published var newCameraSerialNumber: String = ""
-  @Published var downloadMediaUrl: String = ""
+  @Published var downloadMediaEndPoint: String = ""
   @Published var downloadProgress: Double = 0.0
 
   @Published var showCameraToast = false
@@ -91,7 +91,7 @@ class MultiCameraViewModel: ObservableObject {
                   if progress > 99.9 {
                     self.showDownloadMediaToast = false
                   }
-                  self.downloadMediaUrl = "[GoPro " + camera
+                  self.downloadMediaEndPoint = "[GoPro " + camera
                     .serialNumber + "] " + (mediaEndPoint.split(separator: "/").last ?? "")
                   self.downloadProgress = progress
                 }
@@ -122,133 +122,53 @@ class MultiCameraViewModel: ObservableObject {
     self.showPreset1Toast.toggle()
   }
 
-  func setVideoResolution4K() {
-    os_log("Video Resolution: 4K, 16:9", type: .info)
-    for camera in CameraManager.instance.getConnectedCameraContainer() {
-      camera.requestUsbSetting(setting: .videoResolution_4k_16_9) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
-        }
-      }
-    }
+  func setVideoResolution(_ videoResolution: CameraVideoResolution) {
+    CameraManager.instance.setVideoResolutionAll(videoResolution)
     self.showVideoResolutionToast.toggle()
   }
 
-  func setVideoFps120Hz() {
-    os_log("Video FPS: 120Hz", type: .info)
-    for camera in CameraManager.instance.getConnectedCameraContainer() {
-      camera.requestUsbSetting(setting: .fps_120) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
-        }
-      }
-    }
+  func setFps(_ fps: CameraFps) {
+    CameraManager.instance.setFpsAll(fps)
     self.showVideoFpsToast.toggle()
   }
 
-  func setVideoDigitalLensLinear() {
-    os_log("Video Digital Lens: Linear", type: .info)
-    for camera in CameraManager.instance.getConnectedCameraContainer() {
-      camera.requestUsbSetting(setting: .videoDigitalLenses_linear) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
-        }
-      }
-    }
+  func setVideoDigitalLens(_ digitalLenses: CameraDigitalLenses) {
+    CameraManager.instance.setDigitalLensesAll(digitalLenses)
     self.showVideoDigitalLensToast.toggle()
   }
 
-  func setAntiFlicker60Hz() {
-    os_log("Anti Flicker: 60Hz", type: .info)
-    for camera in CameraManager.instance.getConnectedCameraContainer() {
-      camera.requestUsbSetting(setting: .antiFlicker_60) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
-        }
-      }
-    }
+  func setAntiFlicker(_ antiFlicker: CameraAntiFlicker) {
+    CameraManager.instance.setAntiFlickerAll(antiFlicker)
     self.showAntiFlickerToast.toggle()
   }
 
-  func setHyperSmoothOff() {
-    os_log("Hypersmooth: Off", type: .info)
-    for camera in CameraManager.instance.getConnectedCameraContainer() {
-      camera.requestUsbSetting(setting: .hypersmooth_off) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
-        }
-      }
-    }
+  func setHypersmooth(_ hypersmooth: CameraHypersmooth) {
+    CameraManager.instance.setHypersmoothAll(hypersmooth)
     self.showHypersmoothToast.toggle()
   }
 
-  func setHindsightOff() {
-    os_log("Hindsight: Off", type: .info)
-    for camera in CameraManager.instance.getConnectedCameraContainer() {
-      camera.requestUsbSetting(setting: .hindsight_off) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
-        }
-      }
-    }
+  func setHindsight(_ hindsight: CameraHindsight) {
+    CameraManager.instance.setHindsightAll(hindsight)
     self.showHindsightToast.toggle()
   }
 
-  func setVideoBitRateHigh() {
-    os_log("System Video Bit Rate: High", type: .info)
-    for camera in CameraManager.instance.getConnectedCameraContainer() {
-      camera.requestUsbSetting(setting: .systemVideoBitRate_high) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
-        }
-      }
-    }
+  func setVideoBitRate(_ videoBitRate: CameraVideoBitRate) {
+    CameraManager.instance.setVideoBitRateAll(videoBitRate)
     self.showSystemVideoBitRateToast.toggle()
   }
 
-  func setVideoBitDepth10bit() {
-    os_log("System Video Bit Depth: 10bit", type: .info)
-    for camera in CameraManager.instance.getConnectedCameraContainer() {
-      camera.requestUsbSetting(setting: .systemVideoBitDepth_10bit) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
-        }
-      }
-    }
+  func setVideoBitDepth(_ videoBitDepth: CameraVideoBitDepth) {
+    CameraManager.instance.setVideoBitDepthAll(videoBitDepth)
     self.showSystemVideoBitDepthToast.toggle()
   }
 
-  func setAutoPowerDownNever() {
-    os_log("Auto Power Down: Never", type: .info)
-    for camera in CameraManager.instance.getConnectedCameraContainer() {
-      camera.requestUsbSetting(setting: .autoPowerDown_never) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
-        }
-      }
-    }
+  func setAutoPowerDown(_ autoPowerDown: CameraAutoPowerDown) {
+    CameraManager.instance.setAutoPowerDownAll(autoPowerDown)
     self.showAutoPowerDownToast.toggle()
   }
 
-  func setControlsModePro() {
-    os_log("Controls Mode: Pro", type: .info)
-    for camera in CameraManager.instance.getConnectedCameraContainer() {
-      camera.requestUsbSetting(setting: .controls_pro) { error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-          return
-        }
-      }
-    }
+  func setControlsMode(_ controlMode: CameraControlMode) {
+    CameraManager.instance.setControlModeAll(controlMode)
     self.showControlsModeToast.toggle()
   }
 }

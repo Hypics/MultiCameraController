@@ -11,7 +11,7 @@ import os.log
 class CameraViewModel: ObservableObject {
   @Published var camera: any Camera
 
-  @Published var downloadMediaUrl: String = ""
+  @Published var downloadMediaEndPoint: String = ""
   @Published var downloadProgress: Double = 0.0
 
   @Published var showShutterOnToast = false
@@ -57,7 +57,7 @@ class CameraViewModel: ObservableObject {
 
 extension CameraViewModel {
   func downloadMediaAll() {
-    self.camera.downloadAllMedia { result, mediaUrl, progress in
+    self.camera.downloadAllMedia { result, mediaEndPoint, progress in
       self.showDownloadMediaToast = true
 
       switch result {
@@ -68,10 +68,10 @@ extension CameraViewModel {
         os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
       }
 
-      guard let mediaUrl else { return }
+      guard let mediaEndPoint else { return }
       guard let progress else { return }
 
-      self.downloadMediaUrl = mediaUrl
+      self.downloadMediaEndPoint = mediaEndPoint
       self.downloadProgress = progress
 
       if progress > 99.9 {
@@ -94,19 +94,24 @@ extension CameraViewModel {
   }
 
   func downloadMedia(mediaEndPoint: String) {
-    os_log("Download Media: %@", type: .info, mediaEndPoint)
-    self.showDownloadMediaToast = true
-    self.camera.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint, timestamp_path: nil) { progress, error in
-      if let error {
-        os_log("Error: %@", type: .error, error.localizedDescription)
-        return
+    self.camera.downloadMedia(mediaEndPoint: mediaEndPoint) { result, progress in
+      self.showDownloadMediaToast = true
+
+      switch result {
+      case let .success(response):
+        os_log("Success: %@: %@", type: .info, #function, response)
+
+      case let .failure(error):
+        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
       }
-      if let progress {
-        if progress > 99.9 {
-          self.showDownloadMediaToast = false
-        }
-        self.downloadMediaUrl = mediaEndPoint
-        self.downloadProgress = progress
+
+      guard let progress else { return }
+
+      self.downloadMediaEndPoint = mediaEndPoint
+      self.downloadProgress = progress
+
+      if progress > 99.9 {
+        self.showDownloadMediaToast = false
       }
     }
   }
