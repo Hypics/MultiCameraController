@@ -103,7 +103,7 @@ struct MultiCameraControlView: View {
       .padding([.leading, .trailing], 3)
       Spacer()
       Button(action: {
-        self.multiCameraViewModel.showSettingView = true
+        self.multiCameraViewModel.path.append(StackView(view: .settingView))
       }, label: {
         VStack {
           HStack {

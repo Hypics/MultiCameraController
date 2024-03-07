@@ -43,6 +43,8 @@ extension Color {
 extension Color {
   // Color names are from https://colornames.org/search/
 
+  static let hauntedMeadow: Color = .init(hex: "#242424")
+  static let charcoalSoul: Color = .init(hex: "#434343")
   static let skyishMyish: Color = .init(hex: "#80ffd5") // .opacity(0.5)
   static let pearlPrincess: Color = .init(hex: "#ffcaca")
   static let summerMorningSkyline: Color = .init(hex: "#c9e9ff")

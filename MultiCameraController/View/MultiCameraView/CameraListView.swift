@@ -17,8 +17,7 @@ struct CameraListView: View {
         Button(action: {
           if camera.isConnected {
             os_log("CameraView: %@", type: .info, camera.cameraName)
-            self.multiCameraViewModel.targetCamera = camera
-            self.multiCameraViewModel.showCameraView = true
+            self.multiCameraViewModel.path.append(StackView(view: .cameraView, data: camera))
           } else {
             os_log("CameraView is not connected: %@", type: .error, camera.cameraName)
             self.multiCameraViewModel.showCameraEmptyToast.toggle()

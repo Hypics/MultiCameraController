@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
+  @ObservedObject var multiCameraViewModel: MultiCameraViewModel
   @ObservedObject var dataServerViewModel: DataServerViewModel
 
   var body: some View {
@@ -36,7 +37,17 @@ struct LoginView: View {
         .padding(5)
       Spacer()
       Button(
-        action: self.dataServerViewModel.loginSession,
+        action: {
+          self.dataServerViewModel.loginSession { result in
+            switch result {
+            case .success:
+              self.multiCameraViewModel.path.append(StackView(view: .dataServerView))
+
+            case .failure:
+              break
+            }
+          }
+        },
         label: {
           HStack {
             Image(systemName: "network")

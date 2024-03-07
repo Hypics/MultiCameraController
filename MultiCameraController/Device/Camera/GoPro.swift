@@ -10,6 +10,14 @@ import Foundation
 import os.log
 
 class GoPro: Camera {
+  static func == (lhs: GoPro, rhs: GoPro) -> Bool {
+    lhs.serialNumber == rhs.serialNumber
+  }
+
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(self.serialNumber)
+  }
+
   var serialNumber: String
   var cameraName: String
   var isConnected: Bool
@@ -35,14 +43,6 @@ class GoPro: Camera {
     let serialNumberX = serialNumber.substring(with: 0 ..< 1)
     let serialNumberYZ = serialNumber.substring(with: 1 ..< 3)
     self.url = "http://172.2" + serialNumberX + ".1" + serialNumberYZ + ".51:8080"
-  }
-
-  static func == (lhs: GoPro, rhs: GoPro) -> Bool {
-    return lhs.serialNumber == rhs.serialNumber
-  }
-
-  func hash(into hasher: inout Hasher) {
-    hasher.combine(self.serialNumber)
   }
 
   func getCameraInfo() -> CameraInfo? {
