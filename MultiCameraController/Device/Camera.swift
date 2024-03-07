@@ -41,6 +41,9 @@ protocol Camera: Hashable {
   func removeMedia(mediaEndPoint: String, _ completion: @escaping (Result<Bool, Error>) -> Void)
   func removeAllMedia(_ completion: ((Result<Bool, Error>) -> Void)?)
 
+  // Preset
+  func setPreset(cameraPreset: CameraPreset, _ completion: ((Result<Bool, Error>) -> Void)?)
+
   // Setting
   func setVideoResolution(videoResolution: CameraVideoResolution, _ completion: ((Result<Bool, Error>) -> Void)?)
   func setFps(fps: CameraFps, _ completion: ((Result<Bool, Error>) -> Void)?)

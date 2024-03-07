@@ -1,11 +1,35 @@
 //
-//  CameraSettingModel.swift
+//  CameraSetting.swift
 //  MultiCameraController
 //
 //  Created by INHWAN WEE on 3/7/24.
 //
 
 import Foundation
+
+enum CameraPreset {
+  case mounted_4k_60fps
+
+  func toGoProSetting() -> [GoProUsbSetting] {
+    switch self {
+    case .mounted_4k_60fps:
+      [
+        .controls_pro,
+        .videoAspectRatio_16_9,
+        .videoResolution_4k_16_9,
+        .fps_120,
+        .videoDigitalLenses_linear,
+        .antiFlicker_60,
+        .hypersmooth_off,
+        .hindsight_off,
+        .systemVideoBitRate_high,
+        .systemVideoBitDepth_10bit,
+        .autoPowerDown_never,
+        .wirelessBand_5ghz
+      ]
+    }
+  }
+}
 
 enum CameraVideoResolution {
   case videoResolution_1080

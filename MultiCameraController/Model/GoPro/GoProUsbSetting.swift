@@ -5,30 +5,6 @@
 //  Created by INHWAN WEE on 11/23/23.
 //
 
-enum GoProUsbSettingPreset {
-  case mounted_4k_120fps
-
-  var settings: [GoProUsbSetting] {
-    switch self {
-    case .mounted_4k_120fps:
-      [
-        .controls_pro,
-        .videoAspectRatio_16_9,
-        .videoResolution_4k_16_9,
-        .fps_120,
-        .videoDigitalLenses_linear,
-        .antiFlicker_60,
-        .hypersmooth_off,
-        .hindsight_off,
-        .systemVideoBitRate_high,
-        .systemVideoBitDepth_10bit,
-        .autoPowerDown_never,
-        .wirelessBand_5ghz
-      ]
-    }
-  }
-}
-
 enum GoProUsbSetting {
   case videoResolution_5_3k_16_9
   case videoResolution_5_3k_8_7
