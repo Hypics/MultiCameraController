@@ -1,5 +1,5 @@
 //
-//  FileItemModel.swift
+//  FileItemInfo.swift
 //  MultiCameraController
 //
 //  Created by INHWAN WEE on 3/6/24.
@@ -7,10 +7,9 @@
 
 import Foundation
 
-struct FileItemModel: Identifiable {
-  let id = UUID()
+struct FileItemInfo: Hashable {
   let url: URL
-  var childrenItem: [FileItemModel]?
+  var childrenItem: [FileItemInfo]?
 
   var icon: String {
     if self.childrenItem == nil {

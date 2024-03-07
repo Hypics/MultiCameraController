@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		4E62241F2B99659400F3503B /* GoProMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62241E2B99659400F3503B /* GoProMedia.swift */; };
+		4E6224212B99669000F3503B /* GoProSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224202B99669000F3503B /* GoProSetting.swift */; };
+		4E6224232B99764700F3503B /* CameraSettingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224222B99764700F3503B /* CameraSettingModel.swift */; };
 		4E6786752B9767D50004A7D8 /* DataServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */; };
 		4E6786782B97704D0004A7D8 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786772B97704D0004A7D8 /* LoginView.swift */; };
 		4E67867A2B977CC00004A7D8 /* SessionStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786792B977CC00004A7D8 /* SessionStateView.swift */; };
 		4E67867C2B9782AB0004A7D8 /* UploadMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E67867B2B9782AB0004A7D8 /* UploadMediaView.swift */; };
-		4E67867E2B97839D0004A7D8 /* FileItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E67867D2B97839D0004A7D8 /* FileItemModel.swift */; };
+		4E67867E2B97839D0004A7D8 /* FileItemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E67867D2B97839D0004A7D8 /* FileItemInfo.swift */; };
 		4E6786802B978CBF0004A7D8 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E67867F2B978CBF0004A7D8 /* CameraViewModel.swift */; };
 		4E6786832B978EB40004A7D8 /* CameraStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786822B978EB40004A7D8 /* CameraStateView.swift */; };
 		4E6786852B9790200004A7D8 /* CameraControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786842B9790200004A7D8 /* CameraControlView.swift */; };
@@ -38,7 +40,7 @@
 		4EAA6FAA2B0FA002004DD63E /* GoProInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6FA42B0FA002004DD63E /* GoProInfo.swift */; };
 		4EAA6FAB2B0FA002004DD63E /* GoProUsbSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6FA52B0FA002004DD63E /* GoProUsbSetting.swift */; };
 		4EAA6FAC2B0FA002004DD63E /* GoPro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6FA62B0FA002004DD63E /* GoPro.swift */; };
-		4EAA6FAD2B0FA002004DD63E /* GoProCameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6FA72B0FA002004DD63E /* GoProCameraError.swift */; };
+		4EAA6FAD2B0FA002004DD63E /* CameraError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6FA72B0FA002004DD63E /* CameraError.swift */; };
 		4EAD950E2B13C5D700D3EC01 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 4EAD950C2B13C5D700D3EC01 /* .swiftlint.yml */; };
 		4EAD950F2B13C5D700D3EC01 /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 4EAD950D2B13C5D700D3EC01 /* .swiftformat */; };
 		4ECAD5992B16499800CFF41C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4ECAD5982B16499800CFF41C /* Alamofire */; };
@@ -56,11 +58,13 @@
 
 /* Begin PBXFileReference section */
 		4E62241E2B99659400F3503B /* GoProMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProMedia.swift; sourceTree = "<group>"; };
+		4E6224202B99669000F3503B /* GoProSetting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProSetting.swift; sourceTree = "<group>"; };
+		4E6224222B99764700F3503B /* CameraSettingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSettingModel.swift; sourceTree = "<group>"; };
 		4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServerViewModel.swift; sourceTree = "<group>"; };
 		4E6786772B97704D0004A7D8 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4E6786792B977CC00004A7D8 /* SessionStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateView.swift; sourceTree = "<group>"; };
 		4E67867B2B9782AB0004A7D8 /* UploadMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadMediaView.swift; sourceTree = "<group>"; };
-		4E67867D2B97839D0004A7D8 /* FileItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItemModel.swift; sourceTree = "<group>"; };
+		4E67867D2B97839D0004A7D8 /* FileItemInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItemInfo.swift; sourceTree = "<group>"; };
 		4E67867F2B978CBF0004A7D8 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
 		4E6786822B978EB40004A7D8 /* CameraStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraStateView.swift; sourceTree = "<group>"; };
 		4E6786842B9790200004A7D8 /* CameraControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlView.swift; sourceTree = "<group>"; };
@@ -86,7 +90,7 @@
 		4EAA6FA42B0FA002004DD63E /* GoProInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoProInfo.swift; sourceTree = "<group>"; };
 		4EAA6FA52B0FA002004DD63E /* GoProUsbSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoProUsbSetting.swift; sourceTree = "<group>"; };
 		4EAA6FA62B0FA002004DD63E /* GoPro.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoPro.swift; sourceTree = "<group>"; };
-		4EAA6FA72B0FA002004DD63E /* GoProCameraError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoProCameraError.swift; sourceTree = "<group>"; };
+		4EAA6FA72B0FA002004DD63E /* CameraError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraError.swift; sourceTree = "<group>"; };
 		4EAD950C2B13C5D700D3EC01 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		4EAD950D2B13C5D700D3EC01 /* .swiftformat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftformat; sourceTree = SOURCE_ROOT; };
 		4ECB28C12B2E13C4004BA07F /* DataServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServerView.swift; sourceTree = "<group>"; };
@@ -131,12 +135,10 @@
 			isa = PBXGroup;
 			children = (
 				4E6786732B9766B40004A7D8 /* GoPro */,
-				4EAA6FA72B0FA002004DD63E /* GoProCameraError.swift */,
-				4EAA6FA32B0FA002004DD63E /* GoProMediaInfo.swift */,
-				4EAA6FA22B0FA001004DD63E /* GoProUsbCommand.swift */,
-				4EAA6FA52B0FA002004DD63E /* GoProUsbSetting.swift */,
-				4E67867D2B97839D0004A7D8 /* FileItemModel.swift */,
+				4EAA6FA72B0FA002004DD63E /* CameraError.swift */,
 				4E67869E2B98BD210004A7D8 /* CameraInfo.swift */,
+				4E67867D2B97839D0004A7D8 /* FileItemInfo.swift */,
+				4E6224222B99764700F3503B /* CameraSettingModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -165,6 +167,9 @@
 			isa = PBXGroup;
 			children = (
 				4EAA6FA42B0FA002004DD63E /* GoProInfo.swift */,
+				4EAA6FA32B0FA002004DD63E /* GoProMediaInfo.swift */,
+				4EAA6FA22B0FA001004DD63E /* GoProUsbCommand.swift */,
+				4EAA6FA52B0FA002004DD63E /* GoProUsbSetting.swift */,
 			);
 			path = GoPro;
 			sourceTree = "<group>";
@@ -213,6 +218,7 @@
 				4EAA6FA62B0FA002004DD63E /* GoPro.swift */,
 				4E6786A02B98EB7A0004A7D8 /* GoProCommand.swift */,
 				4E62241E2B99659400F3503B /* GoProMedia.swift */,
+				4E6224202B99669000F3503B /* GoProSetting.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -432,7 +438,7 @@
 				4EAA6FA82B0FA002004DD63E /* GoProUsbCommand.swift in Sources */,
 				4E62241F2B99659400F3503B /* GoProMedia.swift in Sources */,
 				4EAA6FA02B0F9FFA004DD63E /* StringExtensions.swift in Sources */,
-				4E67867E2B97839D0004A7D8 /* FileItemModel.swift in Sources */,
+				4E67867E2B97839D0004A7D8 /* FileItemInfo.swift in Sources */,
 				4E67867C2B9782AB0004A7D8 /* UploadMediaView.swift in Sources */,
 				4E931F1F2B0F9E870042B2AA /* SettingView.swift in Sources */,
 				4E67869F2B98BD210004A7D8 /* CameraInfo.swift in Sources */,
@@ -441,6 +447,7 @@
 				4E6786832B978EB40004A7D8 /* CameraStateView.swift in Sources */,
 				4E6786752B9767D50004A7D8 /* DataServerViewModel.swift in Sources */,
 				4ECB28C22B2E13C4004BA07F /* DataServerView.swift in Sources */,
+				4E6224212B99669000F3503B /* GoProSetting.swift in Sources */,
 				4E6786972B98980C0004A7D8 /* ViewExtensions.swift in Sources */,
 				4E67869B2B9898EE0004A7D8 /* Camera.swift in Sources */,
 				4E6786932B9893700004A7D8 /* MultiCameraControlView.swift in Sources */,
@@ -452,13 +459,14 @@
 				4EAA6FAC2B0FA002004DD63E /* GoPro.swift in Sources */,
 				4EAA6FAB2B0FA002004DD63E /* GoProUsbSetting.swift in Sources */,
 				4E6786912B9893570004A7D8 /* CameraListView.swift in Sources */,
+				4E6224232B99764700F3503B /* CameraSettingModel.swift in Sources */,
 				4E6786802B978CBF0004A7D8 /* CameraViewModel.swift in Sources */,
 				4EAA6FA92B0FA002004DD63E /* GoProMediaInfo.swift in Sources */,
 				4E6786782B97704D0004A7D8 /* LoginView.swift in Sources */,
 				4E67867A2B977CC00004A7D8 /* SessionStateView.swift in Sources */,
 				4EAA6FAA2B0FA002004DD63E /* GoProInfo.swift in Sources */,
 				4E67868A2B988AF80004A7D8 /* PresetView.swift in Sources */,
-				4EAA6FAD2B0FA002004DD63E /* GoProCameraError.swift in Sources */,
+				4EAA6FAD2B0FA002004DD63E /* CameraError.swift in Sources */,
 				4ECB28C42B2E3464004BA07F /* UrlExtensions.swift in Sources */,
 				C9401CEC2631EFF900E5208E /* Atomic.swift in Sources */,
 				4E6786A12B98EB7A0004A7D8 /* GoProCommand.swift in Sources */,

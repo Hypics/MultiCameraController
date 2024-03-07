@@ -5,17 +5,17 @@
 //  Created by INHWAN WEE on 11/23/23.
 //
 
-struct MediaListInfo: Codable {
+struct GoProMediaListInfo: Codable {
   var id: String
-  var media: [MediaInfo]
+  var media: [GoProMediaInfo]
 }
 
-struct MediaInfo: Codable {
+struct GoProMediaInfo: Codable {
   var d: String
-  var fs: [FileInfo]
+  var fs: [GoProFileInfo]
 }
 
-struct FileInfo: Codable {
+struct GoProFileInfo: Codable {
   var ls: String
   var cre: String
   var mod: String

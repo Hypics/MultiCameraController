@@ -56,7 +56,7 @@ struct MultiCameraView: View {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("camera", .primary),
-          title: "Connected : \(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+          title: "Connected : \(CameraManager.instance.getConnectedCameraCount()) cams",
           style: .style(titleColor: .primary)
         )
       }
@@ -64,7 +64,7 @@ struct MultiCameraView: View {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("video", .teal),
-          title: "Shutter On All : \(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+          title: "Shutter On All : \(CameraManager.instance.getConnectedCameraCount()) cams",
           style: .style(titleColor: .teal)
         )
       }
@@ -72,7 +72,7 @@ struct MultiCameraView: View {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("stop", .pink),
-          title: "Shutter Off All : \(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+          title: "Shutter Off All : \(CameraManager.instance.getConnectedCameraCount()) cams",
           style: .style(titleColor: .pink)
         )
       }
@@ -87,7 +87,7 @@ struct MultiCameraView: View {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("trash", .red),
-          title: "Remove Media All : \(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+          title: "Remove Media All : \(CameraManager.instance.getConnectedCameraCount()) cams",
           style: .style(titleColor: .red)
         )
       }
@@ -95,7 +95,7 @@ struct MultiCameraView: View {
         AlertToast(
           displayMode: .alert,
           type: .systemImage("camera", .teal),
-          title: "Refresh Camera List : \(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+          title: "Refresh Camera List : \(CameraManager.instance.getConnectedCameraCount()) cams",
           style: .style(titleColor: .teal)
         )
       }

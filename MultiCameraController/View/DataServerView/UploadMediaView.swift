@@ -13,7 +13,7 @@ struct UploadMediaView: View {
 
   var body: some View {
     Text("Folder List").padding()
-    List(self.dataServerViewModel.appFileUrlList ?? [], children: \.childrenItem) { item in
+    List(self.dataServerViewModel.appFileUrlList ?? [], id: \.self, children: \.childrenItem) { item in
       HStack {
         Image(systemName: item.icon)
           .foregroundColor((item.url.isDirectory) ? Color.teal : .gray)

@@ -16,7 +16,7 @@ class DataServerViewModel: ObservableObject {
     .string(forKey: "UserId") ?? ""
   @Published var userPassword: String = ""
 
-  @Published var appFileUrlList: [FileItemModel]?
+  @Published var appFileUrlList: [FileItemInfo]?
   @Published var uploadMediaUrl: String = ""
   @Published var uploadProgress: Double = 0.0
 
@@ -67,7 +67,7 @@ extension DataServerViewModel {
     }
   }
 
-  func getFileItemList(fileUrl: URL) -> [FileItemModel]? {
+  func getFileItemList(fileUrl: URL) -> [FileItemInfo]? {
     if fileUrl.isDirectory {
       var fileContentsUrlList: [URL] = []
       do {
@@ -82,9 +82,9 @@ extension DataServerViewModel {
       if fileContentsUrlList.isEmpty {
         return []
       } else {
-        return fileContentsUrlList.reduce([FileItemModel]()) { result, fileContentsUrl in
+        return fileContentsUrlList.reduce([FileItemInfo]()) { result, fileContentsUrl in
           var temp = result
-          temp.append(FileItemModel(url: fileContentsUrl, childrenItem: self.getFileItemList(fileUrl: fileContentsUrl)))
+          temp.append(FileItemInfo(url: fileContentsUrl, childrenItem: self.getFileItemList(fileUrl: fileContentsUrl)))
           return temp
         }
         .sorted(by: { first, second -> Bool in
@@ -100,10 +100,10 @@ extension DataServerViewModel {
     }
   }
 
-  func uploadFolder(uploadItem: FileItemModel) {
+  func uploadFolder(uploadItem: FileItemInfo) {
     os_log("Upload Folder: %@", type: .info, uploadItem.url.lastPathComponent)
     //            self.showDownloadMediaToast = true
-    guard let folderFileChildrenItems: [FileItemModel] = uploadItem.childrenItem else {
+    guard let folderFileChildrenItems: [FileItemInfo] = uploadItem.childrenItem else {
       os_log("%@ is not directory", type: .info, uploadItem.url.lastPathComponent)
       return
     }
@@ -143,7 +143,7 @@ extension DataServerViewModel {
     }
   }
 
-  func deleteFolder(deleteItem: FileItemModel) {
+  func deleteFolder(deleteItem: FileItemInfo) {
     os_log("Delete Folder or File: %@", type: .info, deleteItem.url.lastPathComponent)
     do {
       try FileManager.default.removeItem(at: deleteItem.url)
