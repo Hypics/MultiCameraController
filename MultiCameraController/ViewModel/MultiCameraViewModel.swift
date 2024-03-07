@@ -9,11 +9,9 @@ import Foundation
 import os.log
 
 class MultiCameraViewModel: ObservableObject {
-  @Published var showSettingView = false
-  @Published var showCameraView = false
+  @Published var path: [StackView] = []
 
   @Published var cameraConnectionInfoListEditable = false
-  @Published var targetCamera: any Camera = GoPro(serialNumber: "")
   @Published var newCameraSerialNumber: String = ""
   @Published var downloadMediaEndPoint: String = ""
   @Published var downloadProgress: Double = 0.0

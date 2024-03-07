@@ -12,7 +12,7 @@ import SwiftUI
 struct MultiCameraControllerApp: App {
   var body: some Scene {
     WindowGroup {
-      MultiCameraView()
+      MainView()
     }
   }
 }

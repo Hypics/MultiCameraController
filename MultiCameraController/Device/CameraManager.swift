@@ -14,7 +14,6 @@ class CameraManager {
   public var cameraSerialNumberList =
     UserDefaults.standard
       .array(forKey: "GoProSerialNumberList") as? [String] ?? []
-
   public var cameraContainer: [any Camera] = (
     UserDefaults.standard
       .array(forKey: "GoProSerialNumberList") as? [String] ?? []

@@ -10,7 +10,6 @@ import os.log
 import SynologyKit
 
 class DataServerViewModel: ObservableObject {
-  @Published var showDataServerView = false
   @Published var client = SynologyClient(host: "ds918pluswee.synology.me", port: 5_001, enableHTTPS: true)
   @Published var userId: String = UserDefaults.standard
     .string(forKey: "UserId") ?? ""
@@ -22,7 +21,7 @@ class DataServerViewModel: ObservableObject {
 
   @Published var showUploadMediaToast = false
 
-  func loginSession() {
+  func loginSession(_ completion: ((Result<Bool, Error>) -> Void)?) {
     if self.userId.isEmpty {
       os_log("%@ is empty", type: .error, self.userId)
     } else {
@@ -32,11 +31,12 @@ class DataServerViewModel: ObservableObject {
         switch response {
         case let .success(authRes):
           self.client.updateSessionID(authRes.sid)
-          os_log("Synology SID: %@", type: .error, authRes.sid)
-          self.showDataServerView = true
+          os_log("Synology SID: %@", type: .info, authRes.sid)
+          completion?(.success(true))
 
         case let .failure(error):
           os_log("Error: %@", type: .error, error.description)
+          completion?(.failure(error))
         }
       }
     }
