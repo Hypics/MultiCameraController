@@ -29,6 +29,10 @@ class CameraManager {
     self.cameraContainer.filter { $0.isConnected == true }
   }
 
+  func getConnectedCameraCount() -> Int {
+    self.cameraContainer.filter { $0.isConnected == true }.count
+  }
+
   func addCamera(newCameraSerialNumber: String) {
     if newCameraSerialNumber.count == 3, newCameraSerialNumber.isInt(),
        !self.cameraContainer.contains(where: { $0.serialNumber == newCameraSerialNumber })

@@ -141,7 +141,7 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("1.square", .pink),
-        title: "Preset 1 :\n\(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+        title: "Preset 1 :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .primary)
       )
     }
@@ -149,7 +149,7 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("camera", .pink),
-        title: "4K :\n\(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+        title: "4K :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .pink)
       )
     }
@@ -157,7 +157,7 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("rectangle.on.rectangle", .pink),
-        title: "120Hz :\n\(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+        title: "120Hz :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .pink)
       )
     }
@@ -165,7 +165,7 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("field.of.view.wide", .red),
-        title: "Linear :\n\(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+        title: "Linear :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .red)
       )
     }
@@ -173,7 +173,7 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("warninglight", .red),
-        title: "60Hz :\n\(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+        title: "60Hz :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .red)
       )
     }
@@ -181,7 +181,7 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("circle.and.line.horizontal", .orange),
-        title: "Off :\n\(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+        title: "Off :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .orange)
       )
     }
@@ -189,7 +189,7 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("arrowshape.turn.up.backward.badge.clock", .orange),
-        title: "Off :\n\(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+        title: "Off :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .orange)
       )
     }
@@ -197,7 +197,7 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("slider.horizontal.3", .teal),
-        title: "High :\n\(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+        title: "High :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .teal)
       )
     }
@@ -205,7 +205,7 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("slider.vertical.3", .teal),
-        title: "10bit :\n\(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+        title: "10bit :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .teal)
       )
     }
@@ -213,7 +213,7 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("powersleep", .indigo),
-        title: "Never :\n\(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+        title: "Never :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .indigo)
       )
     }
@@ -221,7 +221,7 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("wrench.and.screwdriver", .indigo),
-        title: "Pro :\n\(self.multiCameraViewModel.getConnectedCameraList().count) cams",
+        title: "Pro :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .indigo)
       )
     }

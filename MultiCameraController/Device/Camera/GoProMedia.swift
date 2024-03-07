@@ -15,14 +15,15 @@ extension GoPro {
       if let error {
         os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
         completion?(.failure(error), nil)
-      } else { os_log(
-        "Success: %@: %@",
-        type: .info,
-        #function,
-        Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-      )
-      self.mediaEndPointList = mediaEndPointList ?? []
-      completion?(.success(true), mediaEndPointList)
+      } else {
+        os_log(
+          "Success: %@: %@",
+          type: .info,
+          #function,
+          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
+        )
+        self.mediaEndPointList = mediaEndPointList ?? []
+        completion?(.success(true), mediaEndPointList)
       }
     }
   }
@@ -76,6 +77,20 @@ extension GoPro {
     }
   }
 
+  func removeMedia(at offsets: IndexSet) {
+    self
+      .requestUsbMediaRemove(
+        mediaEndPoint: self
+          .mediaEndPointList[offsets[offsets.startIndex]]
+      ) { error in
+        if let error {
+          os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+          return
+        }
+        self.mediaEndPointList.remove(atOffsets: offsets)
+      }
+  }
+
   func removeMedia(mediaUrl: String, _ completion: @escaping (Result<Bool, Error>) -> Void) {
     os_log("Remove Media: %@", type: .info, mediaUrl)
     self.requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
@@ -93,20 +108,6 @@ extension GoPro {
         completion(.success(true))
       }
     }
-  }
-
-  func removeMedia(at offsets: IndexSet) {
-    self
-      .requestUsbMediaRemove(
-        mediaEndPoint: self
-          .mediaEndPointList[offsets[offsets.startIndex]]
-      ) { error in
-        if let error {
-          os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
-          return
-        }
-        self.mediaEndPointList.remove(atOffsets: offsets)
-      }
   }
 
   func removeAllMedia(_ completion: ((Result<Bool, Error>) -> Void)?) {

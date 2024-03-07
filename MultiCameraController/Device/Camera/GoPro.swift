@@ -152,7 +152,7 @@ class GoPro: Camera {
         var mediaEndPointList: [String] = []
         do {
           let dataJSON = try JSONSerialization.data(withJSONObject: obj, options: .prettyPrinted)
-          let mediaListJson = try JSONDecoder().decode(MediaListInfo.self, from: dataJSON)
+          let mediaListJson = try JSONDecoder().decode(GoProMediaListInfo.self, from: dataJSON)
 
           var latestCreationTimestamp = 0
           for mediaInfo in mediaListJson.media {
