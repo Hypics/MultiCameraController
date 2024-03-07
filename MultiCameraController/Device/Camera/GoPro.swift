@@ -13,7 +13,7 @@ class GoPro: Camera {
   var serialNumber: String
   var cameraName: String
   var isConnected: Bool
-  var mediaUrlStringList: [String]
+  var mediaEndPointList: [String]
 
   var goProInfo: GoProInfo?
 
@@ -24,7 +24,7 @@ class GoPro: Camera {
     self.serialNumber = serialNumber
     self.cameraName = "GoPro \(self.serialNumber)"
     self.isConnected = false
-    self.mediaUrlStringList = []
+    self.mediaEndPointList = []
     self.timeoutInterval = 3.0
 
     if serialNumber.isEmpty {
@@ -72,13 +72,13 @@ class GoPro: Camera {
   }
 
   func downloadAllMedia(_ completion: @escaping (Result<Bool, Error>, String?, Double?) -> Void) {
-    self.updateMediaUrlStringList { result, mediaUrlStringList in
+    self.updateMediaEndPointList { result, mediaEndPointList in
       switch result {
       case .success:
-        guard let mediaUrlStringList else { return }
-        for (index, mediaUrl) in mediaUrlStringList.enumerated() {
-          os_log("Download Media (%@/%@): %@", type: .info, index + 1, mediaUrlStringList.count, mediaUrl)
-          self.requestUsbMediaDownload(mediaEndPoint: mediaUrl, timestamp_path: nil) { progress, error in
+        guard let mediaEndPointList else { return }
+        for (index, mediaEndPoint) in mediaEndPointList.enumerated() {
+          os_log("Download Media (%@/%@): %@", type: .info, index + 1, mediaEndPointList.count, mediaEndPoint)
+          self.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint, timestamp_path: nil) { progress, error in
             if let error {
               os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
               completion(.failure(error), nil, nil)
@@ -89,7 +89,7 @@ class GoPro: Camera {
                 #function,
                 Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
               )
-              completion(.success(true), mediaUrl, progress)
+              completion(.success(true), mediaEndPoint, progress)
             }
           }
         }
@@ -125,24 +125,24 @@ class GoPro: Camera {
     self
       .requestUsbMediaRemove(
         mediaEndPoint: self
-          .mediaUrlStringList[offsets[offsets.startIndex]]
+          .mediaEndPointList[offsets[offsets.startIndex]]
       ) { error in
         if let error {
           os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
           return
         }
-        self.mediaUrlStringList.remove(atOffsets: offsets)
+        self.mediaEndPointList.remove(atOffsets: offsets)
       }
   }
 
   func removeAllMedia(_ completion: ((Result<Bool, Error>) -> Void)?) {
-    self.updateMediaUrlStringList { result, mediaUrlStringList in
+    self.updateMediaEndPointList { result, mediaEndPointList in
       switch result {
       case .success:
-        guard let mediaUrlStringList else { return }
-        for (index, mediaUrl) in mediaUrlStringList.enumerated() {
-          os_log("Download Media (%@/%@): %@", type: .info, index + 1, mediaUrlStringList.count, mediaUrl)
-          self.requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
+        guard let mediaEndPointList else { return }
+        for (index, mediaEndPoint) in mediaEndPointList.enumerated() {
+          os_log("Download Media (%@/%@): %@", type: .info, index + 1, mediaEndPointList.count, mediaEndPoint)
+          self.requestUsbMediaRemove(mediaEndPoint: mediaEndPoint) { error in
             if let error {
               os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
               completion?(.failure(error))

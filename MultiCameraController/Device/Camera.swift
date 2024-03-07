@@ -11,7 +11,7 @@ protocol Camera: Hashable {
   var serialNumber: String { get set }
   var cameraName: String { get set }
   var isConnected: Bool { get set }
-  var mediaUrlStringList: [String] { get set }
+  var mediaEndPointList: [String] { get set }
 
   func setCameraInfo(cameraInfo: CameraInfo)
   func getCameraInfo() -> CameraInfo?
@@ -22,7 +22,7 @@ protocol Camera: Hashable {
   func checkConnection(_ completion: ((Result<Bool, Error>) -> Void)?)
   func enableWiredUsbControl(_ completion: ((Result<Bool, Error>) -> Void)?)
 
-  func updateMediaUrlStringList(_ completion: ((Result<Bool, Error>, [String]?) -> Void)?)
+  func updateMediaEndPointList(_ completion: ((Result<Bool, Error>, [String]?) -> Void)?)
 
   func downloadMedia(mediaUrl: String, _ completion: @escaping (Result<Bool, Error>, Double?) -> Void)
   func downloadAllMedia(_ completion: @escaping (Result<Bool, Error>, String?, Double?) -> Void)
