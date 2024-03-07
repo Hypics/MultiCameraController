@@ -76,23 +76,4 @@ extension GoPro {
       }
     }
   }
-
-  func updateMediaEndPointList(_ completion: ((Result<Bool, Error>, [String]?) -> Void)?) {
-    os_log("Update Media EndPoint List: %@", type: .info, self.cameraName)
-    self.requestUsbMediaList { mediaEndPointList, _, error in
-      if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
-        completion?(.failure(error), nil)
-      } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
-        self.mediaEndPointList = mediaEndPointList ?? []
-        completion?(.success(true), mediaEndPointList)
-      }
-    }
-  }
 }

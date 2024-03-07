@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4E62241F2B99659400F3503B /* GoProMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62241E2B99659400F3503B /* GoProMedia.swift */; };
 		4E6786752B9767D50004A7D8 /* DataServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */; };
 		4E6786782B97704D0004A7D8 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786772B97704D0004A7D8 /* LoginView.swift */; };
 		4E67867A2B977CC00004A7D8 /* SessionStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786792B977CC00004A7D8 /* SessionStateView.swift */; };
@@ -54,6 +55,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4E62241E2B99659400F3503B /* GoProMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProMedia.swift; sourceTree = "<group>"; };
 		4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServerViewModel.swift; sourceTree = "<group>"; };
 		4E6786772B97704D0004A7D8 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4E6786792B977CC00004A7D8 /* SessionStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateView.swift; sourceTree = "<group>"; };
@@ -210,6 +212,7 @@
 			children = (
 				4EAA6FA62B0FA002004DD63E /* GoPro.swift */,
 				4E6786A02B98EB7A0004A7D8 /* GoProCommand.swift */,
+				4E62241E2B99659400F3503B /* GoProMedia.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -427,6 +430,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4EAA6FA82B0FA002004DD63E /* GoProUsbCommand.swift in Sources */,
+				4E62241F2B99659400F3503B /* GoProMedia.swift in Sources */,
 				4EAA6FA02B0F9FFA004DD63E /* StringExtensions.swift in Sources */,
 				4E67867E2B97839D0004A7D8 /* FileItemModel.swift in Sources */,
 				4E67867C2B9782AB0004A7D8 /* UploadMediaView.swift in Sources */,
