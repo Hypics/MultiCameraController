@@ -20,7 +20,9 @@ struct SettingView: View {
         .padding([.top, .bottom], 5)
       Text("Configure List").padding()
       List {
-        Button(action: self.multiCameraViewModel.setVideoResolution4K, label: {
+        Button(action: {
+          self.multiCameraViewModel.setVideoResolution(.videoResolution_4k)
+        }, label: {
           HStack {
             Spacer()
             Image(systemName: "camera")
@@ -31,7 +33,9 @@ struct SettingView: View {
           }
         })
         .listRowSeparator(.hidden)
-        Button(action: self.multiCameraViewModel.setVideoFps120Hz, label: {
+        Button(action: {
+          self.multiCameraViewModel.setFps(.fps_60)
+        }, label: {
           HStack {
             Spacer()
             Image(systemName: "rectangle.on.rectangle")
@@ -42,7 +46,9 @@ struct SettingView: View {
           }
         })
         .listRowSeparator(.hidden)
-        Button(action: self.multiCameraViewModel.setVideoDigitalLensLinear, label: {
+        Button(action: {
+          self.multiCameraViewModel.setVideoDigitalLens(.linear)
+        }, label: {
           HStack {
             Spacer()
             Image(systemName: "field.of.view.wide")
@@ -53,7 +59,9 @@ struct SettingView: View {
           }
         })
         .listRowSeparator(.hidden)
-        Button(action: self.multiCameraViewModel.setAntiFlicker60Hz, label: {
+        Button(action: {
+          self.multiCameraViewModel.setAntiFlicker(.antiFlicker_60)
+        }, label: {
           HStack {
             Spacer()
             Image(systemName: "warninglight")
@@ -64,7 +72,9 @@ struct SettingView: View {
           }
         })
         .listRowSeparator(.hidden)
-        Button(action: self.multiCameraViewModel.setHyperSmoothOff, label: {
+        Button(action: {
+          self.multiCameraViewModel.setHypersmooth(.off)
+        }, label: {
           HStack {
             Spacer()
             Image(systemName: "circle.and.line.horizontal")
@@ -75,7 +85,9 @@ struct SettingView: View {
           }
         })
         .listRowSeparator(.hidden)
-        Button(action: self.multiCameraViewModel.setHindsightOff, label: {
+        Button(action: {
+          self.multiCameraViewModel.setHindsight(.hindsight_off)
+        }, label: {
           HStack {
             Spacer()
             Image(systemName: "arrowshape.turn.up.backward.badge.clock")
@@ -86,7 +98,9 @@ struct SettingView: View {
           }
         })
         .listRowSeparator(.hidden)
-        Button(action: self.multiCameraViewModel.setVideoBitRateHigh, label: {
+        Button(action: {
+          self.multiCameraViewModel.setVideoBitRate(.high)
+        }, label: {
           HStack {
             Spacer()
             Image(systemName: "slider.horizontal.3")
@@ -97,7 +111,9 @@ struct SettingView: View {
           }
         })
         .listRowSeparator(.hidden)
-        Button(action: self.multiCameraViewModel.setVideoBitDepth10bit, label: {
+        Button(action: {
+          self.multiCameraViewModel.setVideoBitDepth(.videoBitDepth_10bit)
+        }, label: {
           HStack {
             Spacer()
             Image(systemName: "slider.vertical.3")
@@ -108,7 +124,9 @@ struct SettingView: View {
           }
         })
         .listRowSeparator(.hidden)
-        Button(action: self.multiCameraViewModel.setAutoPowerDownNever, label: {
+        Button(action: {
+          self.multiCameraViewModel.setAutoPowerDown(.autoPowerDown_never)
+        }, label: {
           HStack {
             Spacer()
             Image(systemName: "powersleep")
@@ -119,7 +137,9 @@ struct SettingView: View {
           }
         })
         .listRowSeparator(.hidden)
-        Button(action: self.multiCameraViewModel.setControlsModePro, label: {
+        Button(action: {
+          self.multiCameraViewModel.setControlsMode(.pro)
+        }, label: {
           HStack {
             Spacer()
             Image(systemName: "wrench.and.screwdriver")

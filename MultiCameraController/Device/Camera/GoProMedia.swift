@@ -28,9 +28,9 @@ extension GoPro {
     }
   }
 
-  func downloadMedia(mediaUrl: String, _ completion: @escaping (Result<Bool, Error>, Double?) -> Void) {
-    os_log("Download Media: %@", type: .info, mediaUrl)
-    self.requestUsbMediaDownload(mediaEndPoint: mediaUrl, timestamp_path: nil) { progress, error in
+  func downloadMedia(mediaEndPoint: String, _ completion: @escaping (Result<Bool, Error>, Double?) -> Void) {
+    os_log("Download Media: %@", type: .info, mediaEndPoint)
+    self.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint, timestamp_path: nil) { progress, error in
       if let error {
         os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
         completion(.failure(error), nil)
@@ -91,9 +91,9 @@ extension GoPro {
       }
   }
 
-  func removeMedia(mediaUrl: String, _ completion: @escaping (Result<Bool, Error>) -> Void) {
-    os_log("Remove Media: %@", type: .info, mediaUrl)
-    self.requestUsbMediaRemove(mediaEndPoint: mediaUrl) { error in
+  func removeMedia(mediaEndPoint: String, _ completion: @escaping (Result<Bool, Error>) -> Void) {
+    os_log("Remove Media: %@", type: .info, mediaEndPoint)
+    self.requestUsbMediaRemove(mediaEndPoint: mediaEndPoint) { error in
       if let error {
         os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
         completion(.failure(error))

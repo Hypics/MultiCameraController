@@ -7,7 +7,6 @@
 //
 
 import AlertToast
-// import Foundation
 import SwiftUI
 
 struct MultiCameraView: View {
@@ -79,7 +78,7 @@ struct MultiCameraView: View {
       .toast(isPresenting: self.$multiCameraViewModel.showDownloadMediaToast) {
         AlertToast(
           type: .loading,
-          title: self.multiCameraViewModel.downloadMediaUrl,
+          title: self.multiCameraViewModel.downloadMediaEndPoint,
           subTitle: String(format: "%.2f", self.multiCameraViewModel.downloadProgress) + " %"
         )
       }
