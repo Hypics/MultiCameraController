@@ -14,7 +14,9 @@ struct PresetView: View {
     HStack {
       Spacer()
       Spacer()
-      Button(action: self.multiCameraViewModel.applyPreset1, label: {
+      Button(action: {
+        self.multiCameraViewModel.setPreset(.mounted_4k_60fps)
+      }, label: {
         VStack {
           Image(systemName: "1.square")
             .foregroundColor(.pink)

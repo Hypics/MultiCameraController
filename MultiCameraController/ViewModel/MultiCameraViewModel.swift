@@ -107,18 +107,8 @@ class MultiCameraViewModel: ObservableObject {
     self.showRemoveMediaToast.toggle()
   }
 
-  func applyPreset1() {
-    os_log("4K@120FPS, 16:9, Linear, 60Hz, Off, High, 10bit, Never, Pro", type: .info)
-    for camera in CameraManager.instance.getConnectedCameraContainer() {
-      for presetSetting in GoProUsbSettingPreset.mounted_4k_120fps.settings {
-        camera.requestUsbSetting(setting: presetSetting) { error in
-          if error != nil {
-            os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
-            return
-          }
-        }
-      }
-    }
+  func setPreset(_ cameraPreset: CameraPreset) {
+    CameraManager.instance.setPresetAll(cameraPreset)
     self.showPreset1Toast.toggle()
   }
 
