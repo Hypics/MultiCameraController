@@ -13,22 +13,22 @@ struct DownloadMediaView: View {
   var body: some View {
     Text("Media List").padding()
     List {
-      ForEach(self.cameraViewModel.camera.mediaUrlStringList, id: \.self) { mediaUrlString in
+      ForEach(self.cameraViewModel.camera.mediaEndPointList, id: \.self) { mediaEndPoint in
         Button(action: {
-          self.cameraViewModel.downloadMedia(mediaEndPoint: mediaUrlString)
+          self.cameraViewModel.downloadMedia(mediaEndPoint: mediaEndPoint)
         }, label: {
           HStack {
             Spacer()
             Image(systemName: "photo")
               .foregroundColor(.teal)
-            Text(mediaUrlString)
+            Text(mediaEndPoint)
               .foregroundColor(.teal)
             Spacer()
           }
         })
         .swipeActions(edge: .leading, allowsFullSwipe: false) {
           Button(action: {
-            self.cameraViewModel.downloadMedia(mediaEndPoint: mediaUrlString)
+            self.cameraViewModel.downloadMedia(mediaEndPoint: mediaEndPoint)
           }, label: {
             Text("Download")
               .padding([.top, .bottom], 5)
@@ -42,7 +42,7 @@ struct DownloadMediaView: View {
     }
     .refreshable(
       action: {
-        self.cameraViewModel.camera.updateMediaUrlStringList(nil)
+        self.cameraViewModel.camera.updateMediaEndPointList(nil)
       }
     )
   }

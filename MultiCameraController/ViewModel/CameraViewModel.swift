@@ -25,7 +25,7 @@ class CameraViewModel: ObservableObject {
   }
 
   func getMediaListCount() -> String {
-    "\(String(describing: self.camera.mediaUrlStringList.count)) files"
+    "\(String(describing: self.camera.mediaEndPointList.count)) files"
   }
 
   func startShoot() {

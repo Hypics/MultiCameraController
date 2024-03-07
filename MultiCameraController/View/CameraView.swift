@@ -26,7 +26,7 @@ struct CameraView: View {
     })
     .onAppear {
       self.cameraViewModel.camera.checkConnection(nil)
-      self.cameraViewModel.camera.updateMediaUrlStringList(nil)
+      self.cameraViewModel.camera.updateMediaEndPointList(nil)
     }
     .toast(isPresenting: self.$cameraViewModel.showShutterOnToast, duration: 1, tapToDismiss: true) {
       AlertToast(

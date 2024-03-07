@@ -77,9 +77,9 @@ extension GoPro {
     }
   }
 
-  func updateMediaUrlStringList(_ completion: ((Result<Bool, Error>, [String]?) -> Void)?) {
-    os_log("Update Media Url String List: %@", type: .info, self.cameraName)
-    self.requestUsbMediaList { mediaUrlStringList, _, error in
+  func updateMediaEndPointList(_ completion: ((Result<Bool, Error>, [String]?) -> Void)?) {
+    os_log("Update Media EndPoint List: %@", type: .info, self.cameraName)
+    self.requestUsbMediaList { mediaEndPointList, _, error in
       if let error {
         os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
         completion?(.failure(error), nil)
@@ -90,8 +90,8 @@ extension GoPro {
           #function,
           Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
         )
-        self.mediaUrlStringList = mediaUrlStringList ?? []
-        completion?(.success(true), mediaUrlStringList)
+        self.mediaEndPointList = mediaEndPointList ?? []
+        completion?(.success(true), mediaEndPointList)
       }
     }
   }
