@@ -12,6 +12,7 @@ struct MainView: View {
   @StateObject var multiCameraViewModel = MultiCameraViewModel()
   @StateObject var settingViewModel = SettingViewModel()
   @State var viewInfoList: [ViewInfo] = []
+  @State private var isButtonTapped = false
 
   var body: some View {
     NavigationStack(path: self.$viewInfoList) {
@@ -20,21 +21,43 @@ struct MainView: View {
 
         Button(
           action: {
-            self.viewInfoList.append(ViewInfo(view: .multiCameraView))
+            withAnimation(.easeOut(duration: 1.0)) {
+              self.isButtonTapped = true
+            } completion: {
+              self.viewInfoList.append(ViewInfo(view: .multiCameraView))
+            }
           },
           label: {
             VStack {
-              Text("Hypics").font(.custom("Archivo", size: 120)).foregroundStyle(Color.skyishMyish)
+              Text("Hypics").font(.custom("Archivo", size: 120, relativeTo: .largeTitle))
+                .foregroundStyle(Color.skyishMyish)
                 .padding(5)
-              Text("Step to the Next Level Immersive Experience").font(.custom("Archivo", size: 44))
+              Text("Step to the Next Level Immersive Experience")
+                .font(.custom("Archivo", size: 44, relativeTo: .headline))
                 .foregroundStyle(.white)
                 .padding(5)
-              Text("Hyper Pictures").font(.custom("Archivo", size: 24)).foregroundStyle(Color.skyishMyish)
-                .padding([.top, .leading, .trailing], 5)
-                .padding([.bottom], 100)
+              Text("Hyper Pictures").font(.custom("Archivo", size: 24, relativeTo: .subheadline))
+                .foregroundStyle(Color.skyishMyish)
+                .padding(5)
             }
+            .padding([.top], 45)
+            .padding([.bottom], 95)
+            .padding(.horizontal, 95)
+            .contentShape(Rectangle())
+            .overlay(
+              RoundedRectangle(cornerRadius: 20)
+                .strokeBorder(
+                  Color.skyishMyish,
+                  lineWidth: 3
+                )
+            )
           }
         )
+        .buttonStyle(.plain)
+        .opacity(self.isButtonTapped ? 0 : 1)
+        .onAppear {
+          self.isButtonTapped = false
+        }
       }
       .ignoresSafeArea()
       .navigationDestination(for: ViewInfo.self) { viewInfo in
