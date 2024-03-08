@@ -16,7 +16,6 @@ protocol Camera: Hashable {
   func getCameraInfo() -> CameraInfo?
 
   // TODO: remove
-  func requestUsbSetting(setting: GoProUsbSetting, _ completion: ((Error?) -> Void)?)
   func requestUsbMediaList(_ completion: (([String]?, Int, Error?) -> Void)?)
   func requestUsbMediaDownload(
     mediaEndPoint: String,
