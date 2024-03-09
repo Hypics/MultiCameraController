@@ -1,5 +1,5 @@
 //
-//  DataServerViewModel.swift
+//  ServerViewModel.swift
 //  MultiCameraController
 //
 //  Created by INHWAN WEE on 3/5/24.
@@ -9,7 +9,7 @@ import Foundation
 import os.log
 import SynologyKit
 
-class DataServerViewModel: ObservableObject {
+class ServerViewModel: ObservableObject {
   @Published var client = SynologyClient(host: "ds918pluswee.synology.me", port: 5_001, enableHTTPS: true)
   @Published var userId: String = UserDefaults.standard
     .string(forKey: "UserId") ?? ""
@@ -50,7 +50,7 @@ class DataServerViewModel: ObservableObject {
   }
 }
 
-extension DataServerViewModel {
+extension ServerViewModel {
   func updateAppFileUrlList() {
     do {
       let documentDirectory = try FileManager.default.url(

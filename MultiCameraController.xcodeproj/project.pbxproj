@@ -18,7 +18,7 @@
 		4E62242F2B99DACA00F3503B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E62242E2B99DACA00F3503B /* MainView.swift */; };
 		4E6224312B9A016400F3503B /* ViewInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224302B9A016400F3503B /* ViewInfo.swift */; };
 		4E6224332B9A140400F3503B /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6224322B9A140400F3503B /* SettingViewModel.swift */; };
-		4E6786752B9767D50004A7D8 /* DataServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */; };
+		4E6786752B9767D50004A7D8 /* ServerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786742B9767D50004A7D8 /* ServerViewModel.swift */; };
 		4E6786782B97704D0004A7D8 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786772B97704D0004A7D8 /* LoginView.swift */; };
 		4E67867A2B977CC00004A7D8 /* SessionStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786792B977CC00004A7D8 /* SessionStateView.swift */; };
 		4E67867C2B9782AB0004A7D8 /* UploadMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E67867B2B9782AB0004A7D8 /* UploadMediaView.swift */; };
@@ -55,7 +55,7 @@
 		4ECAD5992B16499800CFF41C /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4ECAD5982B16499800CFF41C /* Alamofire */; };
 		4ECAD59C2B1649D000CFF41C /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 4ECAD59B2B1649D000CFF41C /* AlertToast */; };
 		4ECB28C02B2D8AE4004BA07F /* SynologyKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4ECB28BF2B2D8AE4004BA07F /* SynologyKit */; };
-		4ECB28C22B2E13C4004BA07F /* DataServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECB28C12B2E13C4004BA07F /* DataServerView.swift */; };
+		4ECB28C22B2E13C4004BA07F /* ServerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECB28C12B2E13C4004BA07F /* ServerView.swift */; };
 		4ECB28C42B2E3464004BA07F /* UrlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ECB28C32B2E3464004BA07F /* UrlExtension.swift */; };
 		C9401CD62631EF9B00E5208E /* MultiCameraControllerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CD52631EF9B00E5208E /* MultiCameraControllerApp.swift */; };
 		C9401CDA2631EF9F00E5208E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9401CD92631EF9F00E5208E /* Assets.xcassets */; };
@@ -77,7 +77,7 @@
 		4E62242E2B99DACA00F3503B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		4E6224302B9A016400F3503B /* ViewInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewInfo.swift; sourceTree = "<group>"; };
 		4E6224322B9A140400F3503B /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
-		4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServerViewModel.swift; sourceTree = "<group>"; };
+		4E6786742B9767D50004A7D8 /* ServerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerViewModel.swift; sourceTree = "<group>"; };
 		4E6786772B97704D0004A7D8 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4E6786792B977CC00004A7D8 /* SessionStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateView.swift; sourceTree = "<group>"; };
 		4E67867B2B9782AB0004A7D8 /* UploadMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadMediaView.swift; sourceTree = "<group>"; };
@@ -111,7 +111,7 @@
 		4EAD950C2B13C5D700D3EC01 /* .swiftlint.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = SOURCE_ROOT; };
 		4EAD950D2B13C5D700D3EC01 /* .swiftformat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .swiftformat; sourceTree = SOURCE_ROOT; };
 		4EB1EF4C2B9B3F870030E6FF /* UIScreenExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIScreenExtension.swift; sourceTree = "<group>"; };
-		4ECB28C12B2E13C4004BA07F /* DataServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataServerView.swift; sourceTree = "<group>"; };
+		4ECB28C12B2E13C4004BA07F /* ServerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerView.swift; sourceTree = "<group>"; };
 		4ECB28C32B2E3464004BA07F /* UrlExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlExtension.swift; sourceTree = "<group>"; };
 		C9401CD22631EF9B00E5208E /* MultiCameraController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MultiCameraController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9401CD52631EF9B00E5208E /* MultiCameraControllerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiCameraControllerApp.swift; sourceTree = "<group>"; };
@@ -170,7 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				4E67867F2B978CBF0004A7D8 /* CameraViewModel.swift */,
-				4E6786742B9767D50004A7D8 /* DataServerViewModel.swift */,
+				4E6786742B9767D50004A7D8 /* ServerViewModel.swift */,
 				4E67868B2B988B1A0004A7D8 /* MultiCameraViewModel.swift */,
 				4E6224322B9A140400F3503B /* SettingViewModel.swift */,
 			);
@@ -313,7 +313,7 @@
 				4E67868D2B98930A0004A7D8 /* MultiCameraView */,
 				4E6786882B988AA10004A7D8 /* SettingView */,
 				C9401CF12631FBFD00E5208E /* CameraView.swift */,
-				4ECB28C12B2E13C4004BA07F /* DataServerView.swift */,
+				4ECB28C12B2E13C4004BA07F /* ServerView.swift */,
 				4E62242E2B99DACA00F3503B /* MainView.swift */,
 				4E931F1C2B0F9E870042B2AA /* MultiCameraView.swift */,
 				4E931F1D2B0F9E870042B2AA /* SettingView.swift */,
@@ -476,8 +476,8 @@
 				4E6786872B97918F0004A7D8 /* DownloadMediaView.swift in Sources */,
 				4E6786832B978EB40004A7D8 /* CameraStateView.swift in Sources */,
 				4EB1EF4D2B9B3F870030E6FF /* UIScreenExtension.swift in Sources */,
-				4E6786752B9767D50004A7D8 /* DataServerViewModel.swift in Sources */,
-				4ECB28C22B2E13C4004BA07F /* DataServerView.swift in Sources */,
+				4E6786752B9767D50004A7D8 /* ServerViewModel.swift in Sources */,
+				4ECB28C22B2E13C4004BA07F /* ServerView.swift in Sources */,
 				4E6224212B99669000F3503B /* GoProSetting.swift in Sources */,
 				4E6786972B98980C0004A7D8 /* ViewExtension.swift in Sources */,
 				4E67869B2B9898EE0004A7D8 /* Camera.swift in Sources */,

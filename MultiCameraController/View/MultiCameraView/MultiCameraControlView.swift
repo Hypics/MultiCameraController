@@ -104,7 +104,7 @@ struct MultiCameraControlView: View {
       .padding([.leading, .trailing], 3)
       Spacer()
       Button(action: {
-        self.viewInfoList.append(ViewInfo(view: .settingView))
+//        self.viewInfoList.append(ViewInfo(view: .settingView))
       }, label: {
         VStack {
           HStack {

@@ -11,36 +11,52 @@ import SwiftUI
 
 struct MultiCameraView: View {
   @ObservedObject var multiCameraViewModel: MultiCameraViewModel
-  @ObservedObject var dataServerViewModel: DataServerViewModel
+  @ObservedObject var serverViewModel: ServerViewModel
   @Binding var viewInfoList: [ViewInfo]
 
   var body: some View {
-    VStack {
-      Divider()
-        .padding([.top, .bottom], 5)
-      LoginView(
-        dataServerViewModel: self.dataServerViewModel,
-        viewInfoList: self.$viewInfoList
-      )
-      Divider()
-        .padding([.top, .bottom], 5)
-      MultiCameraControlView(multiCameraViewModel: self.multiCameraViewModel, viewInfoList: self.$viewInfoList)
-      Divider()
-        .padding([.top, .bottom], 5)
-      AddCameraView(multiCameraViewModel: self.multiCameraViewModel)
-      CameraListView(multiCameraViewModel: self.multiCameraViewModel, viewInfoList: self.$viewInfoList)
+    HStack {
+      VStack {
+        Text("Preview")
+          .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.4)
+          .background(Color.hauntedMeadow)
+        Text("Cardview")
+          .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.5)
+          .background(Color.hauntedMeadow)
+      }
+      .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
+      Text("control panel")
+        .frame(maxWidth: UIScreen.screenWidth * 0.3, maxHeight: UIScreen.screenHeight * 0.9)
+        .background(Color.hauntedMeadow)
     }
     .onAppear {
       CameraManager.instance.checkCameraAll()
       CameraManager.instance.enableWiredUsbControlAll()
       self.multiCameraViewModel.showCameraToast.toggle()
     }
+    .navigationTitle("Multi Camera Control")
+    .foregroundStyle(Color.skyishMyish)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
-      ToolbarItem(placement: .principal) {
-        Text("Multi Camera Control").fontWeight(.bold)
+      ToolbarItemGroup(placement: .primaryAction) {
+        TabView {
+          Text("Server List")
+            .tabItem {
+              Label("Data Server", systemImage: "server.rack")
+            }
+            .tabItem {
+              Label("Training Server", systemImage: "server.rack")
+            }
+        }
+//        Button(action: {
+//          print("Setting tapped!")
+//        }, label: {
+//          Label("Setting All", systemImage: "server.rack")
+        ////          Image(systemName: "gear")
+//        })
       }
     }
+    .ignoresSafeArea()
     .toast(isPresenting: self.$multiCameraViewModel.showCameraToast, duration: 3, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
@@ -104,9 +120,6 @@ struct MultiCameraView: View {
         style: .style(titleColor: .pink)
       )
     }
-    .onChange(of: CameraManager.instance.cameraSerialNumberList) {
-      UserDefaults.standard.set(CameraManager.instance.cameraSerialNumberList, forKey: "GoProSerialNumberList")
-    }
   }
 }
 
@@ -115,7 +128,7 @@ struct MultiCameraView_Previews: PreviewProvider {
   static var previews: some View {
     MultiCameraView(
       multiCameraViewModel: MultiCameraViewModel(),
-      dataServerViewModel: DataServerViewModel(),
+      serverViewModel: ServerViewModel(),
       viewInfoList: $viewInfoList
     )
   }

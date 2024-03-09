@@ -47,5 +47,8 @@ struct AddCameraView: View {
         .padding([.trailing], 15)
       }
     }
+    .onChange(of: CameraManager.instance.cameraSerialNumberList) {
+      UserDefaults.standard.set(CameraManager.instance.cameraSerialNumberList, forKey: "GoProSerialNumberList")
+    }
   }
 }
