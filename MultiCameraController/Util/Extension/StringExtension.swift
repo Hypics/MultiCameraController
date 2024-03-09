@@ -1,5 +1,5 @@
 //
-//  StringExtensions.swift
+//  StringExtension.swift
 //  MultiCameraController
 //
 //  Created by INHWAN WEE on 11/21/23.

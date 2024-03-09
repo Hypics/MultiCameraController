@@ -1,5 +1,5 @@
 //
-//  ViewExtensions.swift
+//  ViewExtension.swift
 //  MultiCameraController
 //
 //  Created by INHWAN WEE on 3/6/24.

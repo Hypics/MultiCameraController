@@ -1,5 +1,5 @@
 //
-//  UrlExtensions.swift
+//  UrlExtension.swift
 //  MultiCameraController
 //
 //  Created by INHWAN WEE on 12/17/23.
