@@ -33,6 +33,5 @@ enum ViewType {
   case mainView
   case multiCameraView
   case cameraView
-  case settingView
-  case dataServerView
+  case serverView
 }

@@ -8,57 +8,93 @@
 import SwiftUI
 
 struct MainView: View {
-  @StateObject var dataServerViewModel = DataServerViewModel()
+  @StateObject var serverViewModel = ServerViewModel()
   @StateObject var multiCameraViewModel = MultiCameraViewModel()
   @StateObject var settingViewModel = SettingViewModel()
   @State var viewInfoList: [ViewInfo] = []
-  @State private var isButtonTapped = false
+  @State private var isServerButtonTapped = false
+  @State private var isCameraButtonTapped = false
 
   var body: some View {
     NavigationStack(path: self.$viewInfoList) {
       ZStack {
         Color.hauntedMeadow
 
-        Button(
-          action: {
-            withAnimation(.easeOut(duration: 1.0)) {
-              self.isButtonTapped = true
-            } completion: {
-              self.viewInfoList.append(ViewInfo(view: .multiCameraView))
-            }
-          },
-          label: {
-            VStack {
-              Text("Hypics").font(.custom("Archivo", size: 120, relativeTo: .largeTitle))
-                .foregroundStyle(Color.skyishMyish)
-                .padding(5)
-              Text("Step to the Next Level Immersive Experience")
-                .font(.custom("Archivo", size: 44, relativeTo: .headline))
-                .foregroundStyle(.white)
-                .padding(5)
-              Text("Hyper Pictures").font(.custom("Archivo", size: 24, relativeTo: .subheadline))
-                .foregroundStyle(Color.skyishMyish)
-                .padding(5)
-            }
-            .padding([.top], 45)
-            .padding([.bottom], 95)
-            .padding(.horizontal, 95)
-            .contentShape(Rectangle())
-            .overlay(
-              RoundedRectangle(cornerRadius: 20)
-                .strokeBorder(
-                  Color.skyishMyish,
-                  lineWidth: 3
-                )
-            )
+        VStack {
+          VStack {
+            Spacer()
+            Text("Hypics").font(.custom("Archivo", size: 120, relativeTo: .largeTitle))
+              .foregroundStyle(Color.skyishMyish)
+              .padding(10)
+            Text("Step to the Next Level Immersive Experience")
+              .font(.custom("Archivo", size: 44, relativeTo: .headline))
+              .foregroundStyle(.white)
+              .padding(5)
+            Text("Hyper Pictures").font(.custom("Archivo", size: 24, relativeTo: .subheadline))
+              .foregroundStyle(Color.skyishMyish)
+              .padding(5)
+            Spacer()
+            Spacer()
+            Spacer()
           }
-        )
-        .buttonStyle(.plain)
-        .opacity(self.isButtonTapped ? 0 : 1)
-        .onAppear {
-          self.isButtonTapped = false
+          .frame(width: UIScreen.screenWidth * 0.8, height: UIScreen.screenHeight * 0.36)
+          .contentShape(Rectangle())
+          .overlay(
+            RoundedRectangle(cornerRadius: 20)
+              .strokeBorder(
+                Color.skyishMyish,
+                lineWidth: 3
+              )
+          )
+
+          HStack {
+            Spacer()
+            Spacer()
+            Button(
+              action: {
+                withAnimation(.easeOut(duration: 1.0)) {
+                  self.isServerButtonTapped = true
+                } completion: {
+                  self.viewInfoList.append(ViewInfo(view: .serverView))
+                }
+              },
+              label: {
+                Text("Servers")
+                  .font(.custom("Archivo", size: 44, relativeTo: .headline))
+                  .foregroundStyle(.white)
+                  .frame(width: UIScreen.screenWidth * 0.32, height: UIScreen.screenHeight * 0.08)
+              }
+            )
+            .buttonStyle(.bordered)
+            .opacity(self.isServerButtonTapped ? 0 : 1)
+
+            Spacer()
+            Button(
+              action: {
+                withAnimation(.easeOut(duration: 1.0)) {
+                  self.isCameraButtonTapped = true
+                } completion: {
+                  self.viewInfoList.append(ViewInfo(view: .multiCameraView))
+                }
+              },
+              label: {
+                Text("Cameras")
+                  .font(.custom("Archivo", size: 44, relativeTo: .headline))
+                  .foregroundStyle(.white)
+                  .frame(width: UIScreen.screenWidth * 0.32, height: UIScreen.screenHeight * 0.08)
+              }
+            )
+            .buttonStyle(.bordered)
+            .opacity(self.isCameraButtonTapped ? 0 : 1)
+            Spacer()
+            Spacer()
+          }
+          .padding(50)
         }
       }
+      .navigationViewStyle(StackNavigationViewStyle())
+      .navigationTitle("Hypics")
+      .navigationBarHidden(true)
       .ignoresSafeArea()
       .navigationDestination(for: ViewInfo.self) { viewInfo in
         switch viewInfo.view {
@@ -68,7 +104,7 @@ struct MainView: View {
         case .multiCameraView:
           MultiCameraView(
             multiCameraViewModel: self.multiCameraViewModel,
-            dataServerViewModel: self.dataServerViewModel,
+            serverViewModel: self.serverViewModel,
             viewInfoList: self.$viewInfoList
           )
 
@@ -78,15 +114,15 @@ struct MainView: View {
               .data as? (any Camera) ?? GoPro(serialNumber: "")
           ))
 
-        case .settingView:
-          SettingView(settingViewModel: self.settingViewModel)
-
-        case .dataServerView:
-          DataServerView(dataServerViewModel: self.dataServerViewModel)
+        case .serverView:
+          ServerView(serverViewModel: self.serverViewModel)
         }
       }
+      .onAppear {
+        self.isServerButtonTapped = false
+        self.isCameraButtonTapped = false
+      }
     }
-    .navigationViewStyle(StackNavigationViewStyle())
   }
 }
 

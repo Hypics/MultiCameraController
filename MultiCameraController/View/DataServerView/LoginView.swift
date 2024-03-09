@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct LoginView: View {
-  @ObservedObject var dataServerViewModel: DataServerViewModel
+  @ObservedObject var serverViewModel: ServerViewModel
   @Binding var viewInfoList: [ViewInfo]
 
   var body: some View {
@@ -17,7 +17,7 @@ struct LoginView: View {
       Spacer()
       Text("Synology NAS")
         .padding(5)
-      TextField("ID", text: self.$dataServerViewModel.userId)
+      TextField("ID", text: self.$serverViewModel.userId)
         .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
@@ -26,7 +26,7 @@ struct LoginView: View {
         .frame(width: 140)
         .fixedSize(horizontal: true, vertical: false)
         .padding(5)
-      SecureField("Password", text: self.$dataServerViewModel.userPassword)
+      SecureField("Password", text: self.$serverViewModel.userPassword)
         .padding(10)
         .overlay(
           RoundedRectangle(cornerRadius: 15)
@@ -38,10 +38,10 @@ struct LoginView: View {
       Spacer()
       Button(
         action: {
-          self.dataServerViewModel.loginSession { result in
+          self.serverViewModel.loginSession { result in
             switch result {
             case .success:
-              self.viewInfoList.append(ViewInfo(view: .dataServerView))
+              self.viewInfoList.append(ViewInfo(view: .serverView))
 
             case .failure:
               break

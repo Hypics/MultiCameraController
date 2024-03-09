@@ -9,11 +9,11 @@ import SwiftUI
 import SynologyKit
 
 struct UploadMediaView: View {
-  @ObservedObject var dataServerViewModel: DataServerViewModel
+  @ObservedObject var serverViewModel: ServerViewModel
 
   var body: some View {
     Text("Folder List").padding()
-    List(self.dataServerViewModel.appFileUrlList ?? [], id: \.self, children: \.childrenItem) { item in
+    List(self.serverViewModel.appFileUrlList ?? [], id: \.self, children: \.childrenItem) { item in
       HStack {
         Image(systemName: item.icon)
           .foregroundColor((item.url.isDirectory) ? Color.teal : .gray)
@@ -22,7 +22,7 @@ struct UploadMediaView: View {
       }
       .swipeActions(edge: .leading, allowsFullSwipe: false) {
         Button(action: {
-          self.dataServerViewModel.uploadFolder(uploadItem: item)
+          self.serverViewModel.uploadFolder(uploadItem: item)
         }, label: {
           Text("Upload")
             .padding([.top, .bottom], 5)
@@ -33,8 +33,8 @@ struct UploadMediaView: View {
       }
       .swipeActions(edge: .trailing, allowsFullSwipe: false) {
         Button(action: {
-          self.dataServerViewModel.deleteFolder(deleteItem: item)
-          self.dataServerViewModel.updateAppFileUrlList()
+          self.serverViewModel.deleteFolder(deleteItem: item)
+          self.serverViewModel.updateAppFileUrlList()
         }, label: {
           Text("Delete")
             .padding([.top, .bottom], 5)
@@ -46,7 +46,7 @@ struct UploadMediaView: View {
     }
     .refreshable(
       action: {
-        self.dataServerViewModel.updateAppFileUrlList()
+        self.serverViewModel.updateAppFileUrlList()
       }
     )
   }
