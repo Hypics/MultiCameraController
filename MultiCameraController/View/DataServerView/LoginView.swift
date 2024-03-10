@@ -41,7 +41,7 @@ struct LoginView: View {
           self.serverViewModel.loginSession { result in
             switch result {
             case .success:
-              self.viewInfoList.append(ViewInfo(view: .serverView))
+              self.viewInfoList.append(.init(view: .serverView))
 
             case .failure:
               break

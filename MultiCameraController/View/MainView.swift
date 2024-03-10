@@ -55,7 +55,7 @@ struct MainView: View {
                 withAnimation(.easeOut(duration: 1.0)) {
                   self.isServerButtonTapped = true
                 } completion: {
-                  self.viewInfoList.append(ViewInfo(view: .serverView))
+                  self.viewInfoList.append(.init(view: .serverView))
                 }
               },
               label: {
@@ -74,7 +74,7 @@ struct MainView: View {
                 withAnimation(.easeOut(duration: 1.0)) {
                   self.isCameraButtonTapped = true
                 } completion: {
-                  self.viewInfoList.append(ViewInfo(view: .multiCameraView))
+                  self.viewInfoList.append(.init(view: .multiCameraView))
                 }
               },
               label: {

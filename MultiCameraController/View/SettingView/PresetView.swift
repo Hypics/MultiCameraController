@@ -12,8 +12,6 @@ struct PresetView: View {
 
   var body: some View {
     HStack {
-      Spacer()
-      Spacer()
       Button(action: {
         self.settingViewModel.setPreset(.mounted_4k_60fps)
       }, label: {
@@ -36,8 +34,6 @@ struct PresetView: View {
           .stroke(.gray, lineWidth: 1.0)
       )
       .padding(5)
-      Spacer()
-      Spacer()
     }
   }
 }

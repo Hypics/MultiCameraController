@@ -14,7 +14,6 @@ struct MultiCameraControlView: View {
   var body: some View {
     HStack {
       Spacer()
-      Spacer()
       Button(action: {
         CameraManager.instance.startShootAll()
         self.multiCameraViewModel.showShutterOnToast.toggle()
@@ -22,7 +21,6 @@ struct MultiCameraControlView: View {
         VStack {
           HStack {
             Image(systemName: "video")
-            Image(systemName: "a.circle")
           }
           .foregroundColor(.teal)
           .padding([.top, .bottom], 2)
@@ -30,6 +28,7 @@ struct MultiCameraControlView: View {
             .foregroundColor(.teal)
         }
       })
+      .frame(height: UIScreen.screenHeight * 0.05)
       .padding()
       .overlay(
         RoundedRectangle(cornerRadius: 15)
@@ -45,7 +44,6 @@ struct MultiCameraControlView: View {
         VStack {
           HStack {
             Image(systemName: "stop")
-            Image(systemName: "a.circle")
           }
           .foregroundColor(.pink)
           .padding([.top, .bottom], 2)
@@ -53,6 +51,7 @@ struct MultiCameraControlView: View {
             .foregroundColor(.pink)
         }
       })
+      .frame(height: UIScreen.screenHeight * 0.05)
       .padding()
       .overlay(
         RoundedRectangle(cornerRadius: 15)
@@ -64,9 +63,7 @@ struct MultiCameraControlView: View {
       Button(action: self.multiCameraViewModel.downloadMediaAll, label: {
         VStack {
           HStack {
-            Image(systemName: "photo.on.rectangle.angled")
-            Image(systemName: "a.circle")
-            Image(systemName: "a.circle")
+            Image(systemName: "square.and.arrow.down.on.square")
           }
           .foregroundColor(.green)
           .padding([.top, .bottom], 2)
@@ -74,6 +71,7 @@ struct MultiCameraControlView: View {
             .foregroundColor(.green)
         }
       })
+      .frame(height: UIScreen.screenHeight * 0.05)
       .padding()
       .overlay(
         RoundedRectangle(cornerRadius: 15)
@@ -86,8 +84,6 @@ struct MultiCameraControlView: View {
         VStack {
           HStack {
             Image(systemName: "trash")
-            Image(systemName: "a.circle")
-            Image(systemName: "a.circle")
           }
           .foregroundColor(.red)
           .padding([.top, .bottom], 2)
@@ -95,6 +91,7 @@ struct MultiCameraControlView: View {
             .foregroundColor(.red)
         }
       })
+      .frame(height: UIScreen.screenHeight * 0.05)
       .padding()
       .overlay(
         RoundedRectangle(cornerRadius: 15)
@@ -102,30 +99,14 @@ struct MultiCameraControlView: View {
       )
       .padding([.top, .bottom], 5)
       .padding([.leading, .trailing], 3)
-      Spacer()
-      Button(action: {
-//        self.viewInfoList.append(ViewInfo(view: .settingView))
-      }, label: {
-        VStack {
-          HStack {
-            Image(systemName: "gear")
-            Image(systemName: "a.circle")
-          }
-          .foregroundColor(.orange)
-          .padding([.top, .bottom], 2)
-          Text("Settings")
-            .foregroundColor(.orange)
-        }
-      })
-      .padding()
-      .overlay(
-        RoundedRectangle(cornerRadius: 15)
-          .stroke(.gray, lineWidth: 1.0)
-      )
-      .padding([.top, .bottom], 5)
-      .padding([.leading, .trailing], 3)
-      Spacer()
       Spacer()
     }
+  }
+}
+
+struct MultiCameraControlView_Previews: PreviewProvider {
+  @State static var viewInfoList: [ViewInfo] = []
+  static var previews: some View {
+    MultiCameraControlView(multiCameraViewModel: MultiCameraViewModel(), viewInfoList: $viewInfoList)
   }
 }

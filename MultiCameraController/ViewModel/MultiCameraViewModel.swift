@@ -41,6 +41,7 @@ class MultiCameraViewModel: ObservableObject {
   func deleteCameraItem(at offsets: IndexSet) {
     os_log("Remove %@", type: .info, CameraManager.instance.cameraContainer[offsets[offsets.startIndex]].cameraName)
     CameraManager.instance.removeCamera(at: offsets)
+    UserDefaults.standard.set(CameraManager.instance.cameraSerialNumberList, forKey: "GoProSerialNumberList")
   }
 
   func downloadMediaAll() {

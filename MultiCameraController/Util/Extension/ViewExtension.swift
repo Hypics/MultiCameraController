@@ -8,6 +8,10 @@
 import SwiftUI
 
 extension View {
+  func cardModifier() -> some View {
+    self.modifier(CardModifier())
+  }
+
   func blinkBorderAnimation(
     _ color: Color?,
     lineWidth: CGFloat,
@@ -22,6 +26,18 @@ extension View {
       duration: duration,
       repeatCount: repeatCount
     ))
+  }
+}
+
+struct CardModifier: ViewModifier {
+  func body(content: Content) -> some View {
+    content
+      .background(
+        RoundedRectangle(cornerRadius: 20)
+          .foregroundColor(.white)
+          .shadow(color: .black, radius: 4)
+          .opacity(0.2)
+      )
   }
 }
 
