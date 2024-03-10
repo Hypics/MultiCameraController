@@ -22,6 +22,7 @@ struct CameraListView: View {
   var body: some View {
     List {
       Section(header: HStack {
+        Image(systemName: "camera.on.rectangle")
         Text("Camera List")
         Spacer()
         Button(action: {

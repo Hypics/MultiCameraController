@@ -21,58 +21,58 @@ class SettingViewModel: ObservableObject {
   @Published var showAutoPowerDownToast = false
   @Published var showControlsModeToast = false
 
-  func setPreset(_ cameraPreset: CameraPreset) {
-    CameraManager.instance.setPresetAll(cameraPreset)
+  func setPreset(_ cameraPreset: CameraPreset, _ selectedCameraList: [any Camera]) {
+    CameraManager.instance.setPresetAll(cameraPreset, selectedCameraList)
     self.showPreset1Toast.toggle()
   }
 
-  func setVideoResolution(_ videoResolution: CameraVideoResolution) {
-    CameraManager.instance.setVideoResolutionAll(videoResolution)
+  func setVideoResolution(_ videoResolution: CameraVideoResolution, _ selectedCameraList: [any Camera]) {
+    CameraManager.instance.setVideoResolutionAll(videoResolution, selectedCameraList)
     self.showVideoResolutionToast.toggle()
   }
 
-  func setFps(_ fps: CameraFps) {
-    CameraManager.instance.setFpsAll(fps)
+  func setFps(_ fps: CameraFps, _ selectedCameraList: [any Camera]) {
+    CameraManager.instance.setFpsAll(fps, selectedCameraList)
     self.showVideoFpsToast.toggle()
   }
 
-  func setVideoDigitalLens(_ digitalLenses: CameraDigitalLenses) {
-    CameraManager.instance.setDigitalLensesAll(digitalLenses)
+  func setVideoDigitalLens(_ digitalLenses: CameraDigitalLenses, _ selectedCameraList: [any Camera]) {
+    CameraManager.instance.setDigitalLensesAll(digitalLenses, selectedCameraList)
     self.showVideoDigitalLensToast.toggle()
   }
 
-  func setAntiFlicker(_ antiFlicker: CameraAntiFlicker) {
-    CameraManager.instance.setAntiFlickerAll(antiFlicker)
+  func setAntiFlicker(_ antiFlicker: CameraAntiFlicker, _ selectedCameraList: [any Camera]) {
+    CameraManager.instance.setAntiFlickerAll(antiFlicker, selectedCameraList)
     self.showAntiFlickerToast.toggle()
   }
 
-  func setHypersmooth(_ hypersmooth: CameraHypersmooth) {
-    CameraManager.instance.setHypersmoothAll(hypersmooth)
+  func setHypersmooth(_ hypersmooth: CameraHypersmooth, _ selectedCameraList: [any Camera]) {
+    CameraManager.instance.setHypersmoothAll(hypersmooth, selectedCameraList)
     self.showHypersmoothToast.toggle()
   }
 
-  func setHindsight(_ hindsight: CameraHindsight) {
-    CameraManager.instance.setHindsightAll(hindsight)
+  func setHindsight(_ hindsight: CameraHindsight, _ selectedCameraList: [any Camera]) {
+    CameraManager.instance.setHindsightAll(hindsight, selectedCameraList)
     self.showHindsightToast.toggle()
   }
 
-  func setVideoBitRate(_ videoBitRate: CameraVideoBitRate) {
-    CameraManager.instance.setVideoBitRateAll(videoBitRate)
+  func setVideoBitRate(_ videoBitRate: CameraVideoBitRate, _ selectedCameraList: [any Camera]) {
+    CameraManager.instance.setVideoBitRateAll(videoBitRate, selectedCameraList)
     self.showSystemVideoBitRateToast.toggle()
   }
 
-  func setVideoBitDepth(_ videoBitDepth: CameraVideoBitDepth) {
-    CameraManager.instance.setVideoBitDepthAll(videoBitDepth)
+  func setVideoBitDepth(_ videoBitDepth: CameraVideoBitDepth, _ selectedCameraList: [any Camera]) {
+    CameraManager.instance.setVideoBitDepthAll(videoBitDepth, selectedCameraList)
     self.showSystemVideoBitDepthToast.toggle()
   }
 
-  func setAutoPowerDown(_ autoPowerDown: CameraAutoPowerDown) {
-    CameraManager.instance.setAutoPowerDownAll(autoPowerDown)
+  func setAutoPowerDown(_ autoPowerDown: CameraAutoPowerDown, _ selectedCameraList: [any Camera]) {
+    CameraManager.instance.setAutoPowerDownAll(autoPowerDown, selectedCameraList)
     self.showAutoPowerDownToast.toggle()
   }
 
-  func setControlsMode(_ controlMode: CameraControlMode) {
-    CameraManager.instance.setControlModeAll(controlMode)
+  func setControlsMode(_ controlMode: CameraControlMode, _ selectedCameraList: [any Camera]) {
+    CameraManager.instance.setControlModeAll(controlMode, selectedCameraList)
     self.showControlsModeToast.toggle()
   }
 }

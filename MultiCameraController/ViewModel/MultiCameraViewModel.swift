@@ -23,7 +23,7 @@ class MultiCameraViewModel: ObservableObject {
 
   func getCreationTimestamp(completion: @escaping (Int) -> Void) {
     var creationTimestamp = 2_147_483_647
-    for (index, camera) in CameraManager.instance.getConnectedCameraContainer().enumerated() {
+    for (index, camera) in CameraManager.instance.cameraContainer.filter({ $0.isConnected == true }).enumerated() {
       camera.requestUsbMediaList { _, latestCreationTimestamp, error in
         if error != nil {
           os_log("Error: %@", type: .error, error?.localizedDescription ?? "")

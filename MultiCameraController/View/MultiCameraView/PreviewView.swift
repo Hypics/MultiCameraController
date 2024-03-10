@@ -15,6 +15,7 @@ struct PreviewView: View {
   var body: some View {
     List {
       Section(header: HStack {
+        Image(systemName: "camera")
         Text(self.selectedCamera?.cameraName ?? "Camera")
         Spacer()
         Button(action: {
@@ -35,6 +36,7 @@ struct PreviewView: View {
     }
     .scrollContentBackground(.hidden)
     .background(Color.hauntedMeadow)
+    .scrollDisabled(true)
   }
 }
 
