@@ -14,49 +14,53 @@ struct MultiCameraView: View {
   @ObservedObject var serverViewModel: ServerViewModel
   @Binding var viewInfoList: [ViewInfo]
 
+  @State private var isSettingView = false
+  @State private var selectedCamera: (any Camera)?
+
   var body: some View {
     HStack {
-      VStack {
-        Text("Preview")
-          .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.4)
-          .background(Color.hauntedMeadow)
-        Text("Cardview")
-          .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.5)
-          .background(Color.hauntedMeadow)
+      CameraListView(
+        multiCameraViewModel: self.multiCameraViewModel,
+        viewInfoList: self.$viewInfoList,
+        selectedCamera: self.$selectedCamera
+      )
+      .frame(maxWidth: UIScreen.screenWidth * 0.3, maxHeight: UIScreen.screenHeight * 0.9)
+      .background(Color.hauntedMeadow)
+
+      if self.isSettingView {
+        SettingView(settingViewModel: SettingViewModel())
+          .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
+      } else {
+        VStack {
+          PreviewView(selectedCamera: self.$selectedCamera)
+            .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.7)
+            .background(Color.hauntedMeadow)
+          MultiCameraControlView(multiCameraViewModel: self.multiCameraViewModel, viewInfoList: self.$viewInfoList)
+            .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.2)
+            .background(Color.hauntedMeadow)
+        }
+        .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
       }
-      .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
-      Text("control panel")
-        .frame(maxWidth: UIScreen.screenWidth * 0.3, maxHeight: UIScreen.screenHeight * 0.9)
-        .background(Color.hauntedMeadow)
+    }
+    .navigationTitle("Multi Camera Control")
+    .foregroundStyle(Color.skyishMyish)
+    .navigationBarTitleDisplayMode(.inline)
+    .toolbar {
+      Button(action: {
+        self.isSettingView.toggle()
+      }, label: {
+        if self.isSettingView {
+          Image(systemName: "video")
+        } else {
+          Image(systemName: "gear")
+        }
+      })
     }
     .onAppear {
       CameraManager.instance.checkCameraAll()
       CameraManager.instance.enableWiredUsbControlAll()
       self.multiCameraViewModel.showCameraToast.toggle()
     }
-    .navigationTitle("Multi Camera Control")
-    .foregroundStyle(Color.skyishMyish)
-    .navigationBarTitleDisplayMode(.inline)
-    .toolbar {
-      ToolbarItemGroup(placement: .primaryAction) {
-        TabView {
-          Text("Server List")
-            .tabItem {
-              Label("Data Server", systemImage: "server.rack")
-            }
-            .tabItem {
-              Label("Training Server", systemImage: "server.rack")
-            }
-        }
-//        Button(action: {
-//          print("Setting tapped!")
-//        }, label: {
-//          Label("Setting All", systemImage: "server.rack")
-        ////          Image(systemName: "gear")
-//        })
-      }
-    }
-    .ignoresSafeArea()
     .toast(isPresenting: self.$multiCameraViewModel.showCameraToast, duration: 3, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
