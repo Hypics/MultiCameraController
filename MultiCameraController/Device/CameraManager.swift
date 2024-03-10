@@ -24,10 +24,6 @@ class CameraManager {
     return temp
   }
 
-  func getConnectedCameraContainer() -> [any Camera] {
-    self.cameraContainer.filter { $0.isConnected == true }
-  }
-
   func getConnectedCameraCount() -> Int {
     self.cameraContainer.filter { $0.isConnected == true }.count
   }

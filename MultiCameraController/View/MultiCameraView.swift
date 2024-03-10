@@ -32,10 +32,10 @@ struct MultiCameraView: View {
 
       if self.isSettingView {
         VStack {
-          PresetView(settingViewModel: self.settingViewModel)
+          PresetView(settingViewModel: self.settingViewModel, selectedCameraList: self.$selectedCameraList)
             .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.2)
             .background(Color.hauntedMeadow)
-          SettingView(settingViewModel: self.settingViewModel)
+          SettingView(settingViewModel: self.settingViewModel, selectedCameraList: self.$selectedCameraList)
             .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.7)
         }
         .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)

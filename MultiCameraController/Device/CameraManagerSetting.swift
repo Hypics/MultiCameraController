@@ -9,8 +9,8 @@ import Foundation
 import os.log
 
 extension CameraManager {
-  func setVideoResolutionAll(_ videoResolution: CameraVideoResolution) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setVideoResolutionAll(_ videoResolution: CameraVideoResolution, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set Video Resolution: %@ (%@/%@)",
         type: .info,
@@ -30,8 +30,8 @@ extension CameraManager {
     }
   }
 
-  func setFpsAll(_ fps: CameraFps) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setFpsAll(_ fps: CameraFps, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set FPS: %@ (%@/%@)",
         type: .info,
@@ -51,8 +51,8 @@ extension CameraManager {
     }
   }
 
-  func setAutoPowerDownAll(_ autoPowerDown: CameraAutoPowerDown) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setAutoPowerDownAll(_ autoPowerDown: CameraAutoPowerDown, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set Auto Power Down: %@ (%@/%@)",
         type: .info,
@@ -72,8 +72,8 @@ extension CameraManager {
     }
   }
 
-  func setVideoAspectRatioAll(_ videoAspectRatio: CameraVideoAspectRatio) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setVideoAspectRatioAll(_ videoAspectRatio: CameraVideoAspectRatio, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set Video Aspect Ratio: %@ (%@/%@)",
         type: .info,
@@ -93,8 +93,8 @@ extension CameraManager {
     }
   }
 
-  func setDigitalLensesAll(_ digitalLenses: CameraDigitalLenses) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setDigitalLensesAll(_ digitalLenses: CameraDigitalLenses, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set Digital Lenses: %@ (%@/%@)",
         type: .info,
@@ -114,8 +114,8 @@ extension CameraManager {
     }
   }
 
-  func setAntiFlickerAll(_ antiFlicker: CameraAntiFlicker) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setAntiFlickerAll(_ antiFlicker: CameraAntiFlicker, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set Anti Flicker: %@ (%@/%@)",
         type: .info,
@@ -135,8 +135,8 @@ extension CameraManager {
     }
   }
 
-  func setHypersmoothAll(_ hypersmooth: CameraHypersmooth) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setHypersmoothAll(_ hypersmooth: CameraHypersmooth, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set Hypersmooth: %@ (%@/%@)",
         type: .info,
@@ -156,8 +156,8 @@ extension CameraManager {
     }
   }
 
-  func setHindsightAll(_ hindsight: CameraHindsight) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setHindsightAll(_ hindsight: CameraHindsight, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set Hindsight: %@ (%@/%@)",
         type: .info,
@@ -177,8 +177,8 @@ extension CameraManager {
     }
   }
 
-  func setControlModeAll(_ controlMode: CameraControlMode) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setControlModeAll(_ controlMode: CameraControlMode, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set Control Mode: %@ (%@/%@)",
         type: .info,
@@ -198,8 +198,8 @@ extension CameraManager {
     }
   }
 
-  func setWirelessBandAll(_ wirelessBand: CameraWirelessBand) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setWirelessBandAll(_ wirelessBand: CameraWirelessBand, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set Wireless Band: %@ (%@/%@)",
         type: .info,
@@ -219,8 +219,8 @@ extension CameraManager {
     }
   }
 
-  func setVideoBitRateAll(_ videoBitRate: CameraVideoBitRate) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setVideoBitRateAll(_ videoBitRate: CameraVideoBitRate, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set Video Bit Rate: %@ (%@/%@)",
         type: .info,
@@ -240,8 +240,8 @@ extension CameraManager {
     }
   }
 
-  func setVideoBitDepthAll(_ videoBitDepth: CameraVideoBitDepth) {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func setVideoBitDepthAll(_ videoBitDepth: CameraVideoBitDepth, _ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log(
         "Set Video Bit Depth: %@ (%@/%@)",
         type: .info,

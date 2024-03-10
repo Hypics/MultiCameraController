@@ -17,7 +17,8 @@ struct MultiCameraControlView: View {
     VStack {
       List {
         Section(header: HStack {
-          Text("Selected Camera")
+          Image(systemName: "wrench.and.screwdriver")
+          Text("Control")
           Spacer()
           Button(action: {
             self.isCameraListPopover = true
@@ -27,7 +28,10 @@ struct MultiCameraControlView: View {
           .popover(isPresented: self.$isCameraListPopover, content: {
             VStack {
               List {
-                Section(header: Text("Selected Camera")) {
+                Section(header: HStack {
+                  Image(systemName: "camera.on.rectangle")
+                  Text("Selected Camera")
+                }) {
                   ForEach(self.selectedCameraList, id: \.serialNumber) { camera in
                     HStack {
                       Spacer()
@@ -35,7 +39,9 @@ struct MultiCameraControlView: View {
                       Text(camera.cameraName)
                       Spacer()
                     }
+                    .foregroundStyle(.white)
                   }
+                  .listRowSeparator(.hidden)
                 }
               }
               Button("Done") {
@@ -145,6 +151,7 @@ struct MultiCameraControlView: View {
       }
       .scrollContentBackground(.hidden)
       .background(Color.hauntedMeadow)
+      .scrollDisabled(true)
     }
   }
 }

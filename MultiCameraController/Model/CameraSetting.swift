@@ -31,7 +31,7 @@ enum CameraPreset {
   }
 }
 
-enum CameraVideoResolution {
+enum CameraVideoResolution: CaseIterable {
   case videoResolution_1080
   case videoResolution_2_7k
   case videoResolution_4k
@@ -58,7 +58,7 @@ enum CameraVideoResolution {
   }
 }
 
-enum CameraFps {
+enum CameraFps: CaseIterable {
   case fps_24
   case fps_25
   case fps_30
@@ -105,7 +105,7 @@ enum CameraFps {
   }
 }
 
-enum CameraAutoPowerDown {
+enum CameraAutoPowerDown: CaseIterable {
   case autoPowerDown_8sec
   case autoPowerDown_30sec
   case autoPowerDown_1min
@@ -144,7 +144,7 @@ enum CameraAutoPowerDown {
   }
 }
 
-enum CameraVideoAspectRatio {
+enum CameraVideoAspectRatio: CaseIterable {
   case videoAspectRatio_4_3
   case videoAspectRatio_16_9
   case videoAspectRatio_8_7
@@ -171,7 +171,7 @@ enum CameraVideoAspectRatio {
   }
 }
 
-enum CameraDigitalLenses {
+enum CameraDigitalLenses: CaseIterable {
   case hyperview
   case superview
   case wide
@@ -206,7 +206,7 @@ enum CameraDigitalLenses {
   }
 }
 
-enum CameraAntiFlicker {
+enum CameraAntiFlicker: CaseIterable {
   case antiFlicker_50
   case antiFlicker_60
 
@@ -225,7 +225,7 @@ enum CameraAntiFlicker {
   }
 }
 
-enum CameraHypersmooth {
+enum CameraHypersmooth: CaseIterable {
   case off
   case low
   case auto_boost
@@ -248,7 +248,7 @@ enum CameraHypersmooth {
   }
 }
 
-enum CameraHindsight {
+enum CameraHindsight: CaseIterable {
   case hindsight_15sec
   case hindsight_30sec
   case hindsight_off
@@ -271,7 +271,7 @@ enum CameraHindsight {
   }
 }
 
-enum CameraControlMode {
+enum CameraControlMode: CaseIterable {
   case easy
   case pro
 
@@ -290,7 +290,7 @@ enum CameraControlMode {
   }
 }
 
-enum CameraWirelessBand {
+enum CameraWirelessBand: CaseIterable {
   case wirelessBand_2_4ghz
   case wirelessBand_5ghz
 
@@ -309,7 +309,7 @@ enum CameraWirelessBand {
   }
 }
 
-enum CameraVideoBitRate {
+enum CameraVideoBitRate: CaseIterable {
   case standard
   case high
 
@@ -328,7 +328,7 @@ enum CameraVideoBitRate {
   }
 }
 
-enum CameraVideoBitDepth {
+enum CameraVideoBitDepth: CaseIterable {
   case videoBitDepth_8bit
   case videoBitDepth_10bit
 
