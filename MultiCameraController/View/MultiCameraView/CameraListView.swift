@@ -11,25 +11,57 @@ import SwiftUI
 struct CameraListView: View {
   @ObservedObject var multiCameraViewModel: MultiCameraViewModel
   @Binding var viewInfoList: [ViewInfo]
+  @Binding var selectedCameraList: [any Camera]
   @Binding var selectedCamera: (any Camera)?
+  @Binding var isSettingView: Bool
 
-  @State private var isPopoverPresented = false
+  @State private var isNewCameraPopover = false
   @State private var newSerialNumber: String = ""
+  @State private var isCheckAll = false
 
   var body: some View {
     List {
-      Section(header: Text("Camera List")) {
+      Section(header: HStack {
+        Text("Camera List")
+        Spacer()
+        Button(action: {
+          var tempSelectedCamera = self.selectedCamera
+          self.selectedCameraList.removeAll()
+          self.selectedCamera = nil
+
+          if !self.isCheckAll {
+            for camera in CameraManager.instance.cameraContainer {
+              self.selectedCameraList.append(camera)
+            }
+
+            if let tempSelectedCamera {
+              self.selectedCamera = tempSelectedCamera
+            } else {
+              self.selectedCamera = self.selectedCameraList.first
+            }
+          }
+
+          self.isCheckAll.toggle()
+        }, label: {
+          Image(systemName: self.isCheckAll ? "checkmark.circle.fill" : "checkmark.circle")
+        })
+      }) {
         ForEach(CameraManager.instance.cameraContainer, id: \.self.serialNumber) { camera in
           Button(action: {
-            if camera.serialNumber == self.selectedCamera?.serialNumber {
-              if camera.isConnected {
-                os_log("CameraView: %@", type: .info, camera.cameraName)
-                self.viewInfoList.append(.init(view: .cameraView, data: camera))
-              } else {
-                os_log("CameraView is not connected: %@", type: .error, camera.cameraName)
-                self.multiCameraViewModel.showCameraEmptyToast.toggle()
+            if (self.selectedCameraList.filter { $0.serialNumber == camera.serialNumber }).count == 1 {
+              if let cameraIndex = selectedCameraList.firstIndex(where: { $0.serialNumber == camera.serialNumber }) {
+                self.selectedCameraList.remove(at: cameraIndex)
+
+                if camera.serialNumber == self.selectedCamera?.serialNumber {
+                  self.selectedCamera = self.selectedCameraList.last
+                }
+
+                if self.selectedCameraList.isEmpty {
+                  self.selectedCamera = nil
+                }
               }
             } else {
+              self.selectedCameraList.append(camera)
               self.selectedCamera = camera
             }
           }, label: {
@@ -37,10 +69,10 @@ struct CameraListView: View {
               Spacer()
               Image(systemName: "camera")
                 .foregroundColor(camera.isConnected ? .teal : .pink)
-              Text("GoPro " + camera.serialNumber)
+              Text(camera.cameraName)
                 .foregroundColor(camera.isConnected ? .teal : .pink)
               Spacer()
-              if camera.serialNumber == self.selectedCamera?.serialNumber {
+              if (self.selectedCameraList.filter { $0.serialNumber == camera.serialNumber }).count == 1 {
                 Image(systemName: "checkmark.circle")
                   .foregroundColor(camera.isConnected ? .teal : .pink)
               }
@@ -76,9 +108,9 @@ struct CameraListView: View {
         .frame(height: UIScreen.screenHeight * 0.04)
         .listRowBackground(Color.black)
         .onTapGesture {
-          self.isPopoverPresented = true
+          self.isNewCameraPopover = true
         }
-        .popover(isPresented: self.$isPopoverPresented, content: {
+        .popover(isPresented: self.$isNewCameraPopover, content: {
           VStack {
             Text("Enter a serial number")
               .font(.headline)
@@ -86,7 +118,7 @@ struct CameraListView: View {
             TextField("Serial Number (last 3 digits)", text: self.$newSerialNumber)
               .padding()
             Button("Done") {
-              self.isPopoverPresented = false
+              self.isNewCameraPopover = false
               CameraManager.instance.addCamera(serialNumber: self.newSerialNumber)
               self.newSerialNumber = ""
               UserDefaults.standard.set(CameraManager.instance.cameraSerialNumberList, forKey: "GoProSerialNumberList")
@@ -97,17 +129,15 @@ struct CameraListView: View {
           .padding()
         })
       }
+      .headerProminence(.increased)
     }
     .scrollContentBackground(.hidden)
     .background(Color.hauntedMeadow)
     .refreshable {
-      CameraManager.instance.checkCameraAll()
-      CameraManager.instance.enableWiredUsbControlAll()
+      CameraManager.instance.checkCameraAll(nil)
+      CameraManager.instance.enableWiredUsbControlAll(nil)
       self.multiCameraViewModel.showRefreshCameraListToast.toggle()
     }
-//    .onChange(of: CameraManager.instance.cameraSerialNumberList) {
-//      UserDefaults.standard.set(CameraManager.instance.cameraSerialNumberList, forKey: "GoProSerialNumberList")
-//    }
   }
 
   private func moveCameraItem(from source: IndexSet, to destination: Int) {
@@ -119,12 +149,16 @@ struct CameraListView: View {
 
 struct CameraListView_Previews: PreviewProvider {
   @State static var viewInfoList: [ViewInfo] = []
+  @State static var selectedCameraList: [any Camera] = []
   @State static var selectedCamera: (any Camera)?
+  @State static var isSettingView = false
   static var previews: some View {
     CameraListView(
       multiCameraViewModel: MultiCameraViewModel(),
       viewInfoList: $viewInfoList,
-      selectedCamera: $selectedCamera
+      selectedCameraList: $selectedCameraList,
+      selectedCamera: $selectedCamera,
+      isSettingView: $isSettingView
     )
   }
 }

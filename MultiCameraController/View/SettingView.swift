@@ -12,146 +12,142 @@ struct SettingView: View {
   @ObservedObject var settingViewModel: SettingViewModel
 
   var body: some View {
-    VStack {
-      Text("Preset List").padding()
-      PresetView(settingViewModel: self.settingViewModel)
-      Divider()
-        .padding([.top, .bottom], 5)
-      List {
-        Section(header: Text("Configure List")) {
-          Button(action: {
-            self.settingViewModel.setVideoResolution(.videoResolution_4k)
-          }, label: {
-            HStack {
-              Spacer()
-              Image(systemName: "camera")
-                .foregroundColor(.pink)
-              Text("Video Resolution: 4K")
-                .foregroundColor(.pink)
-              Spacer()
-            }
-          })
-          .listRowSeparator(.hidden)
-          Button(action: {
-            self.settingViewModel.setFps(.fps_60)
-          }, label: {
-            HStack {
-              Spacer()
-              Image(systemName: "rectangle.on.rectangle")
-                .foregroundColor(.pink)
-              Text("Video FPS: 120Hz")
-                .foregroundColor(.pink)
-              Spacer()
-            }
-          })
-          .listRowSeparator(.hidden)
-          Button(action: {
-            self.settingViewModel.setVideoDigitalLens(.linear)
-          }, label: {
-            HStack {
-              Spacer()
-              Image(systemName: "field.of.view.wide")
-                .foregroundColor(.red)
-              Text("Video Digital Lens: Linear")
-                .foregroundColor(.red)
-              Spacer()
-            }
-          })
-          .listRowSeparator(.hidden)
-          Button(action: {
-            self.settingViewModel.setAntiFlicker(.antiFlicker_60)
-          }, label: {
-            HStack {
-              Spacer()
-              Image(systemName: "warninglight")
-                .foregroundColor(.red)
-              Text("Anti Flicker: 60Hz")
-                .foregroundColor(.red)
-              Spacer()
-            }
-          })
-          .listRowSeparator(.hidden)
-          Button(action: {
-            self.settingViewModel.setHypersmooth(.off)
-          }, label: {
-            HStack {
-              Spacer()
-              Image(systemName: "circle.and.line.horizontal")
-                .foregroundColor(.orange)
-              Text("Hypersmooth: Off")
-                .foregroundColor(.orange)
-              Spacer()
-            }
-          })
-          .listRowSeparator(.hidden)
-          Button(action: {
-            self.settingViewModel.setHindsight(.hindsight_off)
-          }, label: {
-            HStack {
-              Spacer()
-              Image(systemName: "arrowshape.turn.up.backward.badge.clock")
-                .foregroundColor(.orange)
-              Text("Hindsight: Off")
-                .foregroundColor(.orange)
-              Spacer()
-            }
-          })
-          .listRowSeparator(.hidden)
-          Button(action: {
-            self.settingViewModel.setVideoBitRate(.high)
-          }, label: {
-            HStack {
-              Spacer()
-              Image(systemName: "slider.horizontal.3")
-                .foregroundColor(.teal)
-              Text("System Video Bit Rate: High")
-                .foregroundColor(.teal)
-              Spacer()
-            }
-          })
-          .listRowSeparator(.hidden)
-          Button(action: {
-            self.settingViewModel.setVideoBitDepth(.videoBitDepth_10bit)
-          }, label: {
-            HStack {
-              Spacer()
-              Image(systemName: "slider.vertical.3")
-                .foregroundColor(.teal)
-              Text("System Video Bit Depth: 10bit")
-                .foregroundColor(.teal)
-              Spacer()
-            }
-          })
-          .listRowSeparator(.hidden)
-          Button(action: {
-            self.settingViewModel.setAutoPowerDown(.autoPowerDown_never)
-          }, label: {
-            HStack {
-              Spacer()
-              Image(systemName: "powersleep")
-                .foregroundColor(.indigo)
-              Text("Auto Power Down: Never")
-                .foregroundColor(.indigo)
-              Spacer()
-            }
-          })
-          .listRowSeparator(.hidden)
-          Button(action: {
-            self.settingViewModel.setControlsMode(.pro)
-          }, label: {
-            HStack {
-              Spacer()
-              Image(systemName: "wrench.and.screwdriver")
-                .foregroundColor(.indigo)
-              Text("Controls Mode: Pro")
-                .foregroundColor(.indigo)
-              Spacer()
-            }
-          })
-          .listRowSeparator(.hidden)
-        }
+    List {
+      Section(header: Text("Configure List")) {
+        Button(action: {
+          self.settingViewModel.setVideoResolution(.videoResolution_4k)
+        }, label: {
+          HStack {
+            Spacer()
+            Image(systemName: "camera")
+              .foregroundColor(.pink)
+            Text("Video Resolution: 4K")
+              .foregroundColor(.pink)
+            Spacer()
+          }
+        })
+        .listRowSeparator(.hidden)
+        Button(action: {
+          self.settingViewModel.setFps(.fps_60)
+        }, label: {
+          HStack {
+            Spacer()
+            Image(systemName: "rectangle.on.rectangle")
+              .foregroundColor(.pink)
+            Text("Video FPS: 120Hz")
+              .foregroundColor(.pink)
+            Spacer()
+          }
+        })
+        .listRowSeparator(.hidden)
+        Button(action: {
+          self.settingViewModel.setVideoDigitalLens(.linear)
+        }, label: {
+          HStack {
+            Spacer()
+            Image(systemName: "field.of.view.wide")
+              .foregroundColor(.red)
+            Text("Video Digital Lens: Linear")
+              .foregroundColor(.red)
+            Spacer()
+          }
+        })
+        .listRowSeparator(.hidden)
+        Button(action: {
+          self.settingViewModel.setAntiFlicker(.antiFlicker_60)
+        }, label: {
+          HStack {
+            Spacer()
+            Image(systemName: "warninglight")
+              .foregroundColor(.red)
+            Text("Anti Flicker: 60Hz")
+              .foregroundColor(.red)
+            Spacer()
+          }
+        })
+        .listRowSeparator(.hidden)
+        Button(action: {
+          self.settingViewModel.setHypersmooth(.off)
+        }, label: {
+          HStack {
+            Spacer()
+            Image(systemName: "circle.and.line.horizontal")
+              .foregroundColor(.orange)
+            Text("Hypersmooth: Off")
+              .foregroundColor(.orange)
+            Spacer()
+          }
+        })
+        .listRowSeparator(.hidden)
+        Button(action: {
+          self.settingViewModel.setHindsight(.hindsight_off)
+        }, label: {
+          HStack {
+            Spacer()
+            Image(systemName: "arrowshape.turn.up.backward.badge.clock")
+              .foregroundColor(.orange)
+            Text("Hindsight: Off")
+              .foregroundColor(.orange)
+            Spacer()
+          }
+        })
+        .listRowSeparator(.hidden)
+        Button(action: {
+          self.settingViewModel.setVideoBitRate(.high)
+        }, label: {
+          HStack {
+            Spacer()
+            Image(systemName: "slider.horizontal.3")
+              .foregroundColor(.teal)
+            Text("System Video Bit Rate: High")
+              .foregroundColor(.teal)
+            Spacer()
+          }
+        })
+        .listRowSeparator(.hidden)
+        Button(action: {
+          self.settingViewModel.setVideoBitDepth(.videoBitDepth_10bit)
+        }, label: {
+          HStack {
+            Spacer()
+            Image(systemName: "slider.vertical.3")
+              .foregroundColor(.teal)
+            Text("System Video Bit Depth: 10bit")
+              .foregroundColor(.teal)
+            Spacer()
+          }
+        })
+        .listRowSeparator(.hidden)
+        Button(action: {
+          self.settingViewModel.setAutoPowerDown(.autoPowerDown_never)
+        }, label: {
+          HStack {
+            Spacer()
+            Image(systemName: "powersleep")
+              .foregroundColor(.indigo)
+            Text("Auto Power Down: Never")
+              .foregroundColor(.indigo)
+            Spacer()
+          }
+        })
+        .listRowSeparator(.hidden)
+        Button(action: {
+          self.settingViewModel.setControlsMode(.pro)
+        }, label: {
+          HStack {
+            Spacer()
+            Image(systemName: "wrench.and.screwdriver")
+              .foregroundColor(.indigo)
+            Text("Controls Mode: Pro")
+              .foregroundColor(.indigo)
+            Spacer()
+          }
+        })
+        .listRowSeparator(.hidden)
       }
     }
+    .scrollContentBackground(.hidden)
+    .background(Color.hauntedMeadow)
     .toast(isPresenting: self.$settingViewModel.showPreset1Toast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,

@@ -44,14 +44,14 @@ class MultiCameraViewModel: ObservableObject {
     UserDefaults.standard.set(CameraManager.instance.cameraSerialNumberList, forKey: "GoProSerialNumberList")
   }
 
-  func downloadMediaAll() {
+  func downloadMediaAll(_ cameraList: [any Camera]) {
     os_log("Download Media All", type: .info)
     self.getCreationTimestamp { creationTimestamp in
       let creationDate = Date(timeIntervalSince1970: TimeInterval(creationTimestamp))
       let creationDateString = creationDate.toString(CustomDateFormat.simpleYearToSecond.rawValue)
 
       os_log("creationTimestamp: %@ from %@", type: .info, creationDateString, creationTimestamp.description)
-      for camera in CameraManager.instance.getConnectedCameraContainer() {
+      for camera in cameraList.filter({ $0.isConnected == true }) {
         os_log("Download media list: %@", type: .info, camera.cameraName)
         camera.requestUsbMediaList { mediaEndPointList, _, error in
           if let error {
@@ -85,8 +85,8 @@ class MultiCameraViewModel: ObservableObject {
     }
   }
 
-  func removeAllMedia() {
-    CameraManager.instance.removeAllMediaFromAllCamera()
+  func removeAllMedia(_ cameraList: [any Camera]) {
+    CameraManager.instance.removeAllMediaFromAllCamera(cameraList)
     self.showRemoveMediaToast.toggle()
   }
 }

@@ -14,30 +14,41 @@ struct MultiCameraView: View {
   @ObservedObject var serverViewModel: ServerViewModel
   @Binding var viewInfoList: [ViewInfo]
 
-  @State private var isSettingView = false
+  @StateObject var settingViewModel = SettingViewModel()
+  @State private var selectedCameraList: [any Camera] = []
   @State private var selectedCamera: (any Camera)?
+  @State private var isSettingView = false
 
   var body: some View {
     HStack {
       CameraListView(
         multiCameraViewModel: self.multiCameraViewModel,
         viewInfoList: self.$viewInfoList,
-        selectedCamera: self.$selectedCamera
+        selectedCameraList: self.$selectedCameraList,
+        selectedCamera: self.$selectedCamera,
+        isSettingView: self.$isSettingView
       )
       .frame(maxWidth: UIScreen.screenWidth * 0.3, maxHeight: UIScreen.screenHeight * 0.9)
-      .background(Color.hauntedMeadow)
 
       if self.isSettingView {
-        SettingView(settingViewModel: SettingViewModel())
-          .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
+        VStack {
+          PresetView(settingViewModel: self.settingViewModel)
+            .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.2)
+            .background(Color.hauntedMeadow)
+          SettingView(settingViewModel: self.settingViewModel)
+            .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.7)
+        }
+        .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
       } else {
         VStack {
           PreviewView(selectedCamera: self.$selectedCamera)
             .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.7)
-            .background(Color.hauntedMeadow)
-          MultiCameraControlView(multiCameraViewModel: self.multiCameraViewModel, viewInfoList: self.$viewInfoList)
-            .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.2)
-            .background(Color.hauntedMeadow)
+          MultiCameraControlView(
+            multiCameraViewModel: self.multiCameraViewModel,
+            selectedCameraList: self.$selectedCameraList
+          )
+          .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.2)
+          .background(Color.hauntedMeadow)
         }
         .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
       }
@@ -57,8 +68,8 @@ struct MultiCameraView: View {
       })
     }
     .onAppear {
-      CameraManager.instance.checkCameraAll()
-      CameraManager.instance.enableWiredUsbControlAll()
+      CameraManager.instance.checkCameraAll(nil)
+      CameraManager.instance.enableWiredUsbControlAll(nil)
       self.multiCameraViewModel.showCameraToast.toggle()
     }
     .toast(isPresenting: self.$multiCameraViewModel.showCameraToast, duration: 3, tapToDismiss: true) {
