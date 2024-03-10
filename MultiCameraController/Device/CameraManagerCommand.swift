@@ -9,8 +9,8 @@ import Foundation
 import os.log
 
 extension CameraManager {
-  func startShootAll() {
-    for camera in self.getConnectedCameraContainer() {
+  func startShootAll(_ cameraList: [any Camera]?) {
+    for camera in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }) {
       camera.startShoot { result in
         switch result {
         case let .success(response):
@@ -23,8 +23,8 @@ extension CameraManager {
     }
   }
 
-  func stopShootAll() {
-    for camera in self.getConnectedCameraContainer() {
+  func stopShootAll(_ cameraList: [any Camera]?) {
+    for camera in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }) {
       camera.stopShoot { result in
         switch result {
         case let .success(response):
@@ -37,8 +37,8 @@ extension CameraManager {
     }
   }
 
-  func checkCameraAll() {
-    for camera in self.getConnectedCameraContainer() {
+  func checkCameraAll(_ cameraList: [any Camera]?) {
+    for camera in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }) {
       camera.checkConnection { result in
         switch result {
         case let .success(response):
@@ -51,8 +51,8 @@ extension CameraManager {
     }
   }
 
-  func enableWiredUsbControlAll() {
-    for camera in self.getConnectedCameraContainer() {
+  func enableWiredUsbControlAll(_ cameraList: [any Camera]?) {
+    for camera in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }) {
       camera.enableWiredUsbControl { result in
         switch result {
         case let .success(response):

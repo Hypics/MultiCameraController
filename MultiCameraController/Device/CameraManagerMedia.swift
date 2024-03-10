@@ -9,8 +9,8 @@ import Foundation
 import os.log
 
 extension CameraManager {
-  func updateMediaEndPointListOfAllCamera() {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func updateMediaEndPointListOfAllCamera(_ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log("Update Media EndPoint List (%@/%@)", type: .info, index + 1, self.cameraContainer.count)
       camera.updateMediaEndPointList { result, _ in
         switch result {
@@ -24,8 +24,8 @@ extension CameraManager {
     }
   }
 
-  func downloadAllMediaFromAllCamera() {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func downloadAllMediaFromAllCamera(_ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log("Download All Media (%@/%@)", type: .info, index + 1, self.cameraContainer.count)
       camera.downloadAllMedia { result, _, _ in
         switch result {
@@ -39,8 +39,8 @@ extension CameraManager {
     }
   }
 
-  func removeAllMediaFromAllCamera() {
-    for (index, camera) in self.getConnectedCameraContainer().enumerated() {
+  func removeAllMediaFromAllCamera(_ cameraList: [any Camera]?) {
+    for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       os_log("Rmove All Media (%@/%@)", type: .info, index + 1, self.cameraContainer.count)
       camera.removeAllMedia { result in
         switch result {
