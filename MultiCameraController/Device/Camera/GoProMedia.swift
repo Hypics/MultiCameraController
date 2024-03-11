@@ -6,22 +6,18 @@
 //
 
 import Foundation
-import os.log
+import OSLog
 
 extension GoPro {
   func updateMediaEndPointList(_ completion: ((Result<Bool, Error>, [String]?) -> Void)?) {
-    os_log("Update Media EndPoint List: %@", type: .info, self.cameraName)
+    Logger.media.info("Update Media EndPoint List: \(self.cameraName)")
     self.requestUsbMediaList { mediaEndPointList, _, error in
       if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
         completion?(.failure(error), nil)
       } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
+        Logger.media
+          .info("Success: \(#function): \(Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue))")
         self.mediaEndPointList = mediaEndPointList ?? []
         completion?(.success(true), mediaEndPointList)
       }
@@ -29,18 +25,14 @@ extension GoPro {
   }
 
   func downloadMedia(mediaEndPoint: String, _ completion: @escaping (Result<Bool, Error>, Double?) -> Void) {
-    os_log("Download Media: %@", type: .info, mediaEndPoint)
+    Logger.media.info("Download Media: \(mediaEndPoint)")
     self.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint, timestamp_path: nil) { progress, error in
       if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
         completion(.failure(error), nil)
       } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
+        Logger.media
+          .info("Success: \(#function): \(Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue))")
         completion(.success(true), progress)
       }
     }
@@ -52,25 +44,21 @@ extension GoPro {
       case .success:
         guard let mediaEndPointList else { return }
         for (index, mediaEndPoint) in mediaEndPointList.enumerated() {
-          os_log("Download Media (%@/%@): %@", type: .info, index + 1, mediaEndPointList.count, mediaEndPoint)
+          Logger.media.info("Download Media (\(index + 1)/\(mediaEndPointList.count)): \(mediaEndPoint)")
           self.requestUsbMediaDownload(mediaEndPoint: mediaEndPoint, timestamp_path: nil) { progress, error in
             if let error {
-              os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+              Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
               completion(.failure(error), nil, nil)
             } else {
-              os_log(
-                "Success: %@: %@",
-                type: .info,
-                #function,
-                Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-              )
+              Logger.media
+                .info("Success: \(#function): \(Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue))")
               completion(.success(true), mediaEndPoint, progress)
             }
           }
         }
 
       case let .failure(error):
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
         completion(.failure(error), nil, nil)
         return
       }
@@ -84,7 +72,7 @@ extension GoPro {
           .mediaEndPointList[offsets[offsets.startIndex]]
       ) { error in
         if let error {
-          os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+          Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
           return
         }
         self.mediaEndPointList.remove(atOffsets: offsets)
@@ -92,18 +80,14 @@ extension GoPro {
   }
 
   func removeMedia(mediaEndPoint: String, _ completion: @escaping (Result<Bool, Error>) -> Void) {
-    os_log("Remove Media: %@", type: .info, mediaEndPoint)
+    Logger.media.info("Remove Media: \(mediaEndPoint)")
     self.requestUsbMediaRemove(mediaEndPoint: mediaEndPoint) { error in
       if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
         completion(.failure(error))
       } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
+        Logger.media
+          .info("Success: \(#function): \(Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue))")
         // TODO: remove item?
         completion(.success(true))
       }
@@ -116,25 +100,21 @@ extension GoPro {
       case .success:
         guard let mediaEndPointList else { return }
         for (index, mediaEndPoint) in mediaEndPointList.enumerated() {
-          os_log("Download Media (%@/%@): %@", type: .info, index + 1, mediaEndPointList.count, mediaEndPoint)
+          Logger.media.info("Remove Media (\(index + 1)/\(mediaEndPointList.count)): \(mediaEndPoint)")
           self.requestUsbMediaRemove(mediaEndPoint: mediaEndPoint) { error in
             if let error {
-              os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+              Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
               completion?(.failure(error))
             } else {
-              os_log(
-                "Success: %@: %@",
-                type: .info,
-                #function,
-                Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-              )
+              Logger.media
+                .info("Success: \(#function): \(Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue))")
               completion?(.success(true))
             }
           }
         }
 
       case let .failure(error):
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
         completion?(.failure(error))
         return
       }

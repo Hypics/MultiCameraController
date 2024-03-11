@@ -6,70 +6,58 @@
 //
 
 import Foundation
-import os.log
+import OSLog
 
 extension GoPro {
   func startShoot(_ completion: ((Result<Bool, Error>) -> Void)?) {
-    os_log("Shutter On", type: .info)
+    Logger.camera.info("Shutter On: \(self.cameraName)")
     self.requestUsbCommand(command: .shutterOn) { error in
       if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.camera.error("Fail: \(#function): \(error.localizedDescription)")
         completion?(.failure(error))
       } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
+        Logger.camera
+          .info("Success: \(#function): \(Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue))")
         completion?(.success(true))
       }
     }
   }
 
   func stopShoot(_ completion: ((Result<Bool, Error>) -> Void)?) {
-    os_log("Shutter Off", type: .info)
+    Logger.camera.info("Shutter Off: \(self.cameraName)")
     self.requestUsbCommand(command: .shutterOff) { error in
       if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.camera.error("Fail: \(#function): \(error.localizedDescription)")
         completion?(.failure(error))
       } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
+        Logger.camera
+          .info("Success: \(#function): \(Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue))")
         completion?(.success(true))
       }
     }
   }
 
   func enableWiredUsbControl(_: ((Result<Bool, Error>) -> Void)?) {
-    os_log("Enable Wired USB Control: %@", type: .info, self.cameraName)
+    Logger.camera.info("Enable Wired USB Control: \(self.cameraName)")
     self.requestUsbCommand(command: .enableWiredUsbControl) { error in
       if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.camera.error("Fail: \(#function): \(error.localizedDescription)")
         return
       }
     }
   }
 
   func checkConnection(_ completion: ((Result<Bool, Error>) -> Void)?) {
-    os_log("Get camera info: %@", type: .info, self.cameraName)
+    Logger.camera.info("Get camera info: \(self.cameraName)")
     self.requestUsbCameraInfo { goProInfo, error in
       if let error {
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.camera.error("Fail: \(#function): \(error.localizedDescription)")
         self.isConnected = false
         self.goProInfo = nil
         completion?(.failure(error))
       } else {
-        os_log(
-          "Success: %@: %@",
-          type: .info,
-          #function,
-          Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue)
-        )
+        Logger.camera
+          .info("Success: \(#function): \(Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue))")
         self.isConnected = true
         self.goProInfo = goProInfo
         completion?(.success(true))

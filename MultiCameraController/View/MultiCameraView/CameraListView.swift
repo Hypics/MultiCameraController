@@ -5,7 +5,7 @@
 //  Created by INHWAN WEE on 3/6/24.
 //
 
-import os.log
+import OSLog
 import SwiftUI
 
 struct CameraListView: View {
@@ -81,7 +81,7 @@ struct CameraListView: View {
           .listRowBackground(Color.black)
           .swipeActions(edge: .leading) {
             Button(action: {
-              os_log("Connect: %@", type: .info, camera.cameraName)
+              Logger.camera.info("Connect: \(camera.cameraName)")
               camera.checkConnection(nil)
               camera.enableWiredUsbControl(nil)
               self.multiCameraViewModel.showCameraConnectedToast.toggle()
@@ -140,7 +140,7 @@ struct CameraListView: View {
   }
 
   private func moveCameraItem(from source: IndexSet, to destination: Int) {
-    os_log("Move GoPro %@", type: .info, CameraManager.instance.cameraContainer[source[source.startIndex]].serialNumber)
+    Logger.camera.info("Move GoPro \(CameraManager.instance.cameraContainer[source[source.startIndex]].serialNumber)")
     CameraManager.instance.moveCamera(from: source, to: destination)
     UserDefaults.standard.set(CameraManager.instance.cameraSerialNumberList, forKey: "GoProSerialNumberList")
   }

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import os.log
+import OSLog
 
 class CameraManager {
   static let instance: CameraManager = .init()
@@ -38,7 +38,7 @@ class CameraManager {
       self.cameraContainer.last?.checkConnection(nil)
       self.cameraContainer.last?.enableWiredUsbControl(nil)
     } else {
-      os_log("%@ is not a serial number (3 digits)", type: .error, serialNumber)
+      Logger.camera.info("\(#function): \(serialNumber) is not a serial number (3 digits)")
     }
   }
 

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import os.log
+import OSLog
 
 extension CameraManager {
   func setPresetAll(_ cameraPreset: CameraPreset, _ cameraList: [any Camera]?) {
@@ -14,10 +14,10 @@ extension CameraManager {
       camera.setPreset(cameraPreset: cameraPreset) { result in
         switch result {
         case let .success(response):
-          os_log("Success: %@: %@", type: .info, #function, response)
+          Logger.setting.info("Success: \(#function): \(response)")
 
         case let .failure(error):
-          os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+          Logger.setting.error("Fail: \(#function): \(error.localizedDescription)")
         }
       }
     }

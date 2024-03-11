@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import os.log
+import OSLog
 
 extension CameraManager {
   func startShootAll(_ cameraList: [any Camera]?) {
@@ -14,10 +14,10 @@ extension CameraManager {
       camera.startShoot { result in
         switch result {
         case let .success(response):
-          os_log("Success: %@: %@", type: .info, #function, response)
+          Logger.camera.info("Success: \(#function): \(response)")
 
         case let .failure(error):
-          os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+          Logger.camera.error("Fail: \(#function): \(error.localizedDescription)")
         }
       }
     }
@@ -28,10 +28,10 @@ extension CameraManager {
       camera.stopShoot { result in
         switch result {
         case let .success(response):
-          os_log("Success: %@: %@", type: .info, #function, response)
+          Logger.camera.info("Success: \(#function): \(response)")
 
         case let .failure(error):
-          os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+          Logger.camera.error("Fail: \(#function): \(error.localizedDescription)")
         }
       }
     }
@@ -42,10 +42,10 @@ extension CameraManager {
       camera.checkConnection { result in
         switch result {
         case let .success(response):
-          os_log("Success: %@: %@", type: .info, #function, response)
+          Logger.camera.info("Success: \(#function): \(response)")
 
         case let .failure(error):
-          os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+          Logger.camera.error("Fail: \(#function): \(error.localizedDescription)")
         }
       }
     }
@@ -56,10 +56,10 @@ extension CameraManager {
       camera.enableWiredUsbControl { result in
         switch result {
         case let .success(response):
-          os_log("Success: %@: %@", type: .info, #function, response)
+          Logger.camera.info("Success: \(#function): \(response)")
 
         case let .failure(error):
-          os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+          Logger.camera.error("Fail: \(#function): \(error.localizedDescription)")
         }
       }
     }

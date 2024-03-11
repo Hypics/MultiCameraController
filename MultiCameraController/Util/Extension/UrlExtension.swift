@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import os.log
+import OSLog
 
 extension URL {
   func createDirectory(appendPath: String) -> URL {
@@ -19,7 +19,7 @@ extension URL {
           attributes: nil
         )
       } catch {
-        os_log("Failed to create directory: %@", type: .error, error.localizedDescription)
+        Logger.media.error("Failed to create directory \(error.localizedDescription)")
       }
     }
     return path
