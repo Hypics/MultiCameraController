@@ -10,7 +10,7 @@ import SwiftUI
 import SynologyKit
 
 struct ServerView: View {
-  @ObservedObject var serverViewModel: ServerViewModel
+  @StateObject var serverViewModel = ServerViewModel()
 
   var body: some View {
     VStack(content: {

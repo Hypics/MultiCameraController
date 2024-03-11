@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct MainView: View {
-  @StateObject var serverViewModel = ServerViewModel()
-  @StateObject var multiCameraViewModel = MultiCameraViewModel()
-  @StateObject var settingViewModel = SettingViewModel()
   @State var viewInfoList: [ViewInfo] = []
+
   @State private var isServerButtonTapped = false
   @State private var isCameraButtonTapped = false
 
@@ -102,20 +100,10 @@ struct MainView: View {
           MainView()
 
         case .multiCameraView:
-          MultiCameraView(
-            multiCameraViewModel: self.multiCameraViewModel,
-            serverViewModel: self.serverViewModel,
-            viewInfoList: self.$viewInfoList
-          )
-
-        case .cameraView:
-          CameraView(cameraViewModel: CameraViewModel(
-            camera: viewInfo
-              .data as? (any Camera) ?? GoPro(serialNumber: "")
-          ))
+          MultiCameraView()
 
         case .serverView:
-          ServerView(serverViewModel: self.serverViewModel)
+          ServerView()
         }
       }
       .onAppear {
