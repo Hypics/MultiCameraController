@@ -32,6 +32,17 @@ struct ViewInfo: Hashable {
 enum ViewType {
   case mainView
   case multiCameraView
-  case cameraView
   case serverView
+}
+
+enum PanelType: CaseIterable {
+  case cameraPanel
+  case settingPanel
+  case mediaPanel
+
+  static func getNext(after currentCase: PanelType) -> PanelType? {
+    guard let currentIndex = PanelType.allCases.firstIndex(of: currentCase) else { return nil }
+    let nextIndex = (currentIndex + 1) % PanelType.allCases.count
+    return PanelType.allCases[nextIndex]
+  }
 }

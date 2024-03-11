@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CameraStateView: View {
-  @ObservedObject var cameraViewModel: CameraViewModel
+  @ObservedObject var mediaViewModel: MediaViewModel
 
   var body: some View {
     HStack {
@@ -18,7 +18,7 @@ struct CameraStateView: View {
         Text("Model Name")
           .foregroundColor(.orange)
         Divider()
-        Text(self.cameraViewModel.camera.getCameraInfo()?.model_name ?? "")
+        Text(self.mediaViewModel.camera.getCameraInfo()?.model_name ?? "")
       }
       .padding(10)
       .overlay(
@@ -31,7 +31,7 @@ struct CameraStateView: View {
         Text("Serial Number")
           .foregroundColor(.orange)
         Divider()
-        Text(self.cameraViewModel.camera.getCameraInfo()?.serial_number ?? "")
+        Text(self.mediaViewModel.camera.getCameraInfo()?.serial_number ?? "")
       }
       .padding(10)
       .overlay(
@@ -44,7 +44,7 @@ struct CameraStateView: View {
         Text("AP SSID")
           .foregroundColor(.orange)
         Divider()
-        Text(self.cameraViewModel.camera.getCameraInfo()?.ap_ssid ?? "")
+        Text(self.mediaViewModel.camera.getCameraInfo()?.ap_ssid ?? "")
       }
       .padding(10)
       .overlay(
@@ -57,7 +57,7 @@ struct CameraStateView: View {
         Text("Firmware Version")
           .foregroundColor(.orange)
         Divider()
-        Text(self.cameraViewModel.camera.getCameraInfo()?.firmware_version ?? "")
+        Text(self.mediaViewModel.camera.getCameraInfo()?.firmware_version ?? "")
       }
       .padding(10)
       .overlay(

@@ -10,10 +10,8 @@ import SwiftUI
 
 struct CameraListView: View {
   @ObservedObject var multiCameraViewModel: MultiCameraViewModel
-  @Binding var viewInfoList: [ViewInfo]
   @Binding var selectedCameraList: [any Camera]
   @Binding var selectedCamera: (any Camera)?
-  @Binding var isSettingView: Bool
 
   @State private var isNewCameraPopover = false
   @State private var newSerialNumber: String = ""
@@ -149,17 +147,13 @@ struct CameraListView: View {
 }
 
 struct CameraListView_Previews: PreviewProvider {
-  @State static var viewInfoList: [ViewInfo] = []
   @State static var selectedCameraList: [any Camera] = []
   @State static var selectedCamera: (any Camera)?
-  @State static var isSettingView = false
   static var previews: some View {
     CameraListView(
       multiCameraViewModel: MultiCameraViewModel(),
-      viewInfoList: $viewInfoList,
       selectedCameraList: $selectedCameraList,
-      selectedCamera: $selectedCamera,
-      isSettingView: $isSettingView
+      selectedCamera: $selectedCamera
     )
   }
 }

@@ -1,5 +1,5 @@
 //
-//  CameraViewModel.swift
+//  MediaViewModel.swift
 //  MultiCameraController
 //
 //  Created by INHWAN WEE on 3/6/24.
@@ -8,8 +8,8 @@
 import Foundation
 import os.log
 
-class CameraViewModel: ObservableObject {
-  @Published var camera: any Camera
+class MediaViewModel: ObservableObject {
+  @Published var camera: any Camera = GoPro(serialNumber: "")
 
   @Published var downloadMediaEndPoint: String = ""
   @Published var downloadProgress: Double = 0.0
@@ -20,42 +20,10 @@ class CameraViewModel: ObservableObject {
   @Published var showRemoveMediaToast = false
   @Published var showRefreshMediaListToast = false
 
-  init(camera: any Camera) {
-    self.camera = camera
-  }
-
   func getMediaListCount() -> String {
     "\(String(describing: self.camera.mediaEndPointList.count)) files"
   }
 
-  func startShoot() {
-    self.camera.startShoot { result in
-      switch result {
-      case .success:
-        self.showShutterOnToast.toggle()
-
-      case let .failure(error):
-        os_log("Error: %@: %@", type: .error, #function, error.localizedDescription)
-        return
-      }
-    }
-  }
-
-  func stopShoot() {
-    self.camera.stopShoot { result in
-      switch result {
-      case .success:
-        self.showShutterOffToast.toggle()
-
-      case let .failure(error):
-        os_log("Error: %@: %@", type: .error, #function, error.localizedDescription)
-        return
-      }
-    }
-  }
-}
-
-extension CameraViewModel {
   func downloadMediaAll() {
     self.camera.downloadAllMedia { result, mediaEndPoint, progress in
       self.showDownloadMediaToast = true

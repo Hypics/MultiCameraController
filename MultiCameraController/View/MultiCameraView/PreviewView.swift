@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PreviewView: View {
+  @ObservedObject var multiCameraViewModel: MultiCameraViewModel
   @Binding var selectedCamera: (any Camera)?
 
   @State private var isShowPreview = false
@@ -43,6 +44,9 @@ struct PreviewView: View {
 struct PreviewView_Previews: PreviewProvider {
   @State static var selectedCamera: (any Camera)?
   static var previews: some View {
-    PreviewView(selectedCamera: $selectedCamera)
+    PreviewView(
+      multiCameraViewModel: MultiCameraViewModel(),
+      selectedCamera: $selectedCamera
+    )
   }
 }

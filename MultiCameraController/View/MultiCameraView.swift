@@ -10,45 +10,55 @@ import AlertToast
 import SwiftUI
 
 struct MultiCameraView: View {
-  @ObservedObject var multiCameraViewModel: MultiCameraViewModel
-  @ObservedObject var serverViewModel: ServerViewModel
-  @Binding var viewInfoList: [ViewInfo]
-
+  @StateObject var multiCameraViewModel = MultiCameraViewModel()
   @StateObject var settingViewModel = SettingViewModel()
+  @StateObject var mediaViewModel = MediaViewModel()
+
   @State private var selectedCameraList: [any Camera] = []
   @State private var selectedCamera: (any Camera)?
-  @State private var isSettingView = false
+  @State private var panelType: PanelType = .cameraPanel
 
   var body: some View {
     HStack {
       CameraListView(
         multiCameraViewModel: self.multiCameraViewModel,
-        viewInfoList: self.$viewInfoList,
         selectedCameraList: self.$selectedCameraList,
-        selectedCamera: self.$selectedCamera,
-        isSettingView: self.$isSettingView
+        selectedCamera: self.$selectedCamera
       )
       .frame(maxWidth: UIScreen.screenWidth * 0.3, maxHeight: UIScreen.screenHeight * 0.9)
 
-      if self.isSettingView {
+      switch self.$panelType.wrappedValue {
+      case .cameraPanel:
         VStack {
-          PresetView(settingViewModel: self.settingViewModel, selectedCameraList: self.$selectedCameraList)
-            .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.2)
-            .background(Color.hauntedMeadow)
-          SettingView(settingViewModel: self.settingViewModel, selectedCameraList: self.$selectedCameraList)
-            .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.7)
-        }
-        .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
-      } else {
-        VStack {
-          PreviewView(selectedCamera: self.$selectedCamera)
-            .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.7)
+          PreviewView(
+            multiCameraViewModel: self.multiCameraViewModel,
+            selectedCamera: self.$selectedCamera
+          )
+          .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.7)
+
           MultiCameraControlView(
             multiCameraViewModel: self.multiCameraViewModel,
             selectedCameraList: self.$selectedCameraList
           )
           .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.2)
           .background(Color.hauntedMeadow)
+        }
+        .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
+
+      case .settingPanel:
+        VStack {
+          PresetView(settingViewModel: self.settingViewModel, selectedCameraList: self.$selectedCameraList)
+            .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.2)
+            .background(Color.hauntedMeadow)
+
+          SettingView(settingViewModel: self.settingViewModel, selectedCameraList: self.$selectedCameraList)
+            .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.7)
+        }
+        .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
+
+      case .mediaPanel:
+        VStack {
+          MediaView(mediaViewModel: self.mediaViewModel, selectedCameraList: self.$selectedCameraList)
         }
         .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
       }
@@ -58,12 +68,16 @@ struct MultiCameraView: View {
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       Button(action: {
-        self.isSettingView.toggle()
+        if let nextPanelType = PanelType.getNext(after: self.panelType) {
+          self.panelType = nextPanelType
+        }
       }, label: {
-        if self.isSettingView {
-          Image(systemName: "video")
-        } else {
+        if self.panelType == .cameraPanel {
           Image(systemName: "gear")
+        } else if self.panelType == .settingPanel {
+          Image(systemName: "photo")
+        } else {
+          Image(systemName: "video")
         }
       })
     }
@@ -139,12 +153,7 @@ struct MultiCameraView: View {
 }
 
 struct MultiCameraView_Previews: PreviewProvider {
-  @State static var viewInfoList: [ViewInfo] = []
   static var previews: some View {
-    MultiCameraView(
-      multiCameraViewModel: MultiCameraViewModel(),
-      serverViewModel: ServerViewModel(),
-      viewInfoList: $viewInfoList
-    )
+    MultiCameraView()
   }
 }

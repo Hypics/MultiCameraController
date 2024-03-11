@@ -24,10 +24,9 @@
 		4E67867A2B977CC00004A7D8 /* SessionStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786792B977CC00004A7D8 /* SessionStateView.swift */; };
 		4E67867C2B9782AB0004A7D8 /* UploadMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E67867B2B9782AB0004A7D8 /* UploadMediaView.swift */; };
 		4E67867E2B97839D0004A7D8 /* FileItemInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E67867D2B97839D0004A7D8 /* FileItemInfo.swift */; };
-		4E6786802B978CBF0004A7D8 /* CameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E67867F2B978CBF0004A7D8 /* CameraViewModel.swift */; };
+		4E6786802B978CBF0004A7D8 /* MediaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E67867F2B978CBF0004A7D8 /* MediaViewModel.swift */; };
 		4E6786832B978EB40004A7D8 /* CameraStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786822B978EB40004A7D8 /* CameraStateView.swift */; };
-		4E6786852B9790200004A7D8 /* CameraControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786842B9790200004A7D8 /* CameraControlView.swift */; };
-		4E6786872B97918F0004A7D8 /* DownloadMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786862B97918F0004A7D8 /* DownloadMediaView.swift */; };
+		4E6786872B97918F0004A7D8 /* MediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786862B97918F0004A7D8 /* MediaView.swift */; };
 		4E67868A2B988AF80004A7D8 /* PresetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786892B988AF80004A7D8 /* PresetView.swift */; };
 		4E67868C2B988B1A0004A7D8 /* MultiCameraViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E67868B2B988B1A0004A7D8 /* MultiCameraViewModel.swift */; };
 		4E6786912B9893570004A7D8 /* CameraListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786902B9893570004A7D8 /* CameraListView.swift */; };
@@ -61,7 +60,6 @@
 		C9401CDA2631EF9F00E5208E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9401CD92631EF9F00E5208E /* Assets.xcassets */; };
 		C9401CDD2631EF9F00E5208E /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9401CDC2631EF9F00E5208E /* Preview Assets.xcassets */; };
 		C9401CEC2631EFF900E5208E /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CEB2631EFF900E5208E /* Atomic.swift */; };
-		C9401CF22631FBFD00E5208E /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9401CF12631FBFD00E5208E /* CameraView.swift */; };
 		C9628A812636FEEB009101EC /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9628A802636FEEB009101EC /* NetworkExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,10 +81,9 @@
 		4E6786792B977CC00004A7D8 /* SessionStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStateView.swift; sourceTree = "<group>"; };
 		4E67867B2B9782AB0004A7D8 /* UploadMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadMediaView.swift; sourceTree = "<group>"; };
 		4E67867D2B97839D0004A7D8 /* FileItemInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItemInfo.swift; sourceTree = "<group>"; };
-		4E67867F2B978CBF0004A7D8 /* CameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraViewModel.swift; sourceTree = "<group>"; };
+		4E67867F2B978CBF0004A7D8 /* MediaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaViewModel.swift; sourceTree = "<group>"; };
 		4E6786822B978EB40004A7D8 /* CameraStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraStateView.swift; sourceTree = "<group>"; };
-		4E6786842B9790200004A7D8 /* CameraControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraControlView.swift; sourceTree = "<group>"; };
-		4E6786862B97918F0004A7D8 /* DownloadMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadMediaView.swift; sourceTree = "<group>"; };
+		4E6786862B97918F0004A7D8 /* MediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaView.swift; sourceTree = "<group>"; };
 		4E6786892B988AF80004A7D8 /* PresetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetView.swift; sourceTree = "<group>"; };
 		4E67868B2B988B1A0004A7D8 /* MultiCameraViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiCameraViewModel.swift; sourceTree = "<group>"; };
 		4E6786902B9893570004A7D8 /* CameraListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraListView.swift; sourceTree = "<group>"; };
@@ -119,7 +116,6 @@
 		C9401CDC2631EF9F00E5208E /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		C9401CDE2631EF9F00E5208E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9401CEB2631EFF900E5208E /* Atomic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
-		C9401CF12631FBFD00E5208E /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		C9628A7E2636FEEB009101EC /* MultiCameraController.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MultiCameraController.entitlements; sourceTree = "<group>"; };
 		C9628A802636FEEB009101EC /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -169,7 +165,7 @@
 		4E6786702B97614C0004A7D8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				4E67867F2B978CBF0004A7D8 /* CameraViewModel.swift */,
+				4E67867F2B978CBF0004A7D8 /* MediaViewModel.swift */,
 				4E6786742B9767D50004A7D8 /* ServerViewModel.swift */,
 				4E67868B2B988B1A0004A7D8 /* MultiCameraViewModel.swift */,
 				4E6224322B9A140400F3503B /* SettingViewModel.swift */,
@@ -211,9 +207,7 @@
 		4E6786812B978EA40004A7D8 /* CameraView */ = {
 			isa = PBXGroup;
 			children = (
-				4E6786842B9790200004A7D8 /* CameraControlView.swift */,
 				4E6786822B978EB40004A7D8 /* CameraStateView.swift */,
-				4E6786862B97918F0004A7D8 /* DownloadMediaView.swift */,
 			);
 			path = CameraView;
 			sourceTree = "<group>";
@@ -231,6 +225,7 @@
 			children = (
 				4E2D7C782B9CFA5200DB922A /* PreviewView.swift */,
 				4E6786902B9893570004A7D8 /* CameraListView.swift */,
+				4E6786862B97918F0004A7D8 /* MediaView.swift */,
 				4E6786922B9893700004A7D8 /* MultiCameraControlView.swift */,
 			);
 			path = MultiCameraView;
@@ -312,7 +307,6 @@
 				4E6786762B9770370004A7D8 /* DataServerView */,
 				4E67868D2B98930A0004A7D8 /* MultiCameraView */,
 				4E6786882B988AA10004A7D8 /* SettingView */,
-				C9401CF12631FBFD00E5208E /* CameraView.swift */,
 				4ECB28C12B2E13C4004BA07F /* ServerView.swift */,
 				4E62242E2B99DACA00F3503B /* MainView.swift */,
 				4E931F1C2B0F9E870042B2AA /* MultiCameraView.swift */,
@@ -473,7 +467,7 @@
 				4E67869F2B98BD210004A7D8 /* CameraInfo.swift in Sources */,
 				4E67868C2B988B1A0004A7D8 /* MultiCameraViewModel.swift in Sources */,
 				4E6224252B999C5B00F3503B /* CameraManagerCommand.swift in Sources */,
-				4E6786872B97918F0004A7D8 /* DownloadMediaView.swift in Sources */,
+				4E6786872B97918F0004A7D8 /* MediaView.swift in Sources */,
 				4E6786832B978EB40004A7D8 /* CameraStateView.swift in Sources */,
 				4EB1EF4D2B9B3F870030E6FF /* UIScreenExtension.swift in Sources */,
 				4E6786752B9767D50004A7D8 /* ServerViewModel.swift in Sources */,
@@ -482,17 +476,15 @@
 				4E6786972B98980C0004A7D8 /* ViewExtension.swift in Sources */,
 				4E67869B2B9898EE0004A7D8 /* Camera.swift in Sources */,
 				4E6786932B9893700004A7D8 /* MultiCameraControlView.swift in Sources */,
-				C9401CF22631FBFD00E5208E /* CameraView.swift in Sources */,
 				C9401CD62631EF9B00E5208E /* MultiCameraControllerApp.swift in Sources */,
 				4E62242B2B99AB4900F3503B /* CameraManagerPreset.swift in Sources */,
 				4E6786952B9897C10004A7D8 /* SoundUtil.swift in Sources */,
 				4E67869D2B9898FC0004A7D8 /* CameraManager.swift in Sources */,
-				4E6786852B9790200004A7D8 /* CameraControlView.swift in Sources */,
 				4EAA6FAC2B0FA002004DD63E /* GoPro.swift in Sources */,
 				4EAA6FAB2B0FA002004DD63E /* GoProUsbSetting.swift in Sources */,
 				4E6786912B9893570004A7D8 /* CameraListView.swift in Sources */,
 				4E6224232B99764700F3503B /* CameraSetting.swift in Sources */,
-				4E6786802B978CBF0004A7D8 /* CameraViewModel.swift in Sources */,
+				4E6786802B978CBF0004A7D8 /* MediaViewModel.swift in Sources */,
 				4E62242F2B99DACA00F3503B /* MainView.swift in Sources */,
 				4EAA6FA92B0FA002004DD63E /* GoProMediaInfo.swift in Sources */,
 				4E6786782B97704D0004A7D8 /* LoginView.swift in Sources */,
