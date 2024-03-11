@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import os.log
 
 class SettingViewModel: ObservableObject {
   @Published var showPreset1Toast = false

@@ -40,6 +40,7 @@
 		4E6786A12B98EB7A0004A7D8 /* GoProCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6786A02B98EB7A0004A7D8 /* GoProCommand.swift */; };
 		4E931F1E2B0F9E870042B2AA /* MultiCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E931F1C2B0F9E870042B2AA /* MultiCameraView.swift */; };
 		4E931F1F2B0F9E870042B2AA /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E931F1D2B0F9E870042B2AA /* SettingView.swift */; };
+		4E9B98742B9F3B6300CA71F7 /* OsLogExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9B98732B9F3B6300CA71F7 /* OsLogExtension.swift */; };
 		4EAA6FA02B0F9FFA004DD63E /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6F9E2B0F9FFA004DD63E /* StringExtension.swift */; };
 		4EAA6FA12B0F9FFA004DD63E /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6F9F2B0F9FFA004DD63E /* ColorExtension.swift */; };
 		4EAA6FA82B0FA002004DD63E /* GoProUsbCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EAA6FA22B0FA001004DD63E /* GoProUsbCommand.swift */; };
@@ -97,6 +98,7 @@
 		4E6786A02B98EB7A0004A7D8 /* GoProCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoProCommand.swift; sourceTree = "<group>"; };
 		4E931F1C2B0F9E870042B2AA /* MultiCameraView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiCameraView.swift; sourceTree = "<group>"; };
 		4E931F1D2B0F9E870042B2AA /* SettingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		4E9B98732B9F3B6300CA71F7 /* OsLogExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OsLogExtension.swift; sourceTree = "<group>"; };
 		4EAA6F9E2B0F9FFA004DD63E /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		4EAA6F9F2B0F9FFA004DD63E /* ColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		4EAA6FA22B0FA001004DD63E /* GoProUsbCommand.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoProUsbCommand.swift; sourceTree = "<group>"; };
@@ -252,6 +254,7 @@
 				4ECB28C32B2E3464004BA07F /* UrlExtension.swift */,
 				4E6786962B98980C0004A7D8 /* ViewExtension.swift */,
 				4EB1EF4C2B9B3F870030E6FF /* UIScreenExtension.swift */,
+				4E9B98732B9F3B6300CA71F7 /* OsLogExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -482,6 +485,7 @@
 				4E67869D2B9898FC0004A7D8 /* CameraManager.swift in Sources */,
 				4EAA6FAC2B0FA002004DD63E /* GoPro.swift in Sources */,
 				4EAA6FAB2B0FA002004DD63E /* GoProUsbSetting.swift in Sources */,
+				4E9B98742B9F3B6300CA71F7 /* OsLogExtension.swift in Sources */,
 				4E6786912B9893570004A7D8 /* CameraListView.swift in Sources */,
 				4E6224232B99764700F3503B /* CameraSetting.swift in Sources */,
 				4E6786802B978CBF0004A7D8 /* MediaViewModel.swift in Sources */,

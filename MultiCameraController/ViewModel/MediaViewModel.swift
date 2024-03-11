@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import os.log
+import OSLog
 
 class MediaViewModel: ObservableObject {
   @Published var camera: any Camera = GoPro(serialNumber: "")
@@ -30,10 +30,10 @@ class MediaViewModel: ObservableObject {
 
       switch result {
       case let .success(response):
-        os_log("Success: %@: %@", type: .info, #function, response)
+        Logger.media.info("Success: \(#function): \(response)")
 
       case let .failure(error):
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
       }
 
       guard let mediaEndPoint else { return }
@@ -52,10 +52,11 @@ class MediaViewModel: ObservableObject {
     self.camera.removeAllMedia { result in
       switch result {
       case .success:
+        Logger.media.info("Success: \(#function)")
         self.showRemoveMediaToast.toggle()
 
       case let .failure(error):
-        os_log("Error: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
         return
       }
     }
@@ -67,10 +68,10 @@ class MediaViewModel: ObservableObject {
 
       switch result {
       case let .success(response):
-        os_log("Success: %@: %@", type: .info, #function, response)
+        Logger.media.info("Success: \(#function): \(response)")
 
       case let .failure(error):
-        os_log("Fail: %@: %@", type: .error, #function, error.localizedDescription)
+        Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
       }
 
       guard let progress else { return }

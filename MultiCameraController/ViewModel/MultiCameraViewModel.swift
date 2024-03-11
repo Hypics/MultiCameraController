@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import os.log
+import OSLog
 
 class MultiCameraViewModel: ObservableObject {
   @Published var downloadMediaEndPoint: String = ""
@@ -25,8 +25,8 @@ class MultiCameraViewModel: ObservableObject {
     var creationTimestamp = 2_147_483_647
     for (index, camera) in CameraManager.instance.cameraContainer.filter({ $0.isConnected == true }).enumerated() {
       camera.requestUsbMediaList { _, latestCreationTimestamp, error in
-        if error != nil {
-          os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+        if let error {
+          Logger.camera.error("Error: \(#function): \(error.localizedDescription)")
           return
         }
         creationTimestamp = min(creationTimestamp, latestCreationTimestamp)
@@ -39,23 +39,23 @@ class MultiCameraViewModel: ObservableObject {
   }
 
   func deleteCameraItem(at offsets: IndexSet) {
-    os_log("Remove %@", type: .info, CameraManager.instance.cameraContainer[offsets[offsets.startIndex]].cameraName)
+    Logger.camera.info("Remove \(CameraManager.instance.cameraContainer[offsets[offsets.startIndex]].cameraName)")
     CameraManager.instance.removeCamera(at: offsets)
     UserDefaults.standard.set(CameraManager.instance.cameraSerialNumberList, forKey: "GoProSerialNumberList")
   }
 
   func downloadMediaAll(_ cameraList: [any Camera]) {
-    os_log("Download Media All", type: .info)
+    Logger.media.info("Download Media All")
     self.getCreationTimestamp { creationTimestamp in
       let creationDate = Date(timeIntervalSince1970: TimeInterval(creationTimestamp))
       let creationDateString = creationDate.toString(CustomDateFormat.simpleYearToSecond.rawValue)
 
-      os_log("creationTimestamp: %@ from %@", type: .info, creationDateString, creationTimestamp.description)
+      Logger.media.info("creationTimestamp: \(creationDateString) from \(creationTimestamp.description)")
       for camera in cameraList.filter({ $0.isConnected == true }) {
-        os_log("Download media list: %@", type: .info, camera.cameraName)
+        Logger.media.info("Download Media List: \(camera.cameraName)")
         camera.requestUsbMediaList { mediaEndPointList, _, error in
           if let error {
-            os_log("Error: %@", type: .error, error.localizedDescription)
+            Logger.camera.error("Error: \(#function): \(error.localizedDescription)")
             return
           }
 
@@ -66,8 +66,8 @@ class MultiCameraViewModel: ObservableObject {
                 mediaEndPoint: mediaEndPoint,
                 timestamp_path: creationDateString
               ) { progress, error in
-                if error != nil {
-                  os_log("Error: %@", type: .error, error?.localizedDescription ?? "")
+                if let error {
+                  Logger.media.error("Error: \(#function): \(error.localizedDescription)")
                   return
                 }
                 if let progress {

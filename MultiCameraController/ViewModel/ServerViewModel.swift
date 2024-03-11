@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import os.log
+import OSLog
 import SynologyKit
 
 class ServerViewModel: ObservableObject {
@@ -23,19 +23,19 @@ class ServerViewModel: ObservableObject {
 
   func loginSession(_ completion: ((Result<Bool, Error>) -> Void)?) {
     if self.userId.isEmpty {
-      os_log("%@ is empty", type: .error, self.userId)
+      Logger.server.error("\(self.userId) is empty")
     } else {
-      os_log("login: %@", type: .info, self.userId)
+      Logger.server.info("Login: \(self.userId)")
       UserDefaults.standard.set(self.userId, forKey: "UserId")
       self.client.login(account: self.userId, passwd: self.userPassword) { response in
         switch response {
         case let .success(authRes):
           self.client.updateSessionID(authRes.sid)
-          os_log("Synology SID: %@", type: .info, authRes.sid)
+          Logger.server.info("Synology SID: \(authRes.sid)")
           completion?(.success(true))
 
         case let .failure(error):
-          os_log("Error: %@", type: .error, error.description)
+          Logger.server.error("Error: \(#function): \(error.localizedDescription)")
           completion?(.failure(error))
         }
       }
@@ -45,7 +45,7 @@ class ServerViewModel: ObservableObject {
   func logoutSession() {
     // This block is not called when the view goes back.
     self.client.logout { _ in
-      os_log("logout: %@", type: .info, self.client.sessionid ?? "")
+      Logger.server.info("Logout: \(self.client.sessionid ?? "")")
     }
   }
 }
@@ -59,11 +59,11 @@ extension ServerViewModel {
         appropriateFor: nil,
         create: true
       )
-      os_log("documentDirectory: %@", type: .info, documentDirectory.path)
+      Logger.server.info("DocumentDirectory: \(documentDirectory.path)")
       self.appFileUrlList = self.getFileItemList(fileUrl: documentDirectory)?
         .filter { $0.url.lastPathComponent != ".Trash" }
     } catch {
-      os_log("Error: %@", type: .error, error.localizedDescription)
+      Logger.server.error("Error: \(#function): \(error.localizedDescription)")
     }
   }
 
@@ -76,7 +76,7 @@ extension ServerViewModel {
           includingPropertiesForKeys: nil
         )
       } catch {
-        os_log("Error: %@", type: .error, error.localizedDescription)
+        Logger.server.error("Error: \(#function): \(error.localizedDescription)")
       }
 
       if fileContentsUrlList.isEmpty {
@@ -101,16 +101,16 @@ extension ServerViewModel {
   }
 
   func uploadFolder(uploadItem: FileItemInfo) {
-    os_log("Upload Folder: %@", type: .info, uploadItem.url.lastPathComponent)
+    Logger.server.info("Upload Folder: \(uploadItem.url.lastPathComponent)")
     //            self.showDownloadMediaToast = true
     guard let folderFileChildrenItems: [FileItemInfo] = uploadItem.childrenItem else {
-      os_log("%@ is not directory", type: .info, uploadItem.url.lastPathComponent)
+      Logger.server.info("\(uploadItem.url.lastPathComponent) is not a folder")
       return
     }
     for childrenItem in folderFileChildrenItems {
       let destinationFolderPath = "/dataset/4DGaussians/data/" + self.userId + "/" + uploadItem
         .url.lastPathComponent
-      os_log("destination folder path: %@", type: .info, destinationFolderPath)
+      Logger.server.info("Destination folder path: \(destinationFolderPath)")
 
       self.showUploadMediaToast = true
       self.client.upload(
@@ -135,7 +135,7 @@ extension ServerViewModel {
             self.showUploadMediaToast = false
 
           case let .failure(error):
-            os_log("Error: %@", type: .error, error.localizedDescription)
+            Logger.server.error("Error: \(#function): \(error.localizedDescription)")
             self.showUploadMediaToast = false
           }
         }
@@ -144,11 +144,11 @@ extension ServerViewModel {
   }
 
   func deleteFolder(deleteItem: FileItemInfo) {
-    os_log("Delete Folder or File: %@", type: .info, deleteItem.url.lastPathComponent)
+    Logger.server.info("Delete Folder or File: \(deleteItem.url.lastPathComponent)")
     do {
       try FileManager.default.removeItem(at: deleteItem.url)
     } catch {
-      os_log("Could not remove item: %@", type: .info, error.localizedDescription)
+      Logger.server.error("Error: \(#function): \(error.localizedDescription)")
     }
   }
 }

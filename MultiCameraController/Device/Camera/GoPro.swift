@@ -7,7 +7,7 @@
 
 import Alamofire
 import Foundation
-import os.log
+import OSLog
 
 class GoPro: Camera {
   static func == (lhs: GoPro, rhs: GoPro) -> Bool {
@@ -64,11 +64,11 @@ class GoPro: Camera {
     .responseJSON { response in
       switch response.result {
       case .success:
-        os_log("success url: %@", type: .debug, commandUrl)
+        Logger.camera.debug("Success url: \(commandUrl)")
         completion?(nil)
 
       case let .failure(error):
-        os_log("error: %@", type: .error, error.localizedDescription)
+        Logger.camera.error("Error: \(#function): \(error.localizedDescription)")
         completion?(error)
       }
     }
@@ -89,11 +89,11 @@ class GoPro: Camera {
     .responseJSON { response in
       switch response.result {
       case .success:
-        os_log("success url: %@", type: .debug, settingUrl)
+        Logger.camera.debug("Success url: \(settingUrl)")
         completion?(nil)
 
       case let .failure(error):
-        os_log("error: %@", type: .error, error.localizedDescription)
+        Logger.camera.error("Error: \(#function): \(error.localizedDescription)")
         completion?(error)
       }
     }
@@ -101,7 +101,7 @@ class GoPro: Camera {
 
   func requestUsbCameraInfo(_ completion: ((GoProInfo?, Error?) -> Void)?) {
     let commandUrl = self.url + GoProUsbCommand.getHardwareInfo.endPoint
-    os_log("url: %@", type: .info, commandUrl)
+    Logger.camera.info("url: \(commandUrl)")
 
     AF.request(
       commandUrl,
@@ -121,12 +121,12 @@ class GoPro: Camera {
           let cameraInfoJson = try JSONDecoder().decode(GoProInfo.self, from: dataJSON)
           completion?(cameraInfoJson, nil)
         } catch {
-          os_log("error: %@", type: .error, error.localizedDescription)
+          Logger.camera.error("Error: \(#function): \(error.localizedDescription)")
           completion?(nil, error)
         }
 
       case let .failure(error):
-        os_log("error: %@", type: .error, error.localizedDescription)
+        Logger.camera.error("Error: \(#function): \(error.localizedDescription)")
         completion?(nil, error)
       }
     }
@@ -134,7 +134,7 @@ class GoPro: Camera {
 
   func requestUsbMediaList(_ completion: (([String]?, Int, Error?) -> Void)?) {
     let commandUrl = self.url + GoProUsbCommand.getMediaList.endPoint
-    os_log("url: %@", type: .info, commandUrl)
+    Logger.camera.info("url: \(commandUrl)")
 
     AF.request(
       commandUrl,
@@ -161,16 +161,16 @@ class GoPro: Camera {
               latestCreationTimestamp = max(latestCreationTimestamp, Int(fileInfo.cre) ?? latestCreationTimestamp)
             }
           }
-          os_log("mediaList: %@", type: .info, mediaEndPointList.description)
-          os_log("creationTimestamp: %@", type: .info, latestCreationTimestamp.description)
+          Logger.camera.info("mediaList: \(mediaEndPointList.description)")
+          Logger.camera.info("creationTimestamp: \(latestCreationTimestamp.description)")
           completion?(mediaEndPointList, latestCreationTimestamp, nil)
         } catch {
-          os_log("error: %@", type: .error, error.localizedDescription)
+          Logger.camera.error("Error: \(#function): \(error.localizedDescription)")
           completion?(nil, 0, error)
         }
 
       case let .failure(error):
-        os_log("error: %@", type: .error, error.localizedDescription)
+        Logger.camera.error("Error: \(#function): \(error.localizedDescription)")
         completion?(nil, 0, error)
       }
     }
@@ -194,18 +194,18 @@ class GoPro: Camera {
     }
 
     let mediaUrl: String = self.url + mediaEndPoint
-    os_log("mediaUrl: %@", type: .info, mediaUrl)
-    os_log("fileUrl: %@", type: .info, fileUrl.path())
+    Logger.camera.info("mediaUrl: \(mediaUrl)")
+    Logger.camera.info("fileUrl: \(fileUrl.path())")
     AF.download(mediaUrl, method: .get, parameters: nil, encoding: JSONEncoding.default, to: destination)
       .downloadProgress { progress in
         completion(Double(progress.fractionCompleted * 100), nil)
       }
       .response { response in
-        if response.error != nil {
-          os_log("Download failed: %@", type: .error, response.error?.errorDescription ?? "")
+        if let error = response.error {
+          Logger.camera.error("Error: \(#function): \(error.localizedDescription)")
           completion(nil, nil)
         } else {
-          os_log("Download Success: %@", type: .info, mediaUrl)
+          Logger.camera.info("Download Success: \(mediaUrl)")
         }
       }
   }
@@ -223,11 +223,11 @@ class GoPro: Camera {
     }
     .validate(statusCode: 200 ..< 300)
     .responseJSON { response in
-      if response.error != nil {
-        os_log("Remove failed: %@", type: .error, response.error?.errorDescription ?? "")
+      if let error = response.error {
+        Logger.camera.error("Error: \(#function): \(error.localizedDescription)")
         completion?(nil)
       } else {
-        os_log("Remove Success: %@", type: .info, mediaUrl)
+        Logger.camera.info("Remove Success: \(mediaUrl)")
       }
     }
   }
