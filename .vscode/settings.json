@@ -20,9 +20,5 @@
     "warninglight",
     "xcworkspace"
   ],
-  "editor.quickSuggestions": {
-    "comments": "off",
-    "strings": "off",
-    "other": "off"
-  }
+  "editor.quickSuggestions": false
 }
