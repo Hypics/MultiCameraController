@@ -59,90 +59,78 @@ struct MultiCameraControlView: View {
               self.multiCameraViewModel.showShutterOnToast.toggle()
             }, label: {
               VStack {
-                HStack {
-                  Image(systemName: "video")
-                }
-                .foregroundColor(.teal)
-                .padding([.top, .bottom], 2)
+                Image(systemName: "video")
+                  .foregroundColor(.teal)
+                  .padding([.top, .bottom], 2)
                 Text("Shutter On")
                   .foregroundColor(.teal)
               }
             })
+            .buttonStyle(BorderlessButtonStyle())
             .frame(height: UIScreen.screenHeight * 0.05)
             .padding()
             .overlay(
               RoundedRectangle(cornerRadius: 15)
                 .stroke(.gray, lineWidth: 1.0)
             )
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 3)
             Spacer()
             Button(action: {
               CameraManager.instance.stopShootAll(self.selectedCameraList)
               self.multiCameraViewModel.showShutterOffToast.toggle()
             }, label: {
               VStack {
-                HStack {
-                  Image(systemName: "stop")
-                }
-                .foregroundColor(.pink)
-                .padding([.top, .bottom], 2)
+                Image(systemName: "stop")
+                  .foregroundColor(.pink)
+                  .padding([.top, .bottom], 2)
                 Text("Shutter Off")
                   .foregroundColor(.pink)
               }
             })
+            .buttonStyle(BorderlessButtonStyle())
             .frame(height: UIScreen.screenHeight * 0.05)
             .padding()
             .overlay(
               RoundedRectangle(cornerRadius: 15)
                 .stroke(.gray, lineWidth: 1.0)
             )
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 3)
             Spacer()
             Button(action: {
               self.multiCameraViewModel.downloadMediaAll(self.selectedCameraList)
             }, label: {
               VStack {
-                HStack {
-                  Image(systemName: "square.and.arrow.down.on.square")
-                }
-                .foregroundColor(.green)
-                .padding([.top, .bottom], 2)
+                Image(systemName: "square.and.arrow.down.on.square")
+                  .foregroundColor(.green)
+                  .padding([.top, .bottom], 2)
                 Text("Download Media")
                   .foregroundColor(.green)
               }
             })
+            .buttonStyle(BorderlessButtonStyle())
             .frame(height: UIScreen.screenHeight * 0.05)
             .padding()
             .overlay(
               RoundedRectangle(cornerRadius: 15)
                 .stroke(.gray, lineWidth: 1.0)
             )
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 3)
             Spacer()
             Button(action: {
               self.multiCameraViewModel.removeAllMedia(self.selectedCameraList)
             }, label: {
               VStack {
-                HStack {
-                  Image(systemName: "trash")
-                }
-                .foregroundColor(.red)
-                .padding([.top, .bottom], 2)
+                Image(systemName: "trash")
+                  .foregroundColor(.red)
+                  .padding([.top, .bottom], 2)
                 Text("Remove Media")
                   .foregroundColor(.red)
               }
             })
+            .buttonStyle(BorderlessButtonStyle())
             .frame(height: UIScreen.screenHeight * 0.05)
             .padding()
             .overlay(
               RoundedRectangle(cornerRadius: 15)
                 .stroke(.gray, lineWidth: 1.0)
             )
-            .padding([.top, .bottom], 5)
-            .padding([.leading, .trailing], 3)
             Spacer()
           }
           .listRowBackground(Color.hauntedMeadow)

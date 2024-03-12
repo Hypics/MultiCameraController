@@ -10,8 +10,9 @@ import OSLog
 
 extension CameraManager {
   func updateMediaEndPointListOfAllCamera(_ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
-      Logger.media.info("\(#function): Update Media EndPoint List (\(index + 1)/\(self.cameraContainer.count))")
+      Logger.media.info("\(#function): Update Media EndPoint List (\(index + 1)/\(cameraCount))")
       camera.updateMediaEndPointList { result, _ in
         switch result {
         case let .success(response):
@@ -25,8 +26,9 @@ extension CameraManager {
   }
 
   func downloadAllMediaFromAllCamera(_ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
-      Logger.media.info("\(#function): Download All Media (\(index + 1)/\(self.cameraContainer.count))")
+      Logger.media.info("\(#function): Download All Media (\(index + 1)/\(cameraCount))")
       camera.downloadAllMedia { result, _, _ in
         switch result {
         case let .success(response):
@@ -40,8 +42,9 @@ extension CameraManager {
   }
 
   func removeAllMediaFromAllCamera(_ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
-      Logger.media.info("\(#function): Rmove All Media (\(index + 1)/\(self.cameraContainer.count))")
+      Logger.media.info("\(#function): Rmove All Media (\(index + 1)/\(cameraCount))")
       camera.removeAllMedia { result in
         switch result {
         case let .success(response):

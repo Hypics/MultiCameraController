@@ -48,6 +48,7 @@ struct PresetView: View {
                 self.isCameraListPopover = false
               }
             }
+            .buttonStyle(BorderlessButtonStyle())
             .frame(width: UIScreen.screenWidth * 0.3, height: UIScreen.screenHeight * 0.4)
             .padding()
           })

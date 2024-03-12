@@ -75,6 +75,8 @@ extension GoPro {
           Logger.media.error("Fail: \(#function): \(error.localizedDescription)")
           return
         }
+
+        // TODO: check
         self.mediaEndPointList.remove(atOffsets: offsets)
       }
   }
@@ -88,7 +90,11 @@ extension GoPro {
       } else {
         Logger.media
           .info("Success: \(#function): \(Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue))")
-        // TODO: remove item?
+
+        // TODO: check
+        if let mediaEndPointIndex = self.mediaEndPointList.firstIndex(of: mediaEndPoint) {
+          self.mediaEndPointList.remove(at: mediaEndPointIndex)
+        }
         completion(.success(true))
       }
     }

@@ -247,11 +247,25 @@ struct SettingView: View {
     .frame(maxHeight: .infinity)
     .scrollContentBackground(.hidden)
     .background(Color.hauntedMeadow)
+    .toast(isPresenting: self.$settingViewModel.showPreset1Toast, duration: 1, tapToDismiss: true) {
+      AlertToast(
+        displayMode: .alert,
+        type: .systemImage("1.square", .pink),
+        title: """
+        \(self.settingViewModel.toastString) :
+        \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams
+        """,
+        style: .style(titleColor: .primary)
+      )
+    }
     .toast(isPresenting: self.$settingViewModel.showVideoResolutionToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("square.arrowtriangle.4.outward", .pink),
-        title: "4K :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: """
+        \(self.settingViewModel.toastString) :
+        \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams
+        """,
         style: .style(titleColor: .pink)
       )
     }
@@ -259,7 +273,10 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("rectangle.on.rectangle", .pink),
-        title: "120Hz :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: """
+        \(self.settingViewModel.toastString) :
+        \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams
+        """,
         style: .style(titleColor: .pink)
       )
     }
@@ -267,7 +284,10 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("field.of.view.wide", .red),
-        title: "Linear :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: """
+        \(self.settingViewModel.toastString) :
+        \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams
+        """,
         style: .style(titleColor: .red)
       )
     }
@@ -275,7 +295,10 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("warninglight", .red),
-        title: "60Hz :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: """
+        \(self.settingViewModel.toastString) :
+        \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams
+        """,
         style: .style(titleColor: .red)
       )
     }
@@ -283,7 +306,10 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("circle.and.line.horizontal", .orange),
-        title: "Off :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: """
+        \(self.settingViewModel.toastString) :
+        \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams
+        """,
         style: .style(titleColor: .orange)
       )
     }
@@ -291,7 +317,10 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("arrowshape.turn.up.backward.badge.clock", .orange),
-        title: "Off :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: """
+        \(self.settingViewModel.toastString) :
+        \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams
+        """,
         style: .style(titleColor: .orange)
       )
     }
@@ -299,7 +328,10 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("slider.horizontal.3", .teal),
-        title: "High :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: """
+        \(self.settingViewModel.toastString) :
+        \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams
+        """,
         style: .style(titleColor: .teal)
       )
     }
@@ -307,7 +339,10 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("slider.vertical.3", .teal),
-        title: "10bit :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: """
+        \(self.settingViewModel.toastString) :
+        \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams
+        """,
         style: .style(titleColor: .teal)
       )
     }
@@ -315,7 +350,10 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("powersleep", .indigo),
-        title: "Never :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: """
+        \(self.settingViewModel.toastString) :
+        \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams
+        """,
         style: .style(titleColor: .indigo)
       )
     }
@@ -323,16 +361,11 @@ struct SettingView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("pencil.and.list.clipboard", .indigo),
-        title: "Pro :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: """
+        \(self.settingViewModel.toastString) :
+        \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams
+        """,
         style: .style(titleColor: .indigo)
-      )
-    }
-    .toast(isPresenting: self.$settingViewModel.showPreset1Toast, duration: 1, tapToDismiss: true) {
-      AlertToast(
-        displayMode: .alert,
-        type: .systemImage("1.square", .pink),
-        title: "Preset 1 :\n\(CameraManager.instance.getConnectedCameraCount()) cams",
-        style: .style(titleColor: .primary)
       )
     }
   }

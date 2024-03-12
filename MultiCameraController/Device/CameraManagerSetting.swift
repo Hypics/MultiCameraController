@@ -10,9 +10,10 @@ import OSLog
 
 extension CameraManager {
   func setVideoResolutionAll(_ videoResolution: CameraVideoResolution, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       Logger.setting
-        .info("Set Video Resolution: \(videoResolution.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+        .info("Set Video Resolution: \(videoResolution.toString()) (\(index + 1)/\(cameraCount))")
       camera.setVideoResolution(videoResolution: videoResolution) { result in
         switch result {
         case let .success(response):
@@ -26,8 +27,9 @@ extension CameraManager {
   }
 
   func setFpsAll(_ fps: CameraFps, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
-      Logger.setting.info("Set FPS: \(fps.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+      Logger.setting.info("Set FPS: \(fps.toString()) (\(index + 1)/\(cameraCount))")
       camera.setFps(fps: fps) { result in
         switch result {
         case let .success(response):
@@ -41,9 +43,10 @@ extension CameraManager {
   }
 
   func setAutoPowerDownAll(_ autoPowerDown: CameraAutoPowerDown, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       Logger.setting
-        .info("Set Auto Power Down: \(autoPowerDown.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+        .info("Set Auto Power Down: \(autoPowerDown.toString()) (\(index + 1)/\(cameraCount))")
       camera.setAutoPowerDown(autoPowerDown: autoPowerDown) { result in
         switch result {
         case let .success(response):
@@ -57,9 +60,10 @@ extension CameraManager {
   }
 
   func setVideoAspectRatioAll(_ videoAspectRatio: CameraVideoAspectRatio, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       Logger.setting
-        .info("Set Video Aspect Ratio: \(videoAspectRatio.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+        .info("Set Video Aspect Ratio: \(videoAspectRatio.toString()) (\(index + 1)/\(cameraCount))")
       camera.setVideoAspectRatio(videoAspectRatio: videoAspectRatio) { result in
         switch result {
         case let .success(response):
@@ -73,9 +77,10 @@ extension CameraManager {
   }
 
   func setDigitalLensesAll(_ digitalLenses: CameraDigitalLenses, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       Logger.setting
-        .info("Set Digital Lenses: \(digitalLenses.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+        .info("Set Digital Lenses: \(digitalLenses.toString()) (\(index + 1)/\(cameraCount))")
       camera.setDigitalLenses(digitalLenses: digitalLenses) { result in
         switch result {
         case let .success(response):
@@ -89,8 +94,9 @@ extension CameraManager {
   }
 
   func setAntiFlickerAll(_ antiFlicker: CameraAntiFlicker, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
-      Logger.setting.info("Set Anti Flicker: \(antiFlicker.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+      Logger.setting.info("Set Anti Flicker: \(antiFlicker.toString()) (\(index + 1)/\(cameraCount))")
       camera.setAntiFlicker(antiFlicker: antiFlicker) { result in
         switch result {
         case let .success(response):
@@ -104,8 +110,9 @@ extension CameraManager {
   }
 
   func setHypersmoothAll(_ hypersmooth: CameraHypersmooth, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
-      Logger.setting.info("Set Hypersmooth: \(hypersmooth.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+      Logger.setting.info("Set Hypersmooth: \(hypersmooth.toString()) (\(index + 1)/\(cameraCount))")
       camera.setHypersmooth(hypersmooth: hypersmooth) { result in
         switch result {
         case let .success(response):
@@ -119,8 +126,9 @@ extension CameraManager {
   }
 
   func setHindsightAll(_ hindsight: CameraHindsight, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
-      Logger.setting.info("Set Hindsight: \(hindsight.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+      Logger.setting.info("Set Hindsight: \(hindsight.toString()) (\(index + 1)/\(cameraCount))")
       camera.setHindsight(hindsight: hindsight) { result in
         switch result {
         case let .success(response):
@@ -134,8 +142,9 @@ extension CameraManager {
   }
 
   func setControlModeAll(_ controlMode: CameraControlMode, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
-      Logger.setting.info("Set Control Mode: \(controlMode.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+      Logger.setting.info("Set Control Mode: \(controlMode.toString()) (\(index + 1)/\(cameraCount))")
       camera.setControlMode(controlMode: controlMode) { result in
         switch result {
         case let .success(response):
@@ -149,8 +158,9 @@ extension CameraManager {
   }
 
   func setWirelessBandAll(_ wirelessBand: CameraWirelessBand, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
-      Logger.setting.info("Set Wireless Band: \(wirelessBand.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+      Logger.setting.info("Set Wireless Band: \(wirelessBand.toString()) (\(index + 1)/\(cameraCount))")
       camera.setWirelessBand(wirelessBand: wirelessBand) { result in
         switch result {
         case let .success(response):
@@ -164,8 +174,9 @@ extension CameraManager {
   }
 
   func setVideoBitRateAll(_ videoBitRate: CameraVideoBitRate, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
-      Logger.setting.info("Set Video Bit Rate: \(videoBitRate.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+      Logger.setting.info("Set Video Bit Rate: \(videoBitRate.toString()) (\(index + 1)/\(cameraCount))")
       camera.setVideoBitRate(videoBitRate: videoBitRate) { result in
         switch result {
         case let .success(response):
@@ -179,9 +190,10 @@ extension CameraManager {
   }
 
   func setVideoBitDepthAll(_ videoBitDepth: CameraVideoBitDepth, _ cameraList: [any Camera]?) {
+    let cameraCount = (cameraList ?? self.cameraContainer).filter { $0.isConnected == true }.count
     for (index, camera) in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }).enumerated() {
       Logger.setting
-        .info("Set Video Bit Depth: \(videoBitDepth.toString()) (\(index + 1)/\(self.cameraContainer.count))")
+        .info("Set Video Bit Depth: \(videoBitDepth.toString()) (\(index + 1)/\(cameraCount))")
       camera.setVideoBitDepth(videoBitDepth: videoBitDepth) { result in
         switch result {
         case let .success(response):
