@@ -38,7 +38,7 @@ extension CameraManager {
   }
 
   func checkCameraAll(_ cameraList: [any Camera]?) {
-    for camera in (cameraList ?? self.cameraContainer).filter({ $0.isConnected == true }) {
+    for camera in cameraList ?? self.cameraContainer {
       camera.checkConnection { result in
         switch result {
         case let .success(response):

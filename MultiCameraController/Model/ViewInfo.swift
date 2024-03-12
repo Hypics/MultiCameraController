@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 struct ViewInfo: Hashable {
   static func == (lhs: ViewInfo, rhs: ViewInfo) -> Bool {
     lhs.view == rhs.view
@@ -36,7 +35,7 @@ enum ViewType {
 }
 
 enum PanelType: CaseIterable {
-  case cameraPanel
+  case controlPanel
   case settingPanel
   case mediaPanel
 
@@ -44,5 +43,18 @@ enum PanelType: CaseIterable {
     guard let currentIndex = PanelType.allCases.firstIndex(of: currentCase) else { return nil }
     let nextIndex = (currentIndex + 1) % PanelType.allCases.count
     return PanelType.allCases[nextIndex]
+  }
+
+  func toTitle() -> String {
+    switch self {
+    case .controlPanel:
+      "Control"
+
+    case .settingPanel:
+      "Setting"
+
+    case .mediaPanel:
+      "Media"
+    }
   }
 }

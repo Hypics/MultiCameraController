@@ -16,7 +16,7 @@ struct MultiCameraView: View {
 
   @State private var selectedCameraList: [any Camera] = []
   @State private var selectedCamera: (any Camera)?
-  @State private var panelType: PanelType = .cameraPanel
+  @State private var panelType: PanelType = .controlPanel
 
   var body: some View {
     HStack {
@@ -28,7 +28,7 @@ struct MultiCameraView: View {
       .frame(maxWidth: UIScreen.screenWidth * 0.3, maxHeight: UIScreen.screenHeight * 0.9)
 
       switch self.$panelType.wrappedValue {
-      case .cameraPanel:
+      case .controlPanel:
         VStack {
           PreviewView(
             multiCameraViewModel: self.multiCameraViewModel,
@@ -58,12 +58,15 @@ struct MultiCameraView: View {
 
       case .mediaPanel:
         VStack {
-          MediaView(mediaViewModel: self.mediaViewModel, selectedCameraList: self.$selectedCameraList)
+          MediaView(
+            mediaViewModel: self.mediaViewModel,
+            selectedCameraList: self.$selectedCameraList
+          )
         }
         .frame(maxWidth: UIScreen.screenWidth * 0.7, maxHeight: UIScreen.screenHeight * 0.9)
       }
     }
-    .navigationTitle("Multi Camera Control")
+    .navigationTitle("Multi Camera \(self.panelType.toTitle())")
     .foregroundStyle(Color.skyishMyish)
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
@@ -71,12 +74,27 @@ struct MultiCameraView: View {
         if let nextPanelType = PanelType.getNext(after: self.panelType) {
           self.panelType = nextPanelType
         }
+
+        switch self.panelType {
+        case .controlPanel:
+          break
+
+        case .settingPanel:
+          break
+
+        case .mediaPanel:
+          CameraManager.instance.updateMediaEndPointListOfAllCamera(self.selectedCameraList)
+          self.selectedCameraList.refreshView() // TODO??
+        }
       }, label: {
-        if self.panelType == .cameraPanel {
+        switch self.panelType {
+        case .controlPanel:
           Image(systemName: "gear")
-        } else if self.panelType == .settingPanel {
+
+        case .settingPanel:
           Image(systemName: "photo")
-        } else {
+
+        case .mediaPanel:
           Image(systemName: "video")
         }
       })
@@ -84,21 +102,13 @@ struct MultiCameraView: View {
     .onAppear {
       CameraManager.instance.checkCameraAll(nil)
       CameraManager.instance.enableWiredUsbControlAll(nil)
-      self.multiCameraViewModel.showCameraToast.toggle()
-    }
-    .toast(isPresenting: self.$multiCameraViewModel.showCameraToast, duration: 3, tapToDismiss: true) {
-      AlertToast(
-        displayMode: .alert,
-        type: .systemImage("camera", .primary),
-        title: "Connected : \(CameraManager.instance.getConnectedCameraCount()) cams",
-        style: .style(titleColor: .primary)
-      )
+      CameraManager.instance.updateMediaEndPointListOfAllCamera(nil)
     }
     .toast(isPresenting: self.$multiCameraViewModel.showShutterOnToast, duration: 1, tapToDismiss: true) {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("video", .teal),
-        title: "Shutter On All : \(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: "Shutter On All : \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams",
         style: .style(titleColor: .teal)
       )
     }
@@ -106,7 +116,7 @@ struct MultiCameraView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("stop", .pink),
-        title: "Shutter Off All : \(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: "Shutter Off All : \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams",
         style: .style(titleColor: .pink)
       )
     }
@@ -121,7 +131,7 @@ struct MultiCameraView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("trash", .red),
-        title: "Remove Media All : \(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: "Remove Media All : \(self.selectedCameraList.filter { $0.isConnected == true }.count) cams",
         style: .style(titleColor: .red)
       )
     }
@@ -129,24 +139,8 @@ struct MultiCameraView: View {
       AlertToast(
         displayMode: .alert,
         type: .systemImage("camera", .teal),
-        title: "Refresh Camera List : \(CameraManager.instance.getConnectedCameraCount()) cams",
+        title: "Connected : \(CameraManager.instance.getConnectedCameraCount()) cams",
         style: .style(titleColor: .teal)
-      )
-    }
-    .toast(isPresenting: self.$multiCameraViewModel.showCameraConnectedToast, duration: 1, tapToDismiss: true) {
-      AlertToast(
-        displayMode: .alert,
-        type: .systemImage("camera", .teal),
-        title: "Success : Camera is connected",
-        style: .style(titleColor: .teal)
-      )
-    }
-    .toast(isPresenting: self.$multiCameraViewModel.showCameraEmptyToast, duration: 1, tapToDismiss: true) {
-      AlertToast(
-        displayMode: .alert,
-        type: .systemImage("camera", .pink),
-        title: "Fail : Camera is not connected",
-        style: .style(titleColor: .pink)
       )
     }
   }

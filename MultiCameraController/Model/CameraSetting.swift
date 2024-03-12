@@ -10,6 +10,10 @@ import Foundation
 enum CameraPreset {
   case mounted_4k_60fps
 
+  func toString() -> String {
+    return "\(self)"
+  }
+
   func toGoProSetting() -> [GoProUsbSetting] {
     switch self {
     case .mounted_4k_60fps:

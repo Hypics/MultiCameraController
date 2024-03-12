@@ -84,7 +84,11 @@ struct CameraListView: View {
               Logger.camera.info("Connect: \(camera.cameraName)")
               camera.checkConnection(nil)
               camera.enableWiredUsbControl(nil)
-              self.multiCameraViewModel.showCameraConnectedToast.toggle()
+              camera.updateMediaEndPointList(nil)
+
+              // TODO: with Task (run after done)
+              self.selectedCameraList.refreshView()
+              self.multiCameraViewModel.showRefreshCameraListToast.toggle()
             }, label: {
               Text("Connect")
                 .padding([.top, .bottom], 5)
@@ -135,6 +139,10 @@ struct CameraListView: View {
     .refreshable {
       CameraManager.instance.checkCameraAll(nil)
       CameraManager.instance.enableWiredUsbControlAll(nil)
+      CameraManager.instance.updateMediaEndPointListOfAllCamera(nil)
+
+      // TODO: with Task (run after done)
+      self.selectedCameraList.refreshView()
       self.multiCameraViewModel.showRefreshCameraListToast.toggle()
     }
   }

@@ -20,7 +20,7 @@ struct UploadMediaView: View {
         Text(item.url.lastPathComponent)
           .foregroundColor((item.url.isDirectory) ? Color.teal : .gray)
       }
-      .swipeActions(edge: .leading, allowsFullSwipe: false) {
+      .swipeActions(edge: .leading, allowsFullSwipe: true) {
         Button(action: {
           self.serverViewModel.uploadFolder(uploadItem: item)
         }, label: {
@@ -31,7 +31,7 @@ struct UploadMediaView: View {
         .disabled(item.childrenItem == nil)
         .tint(.green)
       }
-      .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+      .swipeActions(edge: .trailing, allowsFullSwipe: true) {
         Button(action: {
           self.serverViewModel.deleteFolder(deleteItem: item)
           self.serverViewModel.updateAppFileUrlList()

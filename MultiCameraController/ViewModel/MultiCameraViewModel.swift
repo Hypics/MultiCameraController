@@ -12,14 +12,11 @@ class MultiCameraViewModel: ObservableObject {
   @Published var downloadMediaEndPoint: String = ""
   @Published var downloadProgress: Double = 0.0
 
-  @Published var showCameraToast = false
   @Published var showShutterOnToast = false
   @Published var showShutterOffToast = false
   @Published var showDownloadMediaToast = false
   @Published var showRemoveMediaToast = false
   @Published var showRefreshCameraListToast = false
-  @Published var showCameraConnectedToast = false
-  @Published var showCameraEmptyToast = false
 
   func getCreationTimestamp(completion: @escaping (Int) -> Void) {
     var creationTimestamp = 2_147_483_647
