@@ -64,4 +64,32 @@ extension GoPro {
       }
     }
   }
+
+  func startPreview(_ completion: ((Result<Bool, Error>) -> Void)?) {
+    Logger.camera.info("Start Preview: \(self.cameraName)")
+    self.requestUsbCommand(command: .startPreview) { error in
+      if let error {
+        Logger.camera.error("Fail: \(#function): \(error.localizedDescription)")
+        completion?(.failure(error))
+      } else {
+        Logger.camera
+          .info("Success: \(#function): \(Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue))")
+        completion?(.success(true))
+      }
+    }
+  }
+
+  func stopPreview(_ completion: ((Result<Bool, Error>) -> Void)?) {
+    Logger.camera.info("Stop Preview: \(self.cameraName)")
+    self.requestUsbCommand(command: .stopPreview) { error in
+      if let error {
+        Logger.camera.error("Fail: \(#function): \(error.localizedDescription)")
+        completion?(.failure(error))
+      } else {
+        Logger.camera
+          .info("Success: \(#function): \(Date().toString(CustomDateFormat.yearToFractionalSecond.rawValue))")
+        completion?(.success(true))
+      }
+    }
+  }
 }

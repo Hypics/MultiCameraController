@@ -20,6 +20,7 @@ class GoPro: Camera {
 
   var serialNumber: String
   var cameraName: String
+  var baseUrl: String
   var isConnected: Bool
   var mediaEndPointList: [String]
 
@@ -36,13 +37,15 @@ class GoPro: Camera {
     self.timeoutInterval = 3.0
 
     if serialNumber.isEmpty {
+      self.baseUrl = ""
       self.url = ""
       return
     }
 
     let serialNumberX = serialNumber.substring(with: 0 ..< 1)
     let serialNumberYZ = serialNumber.substring(with: 1 ..< 3)
-    self.url = "http://172.2" + serialNumberX + ".1" + serialNumberYZ + ".51:8080"
+    self.baseUrl = "http://172.2\(serialNumberX).1\(serialNumberYZ).51"
+    self.url = "\(self.baseUrl):8080"
   }
 
   func getCameraInfo() -> CameraInfo? {
@@ -157,6 +160,7 @@ class GoPro: Camera {
           var latestCreationTimestamp = 0
           for mediaInfo in mediaListJson.media {
             for fileInfo in mediaInfo.fs {
+              // TODO: add additional info
               mediaEndPointList.append("/videos/DCIM/" + mediaInfo.d + "/" + fileInfo.n)
               latestCreationTimestamp = max(latestCreationTimestamp, Int(fileInfo.cre) ?? latestCreationTimestamp)
             }
