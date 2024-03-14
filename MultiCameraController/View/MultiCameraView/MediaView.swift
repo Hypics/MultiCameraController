@@ -21,7 +21,8 @@ struct MediaView: View {
         }) {
           ForEach(camera.mediaEndPointList, id: \.self) { mediaEndPoint in
             Button(action: {
-              self.mediaViewModel.downloadMedia(camera: camera, mediaEndPoint: mediaEndPoint)
+              // TODO: show info
+//              self.mediaViewModel.downloadMedia(camera: camera, mediaEndPoint: mediaEndPoint)
             }, label: {
               HStack {
                 Spacer()

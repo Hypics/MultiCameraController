@@ -10,6 +10,7 @@ import Foundation
 protocol Camera: Hashable {
   var serialNumber: String { get set }
   var cameraName: String { get set }
+  var baseUrl: String { get set }
   var isConnected: Bool { get set }
   var mediaEndPointList: [String] { get set }
 
@@ -29,6 +30,9 @@ protocol Camera: Hashable {
 
   func checkConnection(_ completion: ((Result<Bool, Error>) -> Void)?)
   func enableWiredUsbControl(_ completion: ((Result<Bool, Error>) -> Void)?)
+
+  func startPreview(_ completion: ((Result<Bool, Error>) -> Void)?)
+  func stopPreview(_ completion: ((Result<Bool, Error>) -> Void)?)
 
   // Media
   func updateMediaEndPointList(_ completion: ((Result<Bool, Error>, [String]?) -> Void)?)

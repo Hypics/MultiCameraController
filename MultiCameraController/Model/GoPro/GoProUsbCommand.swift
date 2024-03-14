@@ -12,6 +12,8 @@ enum GoProUsbCommand {
   case shutterOff
   case disableWiredUsbControl
   case enableWiredUsbControl
+  case startPreview
+  case stopPreview
 
   var endPoint: String {
     switch self {
@@ -27,6 +29,10 @@ enum GoProUsbCommand {
       "/gopro/camera/control/wired_usb?p=0"
     case .enableWiredUsbControl:
       "/gopro/camera/control/wired_usb?p=1"
+    case .startPreview:
+      "/gopro/camera/stream/start"
+    case .stopPreview:
+      "/gopro/camera/stream/stop"
     }
   }
 }
