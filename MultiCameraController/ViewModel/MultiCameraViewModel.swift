@@ -45,7 +45,10 @@ class MultiCameraViewModel: ObservableObject {
     Logger.media.info("Download Media All")
     self.getCreationTimestamp { creationTimestamp in
       let creationDate = Date(timeIntervalSince1970: TimeInterval(creationTimestamp))
-      let creationDateString = creationDate.toString(CustomDateFormat.simpleYearToSecond.rawValue)
+      let creationDateString = creationDate.toString(
+        CustomDateFormat.simpleYearToSecond.rawValue,
+        timeZone: TimeZone(abbreviation: "UTC")
+      )
 
       Logger.media.info("creationTimestamp: \(creationDateString) from \(creationTimestamp.description)")
       for camera in cameraList.filter({ $0.isConnected == true }) {
